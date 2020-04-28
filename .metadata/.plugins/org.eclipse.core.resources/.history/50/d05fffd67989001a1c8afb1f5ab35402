@@ -1,0 +1,31 @@
+package geopriv4j;
+
+import java.util.ArrayList;
+
+import geopriv4j.utils.LatLng;
+
+public class MovingInTheNeighbourhoodAlgorithmExample {
+	//Moving in the neighborhood
+    public static void main(String[] args) {
+    	
+    	//Number of dummies to be generated 
+    	int iterations = 5;
+    	
+    	//distance between generated locations
+    	double offset = 0.01;
+    	
+		ArrayList<LatLng> dummies = new ArrayList<>();
+		
+		//this is the current user location
+		LatLng current_loc = new LatLng(35.3123,-80.7432);
+		dummies.add(current_loc);
+		
+		for(int i =0;i<iterations;i++) {
+			int prevIndex = dummies.size() - 1;
+			LatLng previous_loaction = dummies.get(prevIndex);
+			LatLng generated_location = MovingInTheNeighbourhoodAlgorithm.generate(offset, previous_loaction);
+			System.out.println("generated location: "+generated_location);
+			dummies.add(generated_location);
+		}
+	}
+}

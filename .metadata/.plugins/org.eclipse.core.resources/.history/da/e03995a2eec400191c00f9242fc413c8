@@ -1,0 +1,59 @@
+package edu.uncc.cci.mobileapps;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+public class MainPart2 {
+	/*
+	 * Question 2: - In this question you will use the Data.users array that
+	 * includes a list of users. Formatted as :
+	 * firstname,lastname,age,email,gender,city,state - Create a User class that
+	 * should parse all the parameters for each user. - The goal is to count the
+	 * number of users living each state. - Print out the list of State, Count order
+	 * in ascending order by count.
+	 */
+
+	public static void main(String[] args) {
+		ArrayList<Users> arrayUsers = new ArrayList();
+		for (String str : Data.users) {
+			String[] array = str.split(",");
+
+			Users users = new Users(array[0], array[1], array[2], array[3], array[4], array[5], array[6]);
+
+			arrayUsers.add(users);
+		}
+
+		Map<String, Integer> newMap = new HashMap<String, Integer>();
+		for (Users u : arrayUsers) {
+
+			newMap.put(u.state, Collections.frequency(arrayUsers, u));
+
+		}
+		Map<String, Integer> oldMap = new HashMap<String, Integer>(newMap);
+
+		ArrayList<Integer> val = new ArrayList<Integer>(newMap.values());
+
+		Collections.sort(val);
+
+		for (Integer value : val) {
+
+			for (Entry<String, Integer> ent : newMap.entrySet()) {
+
+				if (ent.getValue() == value) {
+
+					System.out.println(ent.getKey() + " : " + value);
+					newMap.remove(ent.getKey());
+					break;
+				}
+			}
+		}
+
+	}
+}

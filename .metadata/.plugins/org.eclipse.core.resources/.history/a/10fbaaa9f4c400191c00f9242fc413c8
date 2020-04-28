@@ -1,0 +1,27 @@
+package edu.uncc.cci.mobileapps;
+
+public class ShoppingCart {
+int id;
+int quantity;
+@Override
+public String toString() {
+	return "ShoppingCart [id=" + id + ", quantity=" + quantity + "]";
+}
+public ShoppingCart(int id, int quantity) {
+	super();
+	this.id = id;
+	this.quantity = quantity;
+}
+public int getId() {
+	return id;
+}
+public void setId(int id) {
+	this.id = id;
+}
+public int getQuantity() {
+	return quantity;
+}
+public void setQuantity(int quantity) {
+	this.quantity = quantity;
+}
+}

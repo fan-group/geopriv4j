@@ -1,0 +1,95 @@
+package edu.uncc.cci.mobileapps;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+public class MainPart2 {
+	/*
+	 * Question 2: - In this question you will use the Data.users array that
+	 * includes a list of users. Formatted as :
+	 * firstname,lastname,age,email,gender,city,state - Create a User class that
+	 * should parse all the parameters for each user. - The goal is to count the
+	 * number of users living each state. - Print out the list of State, Count order
+	 * in ascending order by count.
+	 */
+
+	public static void main(String[] args) {
+		ArrayList<Users> arrayUsers = new ArrayList();
+		// example on how to access the Data.users array.
+		for (String str : Data.users) {
+			// System.out.println(str);
+			String[] array = str.split(",");
+			// System.out.println(array[0].toString());
+			Users users = new Users(array[0], array[1], array[2], array[3], array[4], array[5], array[6]);
+			// users.printUsers();
+			arrayUsers.add(users);
+		}
+		// new MainPart2().frequencyCounter(arrayUsers);
+		Map<String, Integer> newMap = new HashMap<String, Integer>();
+		for (Users u : arrayUsers) {
+			// System.out.println(Collections.frequency(arrayUsers, u));
+
+			// System.out.println(u.state+" :"+Collections.frequency(arrayUsers, u));
+			newMap.put(u.state, Collections.frequency(arrayUsers, u));
+
+		}
+		// ArrayList<String> key = new ArrayList<String>(newMap.keySet());
+		ArrayList<Integer> val = new ArrayList<Integer>(newMap.values());
+
+		// Collections.sort(key);
+		Collections.sort(val);
+		int i = 0;
+		for (Integer value : val) {
+
+			for (Entry<String, Integer> ent : newMap.entrySet()) {
+
+				if (ent.getValue() == value) {
+
+					System.out.println(ent.getKey() + " : " + value + " count:" + i++);
+					newMap.remove(ent.getKey());
+					break;
+				}
+			}
+		}
+System.out.println(newMap.size());
+		// Collections.sort(al, new Comparator<Integer>() {
+
+//		@Override
+//		public int compare(Integer o1, Integer o2) {
+//			// TODO Auto-generated method stub
+//			return o1-o2;
+//		}
+//    	   
+//	});
+
+		// Collections.sort(arrayUsers, new Comparator<Users>() {
+
+		// @Override
+		// public int compare(Users o1, Users o2) {
+		// TODO Auto-generated method stub
+		// return o2.age - o1.age;
+
+		// return 0;
+		// }
+		// });
+		// for (int i = 0; i < 10; i++) {
+		// System.out.println(arrayUsers.get(i));
+		// }
+	}
+
+	public ArrayList<Users> frequencyCounter(ArrayList<Users> au) {
+
+		for (Users nu : au) {
+			System.out.println(Collections.frequency(au, nu));
+		}
+		return null;
+
+	}
+}

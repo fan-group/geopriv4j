@@ -1,0 +1,38 @@
+package geopriv4j;
+
+import java.util.Random;
+
+import geopriv4j.utils.Constants;
+import geopriv4j.utils.LatLng;
+
+public class SpatialCloakingAlgorithm {
+
+
+	public LatLng generate(LatLng location, int radius) {
+
+        Random rand = new Random();
+
+        double random_lat = rand.nextInt(radius);
+        double random_lng = rand.nextInt(radius);
+
+        
+        //Coordinate offsets in radians
+        double lat_in_degrees = random_lat/Constants.earth_radius;
+        double lng_in_degrees = random_lng/(Constants.earth_radius * Math.cos(Math.PI*location.latitude/180));
+
+        if(rand.nextGaussian()<0.5) {
+            lat_in_degrees *=-1;
+        }
+
+        if(rand.nextGaussian()<0.5) {
+            lng_in_degrees *=-1;
+        }
+
+        double lat = location.latitude + lat_in_degrees *180/Math.PI;
+        double lng = location.longitude + lng_in_degrees *180/Math.PI;
+
+        LatLng spatialCloaked = new LatLng(lat,lng);
+
+        return spatialCloaked;
+    }
+}

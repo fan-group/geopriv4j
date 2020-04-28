@@ -1,0 +1,53 @@
+package algorithms;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+
+
+public class TaxiFileReader {
+public static ArrayList<Taxi> readFile(String file){
+		
+		ArrayList<Taxi> taxis = new ArrayList<Taxi>();
+	    BufferedReader read = null;
+        String text=null;
+
+	    
+	    try {
+	        read = new BufferedReader(
+	                new FileReader(file));
+	        
+	        while((text = read.readLine())!=null) {
+	        	
+//	            if(!text.equals("\n")){
+	                String taxi_info = text;
+
+	                try {
+	                    read.readLine();
+	                }catch(Exception e) {
+	                	e.printStackTrace();
+	                }
+	                String infoarr [] = taxi_info.split(";");
+	                Taxi m = new Taxi();
+	                m.taxi_id = infoarr[0];
+	                m.day = infoarr[1];
+	                ArrayList<LatLng> locations = new ArrayList<LatLng>();
+	                for(int i=2;i<infoarr.length;i++) {
+	                	String[] loc = infoarr[i].replace("(", "").replace(")","").split(",");
+	                	LatLng latLng = new LatLng(Double.parseDouble(loc[0]),Double.parseDouble(loc[1]));
+	                	locations.add(latLng);
+	                }	
+	                m.locations = locations;
+	                taxis.add(m);
+	            }
+//	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return taxis;
+	}	
+}

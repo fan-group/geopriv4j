@@ -1,0 +1,69 @@
+import java.util.ArrayList;
+
+public class LinearTime {
+
+    public static void main(String[] args) {
+
+
+        int input[] = { -11 , 15 , 17 , 18, -19 , -16 };
+
+        int max_sum , temp_sum ;
+
+        int cal = 0 ;
+
+        int start = 0 , end =0  ;
+
+        max_sum = input[0];
+        temp_sum = input[0];
+
+        System.out.println("Input Array :");
+
+        for(int i = 0 ; i < input.length ; i++){
+
+            System.out.print("\t"+input[i]+"\t");
+
+        }
+
+        for(int i = 1 ; i < input.length ; i++){
+
+            cal = temp_sum + input[i] ;
+
+            if( input[i] >  cal  ) {
+
+                start = i;
+                end = i ;
+
+            }
+
+         temp_sum = Math.max(input[i] , temp_sum + input[i]);
+
+         if( temp_sum > max_sum){
+
+          max_sum = temp_sum;
+          end = i ;
+
+         }
+
+
+        }
+
+        System.out.println("");
+        System.out.println("Max Sum :"+max_sum);
+        System.out.println("Maximum Sub array:");
+
+        for (int i = start ; i <= end ; i++ ){
+            System.out.print("\t"+input[i]+"\t");
+
+        }
+
+
+        
+        
+        
+        
+        
+        
+        
+   }
+
+}
