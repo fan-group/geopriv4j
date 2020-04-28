@@ -1,0 +1,2 @@
+rootProject.name='Geopriv4jApp'
+include ':app'
