@@ -17,20 +17,20 @@ import geopriv4j.utils.LatLng;
 
 public class MovingInTheNeighbourhoodAlgorithmExample {
 	//Moving in the neighborhood
-    public static void main(String[] args) {
-    	
-    	//Number of dummies to be generated 
-    	int n = 5;
-    	
-    	//distance between generated locations
-    	double offset = 0.01;
-    	
+	public static void main(String[] args) {
+
+		//Number of dummies to be generated 
+		int n = 5;
+
+		//distance between generated locations
+		double offset = 0.01;
+
 		//this is the current user location
 		LatLng current_loc = new LatLng(35.3123,-80.7432);
-    	
+
 		ArrayList<LatLng> dummies = MovingInTheNeighbourhoodAlgorithm.generate(offset,n, current_loc);
-		
+
 		System.out.println("generated location: "+dummies);
-		
+
 	}
 }
