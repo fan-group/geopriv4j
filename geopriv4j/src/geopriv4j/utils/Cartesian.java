@@ -5,9 +5,9 @@ package geopriv4j.utils;
  */
 
 public class Cartesian{
-    public double x;
-    public double y;
-    public Cartesian() {
-    	super();
-    }
+	public double x;
+	public double y;
+	public Cartesian() {
+		super();
+	}
 }

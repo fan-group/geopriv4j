@@ -19,32 +19,32 @@ public class SpatialCloakingAlgorithm {
 
 	public static LatLng generate(LatLng location, int delta) {
 
-        Random rand = new Random();
+		Random rand = new Random();
 
-        // generating new lat and lng location within the specified radius
-        double random_lat = rand.nextInt(delta);
-        double random_lng = rand.nextInt(delta);
+		// generating new lat and lng location within the specified radius
+		double random_lat = rand.nextInt(delta);
+		double random_lng = rand.nextInt(delta);
 
-        
-        //Coordinate offsets in radians
-        double lat_in_degrees = random_lat/Constants.earth_radius;
-        double lng_in_degrees = random_lng/(Constants.earth_radius * Math.cos(Math.PI*location.latitude/180));
 
-        if(rand.nextGaussian()<0.5) {
-            lat_in_degrees *=-1;
-        }
+		//Coordinate offsets in radians
+		double lat_in_degrees = random_lat/Constants.earth_radius;
+		double lng_in_degrees = random_lng/(Constants.earth_radius * Math.cos(Math.PI*location.latitude/180));
 
-        if(rand.nextGaussian()<0.5) {
-            lng_in_degrees *=-1;
-        }
+		if(rand.nextGaussian()<0.5) {
+			lat_in_degrees *=-1;
+		}
 
-        double lat = location.latitude + lat_in_degrees *180/Math.PI;
-        double lng = location.longitude + lng_in_degrees *180/Math.PI;
+		if(rand.nextGaussian()<0.5) {
+			lng_in_degrees *=-1;
+		}
 
-        LatLng spatialCloaked = new LatLng(lat,lng);
+		double lat = location.latitude + lat_in_degrees *180/Math.PI;
+		double lng = location.longitude + lng_in_degrees *180/Math.PI;
 
-        return spatialCloaked;
-    }
-	
-	
+		LatLng spatialCloaked = new LatLng(lat,lng);
+
+		return spatialCloaked;
+	}
+
+
 }

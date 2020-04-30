@@ -7,7 +7,7 @@ package geopriv4j.utils;
 public class LatLng{
 	public double latitude;
 	public double longitude;
-	
+
 	public LatLng(){
 		super();
 	}
@@ -20,5 +20,5 @@ public class LatLng{
 		// TODO Auto-generated method stub
 		return "[latitude = "+this.latitude+ ",longitude = "+this.longitude+"]";
 	}
-	
+
 }
