@@ -26,13 +26,16 @@ public class SpotMeAlgorithm {
 	//This contains the grids that is generated
 	public static Map<Integer, ArrayList<LatLng>> grids = new HashMap<>();
 
-	//speicfy the topleft and the bottomright locations for the grid 
-	public LatLng topleft = new LatLng(35.312266, -80.743184);
-	public LatLng bottomright = new LatLng(35.2944838,-80.71985850859298);
+	public LatLng topleft;
+	public LatLng bottomright;
+	public double probability;
 
 
-	public SpotMeAlgorithm() {
-		this.initiateSpotMe(topleft,  bottomright);
+	public SpotMeAlgorithm(LatLng topleft, LatLng bottomright, double probability) {
+		this.topleft = topleft;
+		this.bottomright = bottomright;
+		this.probability = probability;
+		this.initiateSpotMe(this.topleft,  this.bottomright);
 	}
 
 	//created the grid by calculating the cell size and bearing
@@ -111,7 +114,7 @@ public class SpotMeAlgorithm {
 
 
 	//this generates new locations based on the current location and specified probability
-	public Map<Integer, Boolean> generate( LatLng current, double probability) {
+	public Map<Integer, Boolean> generate( LatLng current) {
 
 		Map<Integer, Boolean> result = new HashMap<>();
 		Random random = new Random();
@@ -122,7 +125,7 @@ public class SpotMeAlgorithm {
 			ArrayList<LatLng> locs = grids.get(r);
 
 			//check if the probability is greater then report true
-			if (random.nextDouble() < probability) {
+			if (random.nextDouble() < this.probability) {
 				result.put(r, true);
 				count++;
 

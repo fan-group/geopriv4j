@@ -1,5 +1,7 @@
 package geopriv4j;
 
+import java.io.IOException;
+
 /*
  * This is an example class for Moving in a Neighborhood (MN). In this algorithm, 
  * the next position of the dummy is decided in a neighborhood of the current 
@@ -13,24 +15,36 @@ package geopriv4j;
 
 import java.util.ArrayList;
 
+import geopriv4j.utils.DataHandler;
 import geopriv4j.utils.LatLng;
 
 public class MovingInTheNeighbourhoodAlgorithmExample {
 	//Moving in the neighborhood
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 
 		//Number of dummies to be generated 
 		int n = 5;
 
 		//distance between generated locations
-		double offset = 0.01;
+		double offset = 0.001;
 
-		//this is the current user location
-		LatLng current_loc = new LatLng(35.3123,-80.7432);
+//		//this is the current user location
+//		LatLng initial_location = new LatLng(35.3123, -80.7432);
 
-		ArrayList<LatLng> dummies = MovingInTheNeighbourhoodAlgorithm.generate(offset,n, current_loc);
-
-		System.out.println("generated location: "+dummies);
+		LatLng topleft = new LatLng(35.312266, -80.743184);
+		LatLng bottomright = new LatLng(35.2944838,-80.71985850859298);
+		
+		int data = 10000;
+		
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+		MovingInTheNeighbourhoodAlgorithm algorithm = new MovingInTheNeighbourhoodAlgorithm(topleft, bottomright);
+		
+		for(int i=0;i<locations.size();i++) {
+			
+			ArrayList<LatLng> dummies = algorithm.generate(offset, n, locations.get(i));
+			
+			System.out.println("generated location: "+dummies);
+		}
 
 	}
 }

@@ -19,8 +19,17 @@ import geopriv4j.utils.LatLng;
 
 public class MovingInTheNeighbourhoodAlgorithm {
 
+	//speicfy the topleft and the bottomright locations for the grid 
+	public LatLng topleft ;
+	public LatLng bottomright ;
+
+	public MovingInTheNeighbourhoodAlgorithm(LatLng topleft, LatLng bottomright) {
+		this.topleft = topleft;
+		this.bottomright = bottomright;
+	}
+
 	//This method generates new dummy locations based on the previous location and offset specified
-	public static ArrayList<LatLng> generate(double offset, int n, LatLng current_loc){
+	public  ArrayList<LatLng> generate(double offset, int n, LatLng current_loc){
 
 		ArrayList<LatLng> dummies = new ArrayList<>();
 
@@ -29,6 +38,9 @@ public class MovingInTheNeighbourhoodAlgorithm {
 			int prevIndex = dummies.size() - 1;
 			LatLng previous_loaction = dummies.get(prevIndex);
 			LatLng generated_location = MN(offset, previous_loaction);
+			while(!this.checkBounds(generated_location)) {
+				generated_location = MN(offset, previous_loaction);
+			}
 			dummies.add(generated_location);
 		}
 		return dummies;
@@ -46,6 +58,16 @@ public class MovingInTheNeighbourhoodAlgorithm {
 		double random_lng = ln1 + (ln2 - ln1) * random.nextDouble();
 		return new LatLng(random_lat,random_lng);
 
+	}
+
+
+	public boolean checkBounds(LatLng location) {
+		if (this.topleft.latitude >= location.latitude && this.bottomright.latitude <= location.latitude
+				&& this.topleft.longitude <= location.longitude && this.bottomright.longitude >= location.longitude) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

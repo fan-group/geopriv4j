@@ -1,5 +1,10 @@
 package geopriv4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import geopriv4j.utils.DataHandler;
+
 /* 
  * This is a VHC Algorithm Example class
  * In this we use Various-size-grid Hilbert Curve (VHC)-mapping to project user location 
@@ -15,12 +20,12 @@ import geopriv4j.utils.Mapper;
 
 public class VHCAlgorithmExample {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
 
-		//this is the current user location
-		LatLng current_loc = new LatLng(35.3123,-80.7432);
+//		//this is the current user location
+//		LatLng current_loc = new LatLng(35.3123,-80.7432);
 
-		Mapper current_mapper = new Mapper("currentLoc", current_loc);
+
 
 		//specify the offset size here
 		int sigma = 5;
@@ -36,11 +41,20 @@ public class VHCAlgorithmExample {
 		String file = "data/maploc.txt";
 
 
-		VHCAlgorithm algorithm = new VHCAlgorithm( topleft, topright, bottomright, bottomleft, file);
+		VHCAlgorithm algorithm = new VHCAlgorithm(sigma, topleft, topright, bottomright, bottomleft, file);
 
-		LatLng generated_location = algorithm.generate(current_mapper, sigma);
 
-		System.out.println("generated location: "+ generated_location);
+		int data = 10000;
 
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+
+		for(int i=0;i<locations.size();i++) {
+
+			Mapper current_mapper = new Mapper("currentLoc", locations.get(i));
+
+			LatLng generated_location = algorithm.generate(current_mapper);
+
+			System.out.println("generated location: "+ generated_location);
+		}
 	}
 }

@@ -1,10 +1,12 @@
 package geopriv4j.utils;
 
+import java.io.Serializable;
+
 /*
  * This class is used to store the latitude and longitude values of a location
  */
 
-public class LatLng{
+public class LatLng implements Serializable{
 	public double latitude;
 	public double longitude;
 

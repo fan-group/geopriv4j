@@ -1,5 +1,10 @@
 package geopriv4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import geopriv4j.utils.DataHandler;
+
 /* 
  * This is a Laplace Algorithm Example class.
  * In this method we will be generating new location z with a probability p that 
@@ -15,17 +20,26 @@ import geopriv4j.utils.LatLng;
 
 public class LaplaceAlgorithmExample {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
 
-		//this is the current user location
-		LatLng current_loc = new LatLng(35.3123,-80.7432);
+
+		//		//this is the current user location
+		//		LatLng current_loc = new LatLng(35.3123,-80.7432);
 
 		// ∊ value for ∊-differential privacy
 		double epsilon = 0.001;
 
-		LatLng generated_noise = LaplaceAlgorithm.generate(epsilon, current_loc);
+		LaplaceAlgorithm algorithm = new LaplaceAlgorithm(epsilon);
 
-		System.out.println("Genereated noise: "+ generated_noise);
+		int data = 10000;
+
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+		
+		for(int i=0;i<locations.size();i++) {
+			LatLng generated_noise = algorithm.generate(locations.get(i));
+
+			System.out.println("Genereated noise: "+ generated_noise);
+		}
 
 	}
 

@@ -25,9 +25,12 @@ public class VHCAlgorithm {
 
 	//Specify the threshold for each cell in VHC algorithm
 	public static int VHC_LIMIT = 500;
+	public int sigma;
 
-	public VHCAlgorithm(Mapper topleft, Mapper topright, Mapper bottomright, Mapper bottomleft, String file) {
+	public VHCAlgorithm(int sigma, Mapper topleft, Mapper topright, Mapper bottomright, Mapper bottomleft, String file) {
 
+		this.sigma = sigma;
+		
 		//read data obtained from openStreetMap
 		ArrayList<Mapper> mappers = VhcFileReader.readFile(file);
 		ArrayList<Mapper> coordinates = new ArrayList<>();
@@ -139,7 +142,7 @@ public class VHCAlgorithm {
 
 
 	//generate new location based on the VHC
-	public LatLng generate(Mapper mapper , int sigma) {
+	public LatLng generate(Mapper mapper) {
 		Random random = new Random();
 		int result=0;
 		int sign = 1;
@@ -154,14 +157,14 @@ public class VHCAlgorithm {
 			Mapper bottomrightMap = coordinates.get(2);
 			if(topleftMap.loc.latitude > mapper.loc.latitude && Math.abs(topleftMap.loc.longitude) > Math.abs(mapper.loc.longitude) ) {
 				if(bottomrightMap.loc.latitude < mapper.loc.latitude && Math.abs(bottomrightMap.loc.longitude) < Math.abs(mapper.loc.longitude) ) {
-					result = i+sign*random.nextInt(sigma);
+					result = i+sign*random.nextInt(this.sigma);
 				}
 			}
 		}
 
 		//check if the generated cell is within the grid
 		if(result>=vhcmap.size()) {
-			ArrayList<Mapper> coordinates = vhcmap.get(vhcmap.size());
+			ArrayList<Mapper> coordinates = vhcmap.get(vhcmap.size()-1);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
 			double lat = topleftMap.loc.latitude - (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude))/2;

@@ -17,15 +17,22 @@ import geopriv4j.utils.Constants;
 import geopriv4j.utils.LatLng;
 
 public class NoiseAlgorithm {
+	
+	public double variance;
 
+	public NoiseAlgorithm(double variance) {
+		
+		this.variance = variance;
+		
+	}
 
-	public static LatLng generate(LatLng location, double variance){
+	public  LatLng generate(LatLng location){
 
 		Random rand = new Random();
 
 		//Generate a random Gaussian noise with the variance provided
-		double noise_lat = rand.nextGaussian() * Math.sqrt(variance);
-		double noise_lng = rand.nextGaussian() * Math.sqrt(variance);
+		double noise_lat = rand.nextGaussian() * Math.sqrt(this.variance);
+		double noise_lng = rand.nextGaussian() * Math.sqrt(this.variance);
 
 
 		//offsets in meters

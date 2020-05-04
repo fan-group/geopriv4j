@@ -17,26 +17,31 @@ import geopriv4j.utils.LatLng;
 
 public class SpatialCloakingAlgorithm {
 
-
-	public static LatLng generate(LatLng location, int r, int R) throws RadiusException {
-
-
+	public static LatLng center;
+	
+	public static int r;
+	public static int R;
+	
+	public SpatialCloakingAlgorithm(LatLng sensitive, int r, int R) throws RadiusException {
+			
 		try {
 			
 			if(r>=R){
 				throw new RadiusException("Please specify r < R");
 			}
-	
+			SpatialCloakingAlgorithm.r = r;
+			SpatialCloakingAlgorithm.R = R;
+			
 			Random rand = new Random();
 
 			// generating new lat and lng location within the specified radius r
-			double random_lat_r = rand.nextInt(r);
-			double random_lng_r = rand.nextInt(r);
+			double random_lat_r =  rand.nextInt(SpatialCloakingAlgorithm.r);
+			double random_lng_r =  rand.nextInt(SpatialCloakingAlgorithm.r);
 
 
 			//Coordinate offsets in radians
 			double lat_in_degrees = random_lat_r/Constants.earth_radius;
-			double lng_in_degrees = random_lng_r/(Constants.earth_radius * Math.cos(Math.PI*location.latitude/180));
+			double lng_in_degrees = random_lng_r/(Constants.earth_radius * Math.cos(Math.PI*sensitive.latitude/180));
 
 			if(rand.nextGaussian()<0.5) {
 				lat_in_degrees *=-1;
@@ -47,45 +52,36 @@ public class SpatialCloakingAlgorithm {
 			}
 
 
-			double lat = location.latitude + lat_in_degrees *180/Math.PI;
-			double lng = location.longitude + lng_in_degrees *180/Math.PI;
+			double lat = sensitive.latitude + lat_in_degrees *180/Math.PI;
+			double lng = sensitive.longitude + lng_in_degrees *180/Math.PI;
 
 			//new center within the radius r
-			LatLng center = new LatLng(lat,lng);
+			 center = new LatLng(lat,lng);
 
-
-			// generating new lat and lng location within the specified radius R excluding r
-			double random_lat_R = rand.nextInt(R-r)+r;
-			double random_lng_R = rand.nextInt(R-r)+r;
-
-
-			//Coordinate offsets in radians
-			double lat_R_in_degrees = random_lat_R/Constants.earth_radius;
-			double lng_R_in_degrees = random_lng_R/(Constants.earth_radius * Math.cos(Math.PI*center.latitude/180));
-
-			if(rand.nextGaussian()<0.5) {
-				lat_R_in_degrees *=-1;
-			}
-
-			if(rand.nextGaussian()<0.5) {
-				lng_R_in_degrees *=-1;
-			}
-
-
-			double lat_R = center.latitude + lat_R_in_degrees *180/Math.PI;
-			double lng_R = center.longitude + lng_R_in_degrees *180/Math.PI;
-
-			//new location within the radius R-r
-			LatLng spatialCloaked = new LatLng(lat_R,lng_R);
-
-			return spatialCloaked;
 		}
 		catch (Exception e) {
 			// TODO: handle exception
 			throw e;
 		}
+		
+		
 	}
-
-
+	
+	
+	public  LatLng generate(LatLng location) {
+		
+		double difflat = Math.abs(Math.toRadians(center.latitude) - Math.toRadians(location.latitude));
+		double difflng = Math.abs(Math.toRadians(center.longitude) - Math.toRadians(location.longitude));
+		double result = Math.pow(Math.sin(difflat / 2), 2) + Math.cos(Math.toRadians(center.latitude))
+		* Math.cos(Math.toRadians(location.latitude)) * Math.pow(Math.sin(difflng / 2), 2);
+		result = 2 * Math.asin(Math.sqrt(result));
+		double distance = result * Constants.earth_radius;
+		
+		if(R > distance) {
+			return null;
+		}
+		
+		return location;
+	}
 
 }

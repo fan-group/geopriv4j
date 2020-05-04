@@ -16,6 +16,14 @@ import geopriv4j.utils.LatLng;
 
 public class LaplaceAlgorithm {
 
+	
+	public double epsilon;
+	
+	public LaplaceAlgorithm(double epsilon) {
+	
+		this.epsilon = epsilon;
+		
+	}
 
 	public static double rad_of_deg (double ang){return ang * Math.PI / 180;}
 	public static double deg_of_rad (double ang){return ang * 180 / Math.PI;}
@@ -123,8 +131,8 @@ public class LaplaceAlgorithm {
 		return latLng;
 	}
 
-	public static LatLng generate(double epsilon, LatLng location) {
-		return addPolarNoise(epsilon, location);
+	public LatLng generate( LatLng location) {
+		return addPolarNoise(this.epsilon, location);
 	}
 
 

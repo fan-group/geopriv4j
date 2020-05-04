@@ -1,5 +1,10 @@
 package geopriv4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import geopriv4j.utils.DataHandler;
+
 /*
  * This is a Rounding Algorithm Example Class
  * We snap each latitude and longitude to the nearest point on a square 
@@ -14,16 +19,24 @@ import geopriv4j.utils.LatLng;
 
 public class RoundingAlgorithmExample {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
 
-		//this is the current user location
-		LatLng current_loc = new LatLng(35.3123,-80.7432);
+//		//this is the current user location
+//		LatLng current_loc = new LatLng(35.3123,-80.741);
 
 		//specify the offset in meters
-		double delta = 500;
+		double s = 500;
 
-		LatLng generated_rounded_location = RoundingAlgorithm.generate(current_loc, delta); 
+		RoundingAlgorithm algorithm = new RoundingAlgorithm(s);
+		int data = 10000;
 
-		System.out.println("genereated noise: "+ generated_rounded_location);
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+
+		for(int i=0;i<locations.size();i++) {
+
+			LatLng generated_rounded_location = algorithm.generate(locations.get(i)); 
+
+			System.out.println("genereated noise: "+ generated_rounded_location);
+		}
 	}
 }
