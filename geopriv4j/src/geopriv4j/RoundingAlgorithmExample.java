@@ -21,13 +21,15 @@ public class RoundingAlgorithmExample {
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 
-//		//this is the current user location
-//		LatLng current_loc = new LatLng(35.3123,-80.741);
+		//		//this is the current user location
+		//		LatLng current_loc = new LatLng(35.3123,-80.741);
 
 		//specify the offset in meters
 		double s = 500;
 
 		RoundingAlgorithm algorithm = new RoundingAlgorithm(s);
+
+		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");

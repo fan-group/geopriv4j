@@ -22,8 +22,8 @@ public class VHCAlgorithmExample {
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 
-//		//this is the current user location
-//		LatLng current_loc = new LatLng(35.3123,-80.7432);
+		//		//this is the current user location
+		//		LatLng current_loc = new LatLng(35.3123,-80.7432);
 
 
 
@@ -43,7 +43,7 @@ public class VHCAlgorithmExample {
 
 		VHCAlgorithm algorithm = new VHCAlgorithm(sigma, topleft, topright, bottomright, bottomleft, file);
 
-
+		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");

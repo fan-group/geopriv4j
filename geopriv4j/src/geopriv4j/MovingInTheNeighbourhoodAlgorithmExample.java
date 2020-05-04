@@ -28,21 +28,22 @@ public class MovingInTheNeighbourhoodAlgorithmExample {
 		//distance between generated locations
 		double offset = 0.001;
 
-//		//this is the current user location
-//		LatLng initial_location = new LatLng(35.3123, -80.7432);
+		//		//this is the current user location
+		//		LatLng initial_location = new LatLng(35.3123, -80.7432);
 
 		LatLng topleft = new LatLng(35.312266, -80.743184);
 		LatLng bottomright = new LatLng(35.2944838,-80.71985850859298);
-		
+
+		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
-		
+
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
 		MovingInTheNeighbourhoodAlgorithm algorithm = new MovingInTheNeighbourhoodAlgorithm(topleft, bottomright);
-		
+
 		for(int i=0;i<locations.size();i++) {
-			
+
 			ArrayList<LatLng> dummies = algorithm.generate(offset, n, locations.get(i));
-			
+
 			System.out.println("generated location: "+dummies);
 		}
 

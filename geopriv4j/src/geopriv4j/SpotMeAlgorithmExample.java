@@ -26,8 +26,8 @@ public class SpotMeAlgorithmExample {
 		//specify the probability for reporting true
 		double probability = 0.01;
 
-		//this is the current user location
-		LatLng current_loc = new LatLng(35.3123,-80.7432);
+		//		//this is the current user location
+		//		LatLng current_loc = new LatLng(35.3123,-80.7432);
 
 		//speicfy the topleft and the bottomright locations for the grid 
 		LatLng topleft = new LatLng(35.312266, -80.743184);
@@ -35,6 +35,7 @@ public class SpotMeAlgorithmExample {
 
 		SpotMeAlgorithm algorithm = new SpotMeAlgorithm(topleft, bottomright, probability);
 
+		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 5000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
