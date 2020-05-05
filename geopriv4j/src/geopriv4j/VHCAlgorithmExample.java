@@ -48,6 +48,8 @@ public class VHCAlgorithmExample {
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
 
+		long startTime = System.nanoTime();
+
 		for(int i=0;i<locations.size();i++) {
 
 			Mapper current_mapper = new Mapper("currentLoc", locations.get(i));
@@ -56,5 +58,9 @@ public class VHCAlgorithmExample {
 
 			System.out.println("generated location: "+ generated_location);
 		}
+
+		long endTime   = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println("run time : "+totalTime);
 	}
 }

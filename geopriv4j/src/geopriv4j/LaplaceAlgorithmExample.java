@@ -36,12 +36,20 @@ public class LaplaceAlgorithmExample {
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
 
+
+
+		long startTime = System.nanoTime();
+
+
 		for(int i=0;i<locations.size();i++) {
 			LatLng generated_noise = algorithm.generate(locations.get(i));
 
 			System.out.println("Genereated noise: "+ generated_noise);
 		}
 
+		long endTime   = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println("run time : "+totalTime);
 	}
 
 }

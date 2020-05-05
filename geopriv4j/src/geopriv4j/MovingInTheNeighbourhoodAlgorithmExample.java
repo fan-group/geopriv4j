@@ -40,12 +40,18 @@ public class MovingInTheNeighbourhoodAlgorithmExample {
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
 		MovingInTheNeighbourhoodAlgorithm algorithm = new MovingInTheNeighbourhoodAlgorithm(topleft, bottomright);
 
+		long startTime = System.nanoTime();
+
 		for(int i=0;i<locations.size();i++) {
 
 			ArrayList<LatLng> dummies = algorithm.generate(offset, n, locations.get(i));
 
 			System.out.println("generated location: "+dummies);
 		}
+
+		long endTime   = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println("run time : "+totalTime);
 
 	}
 }

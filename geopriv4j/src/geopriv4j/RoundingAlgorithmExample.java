@@ -34,11 +34,18 @@ public class RoundingAlgorithmExample {
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
 
+		long startTime = System.nanoTime();
+
+
 		for(int i=0;i<locations.size();i++) {
 
 			LatLng generated_rounded_location = algorithm.generate(locations.get(i)); 
 
 			System.out.println("genereated noise: "+ generated_rounded_location);
 		}
+
+		long endTime   = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println("run time : "+totalTime);
 	}
 }

@@ -36,16 +36,21 @@ public class SpotMeAlgorithmExample {
 		SpotMeAlgorithm algorithm = new SpotMeAlgorithm(topleft, bottomright, probability);
 
 		//change this variable to pick 1000, 5000, 10000 dummy points
-		int data = 5000;
+		int data = 10000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+
+		long startTime = System.nanoTime();
 
 		for(int i=0;i<locations.size();i++) {
 
 			Map<Integer, Boolean> reported_locations = algorithm.generate(locations.get(i));
 
-			System.out.println("reported locations: "+ reported_locations);
+			//	System.out.println("reported locations: "+ reported_locations);
 		}
 
+		long endTime   = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println("run time : "+totalTime);
 	}
 }
