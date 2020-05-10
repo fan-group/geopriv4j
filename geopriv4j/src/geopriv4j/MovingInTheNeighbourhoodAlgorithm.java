@@ -1,6 +1,7 @@
 package geopriv4j;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /*
  * Moving in a Neighborhood (MN) In this algorithm, the next position of the dummy 
@@ -19,7 +20,7 @@ import geopriv4j.utils.LatLng;
 
 public class MovingInTheNeighbourhoodAlgorithm {
 
-	//speicfy the topleft and the bottomright locations for the grid 
+	//Specify the topleft and the bottomright locations for the grid 
 	public LatLng topleft ;
 	public LatLng bottomright ;
 
@@ -43,6 +44,10 @@ public class MovingInTheNeighbourhoodAlgorithm {
 			}
 			dummies.add(generated_location);
 		}
+		
+		//TO-DO shuffle the dummies
+		Collections.shuffle(dummies);
+		
 		return dummies;
 	}
 

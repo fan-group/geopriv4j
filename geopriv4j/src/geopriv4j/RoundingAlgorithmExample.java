@@ -32,16 +32,16 @@ public class RoundingAlgorithmExample {
 		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 
 		long startTime = System.nanoTime();
 
 
 		for(int i=0;i<locations.size();i++) {
 
-			LatLng generated_rounded_location = algorithm.generate(locations.get(i)); 
+			LatLng generated_location = algorithm.generate(locations.get(i)); 
 
-			System.out.println("genereated noise: "+ generated_rounded_location);
+			//			System.out.println("Genereated location: "+ generated_location);
 		}
 
 		long endTime   = System.nanoTime();

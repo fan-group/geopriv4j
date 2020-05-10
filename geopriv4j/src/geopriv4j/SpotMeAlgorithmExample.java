@@ -29,7 +29,7 @@ public class SpotMeAlgorithmExample {
 		//		//this is the current user location
 		//		LatLng current_loc = new LatLng(35.3123,-80.7432);
 
-		//speicfy the topleft and the bottomright locations for the grid 
+		//Specify the topleft and the bottomright locations for the grid 
 		LatLng topleft = new LatLng(35.312266, -80.743184);
 		LatLng bottomright = new LatLng(35.2944838,-80.71985850859298);
 
@@ -38,15 +38,15 @@ public class SpotMeAlgorithmExample {
 		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 
 		long startTime = System.nanoTime();
 
 		for(int i=0;i<locations.size();i++) {
 
-			Map<Integer, Boolean> reported_locations = algorithm.generate(locations.get(i));
+			Map<Integer, Boolean> generated_location = algorithm.generate(locations.get(i));
 
-			//	System.out.println("reported locations: "+ reported_locations);
+			//	System.out.println("Generated locations: "+ generated_location);
 		}
 
 		long endTime   = System.nanoTime();

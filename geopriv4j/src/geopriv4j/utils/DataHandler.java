@@ -39,5 +39,8 @@ public class DataHandler {
 		writeData("data/data.txt", arrayList);
 		
 		readData("data/data.txt");
+
+		
+		
 	}
 }

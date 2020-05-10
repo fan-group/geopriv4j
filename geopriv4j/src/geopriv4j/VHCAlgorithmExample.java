@@ -46,7 +46,7 @@ public class VHCAlgorithmExample {
 		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 
 		long startTime = System.nanoTime();
 
@@ -56,7 +56,7 @@ public class VHCAlgorithmExample {
 
 			LatLng generated_location = algorithm.generate(current_mapper);
 
-			System.out.println("generated location: "+ generated_location);
+			//			System.out.println("Generated location: "+ generated_location);
 		}
 
 		long endTime   = System.nanoTime();

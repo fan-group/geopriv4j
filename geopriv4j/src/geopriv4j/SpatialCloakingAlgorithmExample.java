@@ -43,16 +43,16 @@ public class SpatialCloakingAlgorithmExample {
 		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 
 		long startTime = System.nanoTime();
 
 		for(int i=0;i<locations.size();i++) {
 
-			LatLng spatialCloaked_location = algorithm.generate(locations.get(i)); 
+			LatLng generated_location = algorithm.generate(locations.get(i)); 
 
-			if(spatialCloaked_location!=null) System.out.println("Spatial cloacked: "+ spatialCloaked_location);
-			else System.out.println("Spatial cloacked: location inside the larger radius R ");
+			//			if(spatialCloaked_location!=null) System.out.println("Generated location: "+ generated_location);
+			//			else System.out.println("Generated location inside the larger radius R ");
 		}
 
 		long endTime   = System.nanoTime();

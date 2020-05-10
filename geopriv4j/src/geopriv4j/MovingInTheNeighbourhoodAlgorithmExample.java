@@ -37,16 +37,16 @@ public class MovingInTheNeighbourhoodAlgorithmExample {
 		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 		MovingInTheNeighbourhoodAlgorithm algorithm = new MovingInTheNeighbourhoodAlgorithm(topleft, bottomright);
 
 		long startTime = System.nanoTime();
 
 		for(int i=0;i<locations.size();i++) {
 
-			ArrayList<LatLng> dummies = algorithm.generate(offset, n, locations.get(i));
+			ArrayList<LatLng> generated_location = algorithm.generate(offset, n, locations.get(i));
 
-			System.out.println("generated location: "+dummies);
+			//			System.out.println("Generated location: "+generated_location);
 		}
 
 		long endTime   = System.nanoTime();

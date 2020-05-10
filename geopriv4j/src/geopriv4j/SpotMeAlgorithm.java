@@ -142,7 +142,7 @@ public class SpotMeAlgorithm {
 				}
 			}
 		}
-		System.out.println("reported count "+count);
+		//		System.out.println("reported count "+count);
 
 		return result;
 	}

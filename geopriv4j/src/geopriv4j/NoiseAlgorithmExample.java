@@ -32,17 +32,17 @@ public class NoiseAlgorithmExample {
 		NoiseAlgorithm algorithm = new NoiseAlgorithm(variance);
 
 		//change this variable to pick 1000, 5000, 10000 dummy points
-		int data = 1000;
+		int data = 10000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 
 		long startTime = System.nanoTime();
 
 
 		for(int i=0;i<locations.size();i++) {
-			LatLng generated_noise = algorithm.generate(locations.get(i)); 
+			LatLng generated_location = algorithm.generate(locations.get(i)); 
 
-			System.out.println("genereated noise: "+ generated_noise);
+			//			System.out.println("Genereated location: "+ generated_location);
 		}
 
 

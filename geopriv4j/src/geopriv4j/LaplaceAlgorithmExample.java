@@ -32,9 +32,9 @@ public class LaplaceAlgorithmExample {
 		LaplaceAlgorithm algorithm = new LaplaceAlgorithm(epsilon);
 
 		//change this variable to pick 1000, 5000, 10000 dummy points
-		int data = 10000;
+		int data = 5000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+"_dummies.txt");
+		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 
 
 
@@ -42,9 +42,10 @@ public class LaplaceAlgorithmExample {
 
 
 		for(int i=0;i<locations.size();i++) {
-			LatLng generated_noise = algorithm.generate(locations.get(i));
+			//call all the locations as generated_locations
+			LatLng generated_location = algorithm.generate(locations.get(i));
 
-			System.out.println("Genereated noise: "+ generated_noise);
+			//			System.out.println("Genereated location: "+ generated_location);
 		}
 
 		long endTime   = System.nanoTime();
