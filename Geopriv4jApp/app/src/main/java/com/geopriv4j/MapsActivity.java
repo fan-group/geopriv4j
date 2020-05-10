@@ -26,7 +26,8 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.Locale;
 
-import geopriv4j.RoundingAlgorithm;
+import geopriv4j.*;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -78,22 +79,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (locationResult == null) {
                         return;
                     }
-                    for (Location location : locationResult.getLocations()) {
-                        if (location != null) {
-                            currentLatitude = location.getLatitude();
-                            currentLongitude = location.getLongitude();
+                    Location location = locationResult.getLastLocation();
+                    if (location != null) {
+                        currentLatitude = location.getLatitude();
+                        currentLongitude = location.getLongitude();
 
-                            Log.d("geopriv4j", String.format(Locale.US, "%s -- %s", currentLatitude, currentLongitude));
+                        Log.d("geopriv4j", String.format(Locale.US, "%s -- %s", currentLatitude, currentLongitude));
 
-                            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-                            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                                    .findFragmentById(R.id.map);
+                        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                                .findFragmentById(R.id.map);
 
-                            assert mapFragment != null;
-                            mapFragment.getMapAsync(MapsActivity.this);
+                        assert mapFragment != null;
+                        mapFragment.getMapAsync(MapsActivity.this);
 
-                        }
                     }
+
                 }
             };
         }
@@ -107,6 +108,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             startLocationUpdates();
         }
     }
+
     private void startLocationUpdates() {
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
@@ -128,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //displaying actual location on the map
         LatLng loc = new LatLng(currentLatitude, currentLongitude);
         googleMap.addMarker(new MarkerOptions().position(loc).title("actual location").icon(BitmapDescriptorFactory.fromResource(R.drawable.red_dot)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,14));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14));
 
         //converting com.google.android.gms.maps.model.LatLng obejct to geopriv4j.utils.LatLng object
         geopriv4j.utils.LatLng location = new geopriv4j.utils.LatLng(loc.latitude, loc.longitude);
@@ -138,18 +140,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
          */
 
         //specify the offset in meters
-        double delta = 500;
+        double s = 500;
 
         //generating the noise using the RoundingAlgorithm from geopriv4j package
-        geopriv4j.utils.LatLng rounded  = RoundingAlgorithm.generate(location, delta);
+        geopriv4j.utils.LatLng rounded = new RoundingAlgorithm(s).generate(location);
 
 
         //converting geopriv4j.utils.LatLng object to com.google.android.gms.maps.model.LatLng obejct
-        LatLng roundedLatLng =  new LatLng(rounded.latitude, rounded.longitude);
+        LatLng roundedLatLng = new LatLng(rounded.latitude, rounded.longitude);
 
         //displaying the location on the map
         googleMap.addMarker(new MarkerOptions().position(roundedLatLng).title("rounded location").icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow_dot)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(roundedLatLng,14));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(roundedLatLng, 14));
 
     }
 }
