@@ -1,4 +1,0 @@
-commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\n<messages>\n<message>Merge branch &apos;master&apos; of https\://github.com/fan-group/geopriv4j&\#x0A;</message>\n<message>-made changes to variable names and file names</message>\n<message>-ran experiments to calculate runtime efficiency of the algorithms</message>\n<message>-made indentation changes</message>\n<message>-created dummies and ran experiments</message>\n<message>-made changes to spatial cloaking algorithm</message>\n<message>-indentation changes made</message>\n<message>-changes made except for spatial cloaking algorithm</message>\n<message>-initial commit</message>\n<message>-created example class for each algorithm implemented</message>\n</messages>
-eclipse.preferences.version=1
-resourcehistory_graph_split=500,500
-resourcehistory_rev_split=700,300
