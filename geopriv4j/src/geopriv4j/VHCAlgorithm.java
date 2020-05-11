@@ -35,7 +35,10 @@ public class VHCAlgorithm {
 	public static Map<Integer,ArrayList<Mapper>> vhcmap = new HashMap<>();
 
 	//Specify the threshold for each cell in VHC algorithm
-	public static int VHC_LIMIT = 500;
+	public static int VHC_LIMIT = 500 ;
+	
+	
+
 	public int sigma;
 
 	public VHCAlgorithm(int sigma, Mapper topleft, Mapper topright, Mapper bottomright, Mapper bottomleft, String file) {
@@ -53,8 +56,9 @@ public class VHCAlgorithm {
 
 	}
 
+
 	//create the VHC based on the coordinates specified
-	public static int initiateVhc(ArrayList<Mapper> mappers, ArrayList<Mapper> coordinates) {
+	public int initiateVhc(ArrayList<Mapper> mappers, ArrayList<Mapper> coordinates) {
 
 		Mapper topleftMap = coordinates.get(0);
 		Mapper toprightMap = coordinates.get(1);

@@ -21,7 +21,15 @@ import geopriv4j.utils.LatLng;
 public class SpotMeAlgorithm {
 
 	//specify the grid size 
-	public static int gridSize = 25;
+	public  int gridSize;
+
+	public  int getGridSize() {
+		return gridSize;
+	}
+
+	public void setGridSize(int gridSize) {
+		gridSize = gridSize;
+	}
 
 	//This contains the grids that is generated
 	public static Map<Integer, ArrayList<LatLng>> grids = new HashMap<>();
@@ -61,12 +69,12 @@ public class SpotMeAlgorithm {
 	}
 
 	//generates the grid based on the specified gridsize and the topleft location
-	public static void generateGrids( double offset, LatLng topleft, double brng ) {
+	public void generateGrids( double offset, LatLng topleft, double brng ) {
 
 		double meters = offset;
 
-		for (int i = 0; i < gridSize; i++) {
-			for (int j = 0; j < gridSize; j++) {
+		for (int i = 0; i < this.gridSize; i++) {
+			for (int j = 0; j < this.gridSize; j++) {
 
 				ArrayList<LatLng> arrayList = new ArrayList<LatLng>();
 

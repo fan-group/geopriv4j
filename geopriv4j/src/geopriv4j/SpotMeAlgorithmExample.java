@@ -35,6 +35,11 @@ public class SpotMeAlgorithmExample {
 
 		SpotMeAlgorithm algorithm = new SpotMeAlgorithm(topleft, bottomright, probability);
 
+		//Setting the gridSize
+		int gridSize = 25;
+		
+		algorithm.setGridSize(gridSize);
+		
 		//change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
 

@@ -42,9 +42,9 @@ public class VHCAlgorithmExample {
 
 
 		VHCAlgorithm algorithm = new VHCAlgorithm(sigma, topleft, topright, bottomright, bottomleft, file);
-
+				
 		//change this variable to pick 1000, 5000, 10000 dummy points
-		int data = 10000;
+		int data = 5000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 
