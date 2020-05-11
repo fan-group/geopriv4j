@@ -1,5 +1,5 @@
 # Geopriv4j
-An Open Source Java Repository for Location Privacy Methods
+Geopriv4j is an open source repository for location privacy in Java (JDK 14.0.1).  Location privacy methods implemented in the repository do not rely on other trusted parties/users/servers, and protect the user's location on-the-fly.  Please see the below for a list of methods implemented in the repository.  
 
 ## Location Privacy Methods:
 
@@ -16,5 +16,10 @@ An Open Source Java Repository for Location Privacy Methods
 * Various-sized Hilbert Curve - This has been implemented based on the paper by Pingley, Aniket, et al. "Cap: A context-aware privacy protection system for location-based services." 2009 29th IEEE International Conference on Distributed Computing Systems. IEEE, 2009. [paper](https://www2.seas.gwu.edu/~nzhang10/cap/cap/Welcome_files/paper.pdf)
 * Laplace - This method is implemented based on the paper by Andrés, Miguel E., et al.  "Geo-indistinguishability: Differential privacy for location-based systems." Proceedings of the 2013 ACM SIGSAC conference on Computer & communications security. 2013. [paper](http://www.lix.polytechnique.fr/~catuscia/papers/Geolocation/geo.pdf)
 
+## Usage Examples
+A usage example is provided for each location privacy method.  Synthetic location traces can be found in "data".
+
+## Test Android App
+A sample app is provided to illustrate the adoption of location privacy methods.  
 
 *Acknolwedgement:* This research has been supported in part by NSF grant CNS-1951430 and UNC Charlotte. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the sponsors.
