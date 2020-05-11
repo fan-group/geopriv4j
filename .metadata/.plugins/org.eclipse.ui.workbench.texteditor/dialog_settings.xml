@@ -6,8 +6,11 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="2006;"/>
+		<item key="selection" value=""/>
 		<list key="findhistory">
+			<item value="event details"/>
+			<item value="System"/>
+			<item value="sigma"/>
 			<item value="2006;"/>
 			<item value="6670;"/>
 			<item value="4662;"/>
@@ -20,9 +23,6 @@
 			<item value="1251;"/>
 			<item value="2189;"/>
 			<item value="7634;"/>
-			<item value="7146;"/>
-			<item value="9180;"/>
-			<item value="9180"/>
 		</list>
 		<list key="replacehistory">
 			<item value="//System.out.println"/>

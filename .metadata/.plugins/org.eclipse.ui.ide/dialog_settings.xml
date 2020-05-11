@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="/Users/ygsriram/Desktop/parser-for-flight-recorder-6-master"/>
+		<item value="/Users/ygsriram/eclipse-workspace/geopriv4j"/>
+		<item value="/Users/ygsriram/eclipse-workspace"/>
 		<item value="/Users/ygsriram/Desktop/IS/IS_Assignment3_abhi/is"/>
 		<item value="/Users/ygsriram/Desktop/DSA/FuzzySortAssignment/FuzzyIntervalSort"/>
 		<item value="/Users/ygsriram/Downloads/alg"/>

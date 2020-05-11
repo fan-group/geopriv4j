@@ -1376,3 +1376,199 @@ when weaving type org.eclipse.jdt.internal.junit.ui.JUnitQuickFixProcessor
 when weaving classes 
 when weaving 
  [Xlint:cantFindType]
+2020-04-28 16:09:24,676 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-04-28 16:09:24,685 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.launching.JavaRuntime
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-04-28 16:11:13,855 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-04-28 16:11:13,863 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.launching.JavaRuntime
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-04-28 16:11:45,184 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-04-28 16:11:45,201 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.debug.core.IJavaLineBreakpoint
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-04-28 21:24:46,459 ERROR [main] - System.err - [org.eclipse.jdt.debug.ui] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.internal.debug.ui.actions.RetargettableActionAdapterFactory
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-04-30 08:41:27,980 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-04-30 08:41:27,988 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.launching.JavaRuntime
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-04-30 08:42:36,479 ERROR [Worker-10: Compute launch button tooltip] - System.err - [org.eclipse.jdt.debug.ui] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.debug.ui.launchConfigurations.JavaApplicationLaunchShortcut
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-04-30 08:42:36,513 ERROR [Worker-10: Compute launch button tooltip] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-04-30 08:42:36,518 ERROR [Worker-10: Compute launch button tooltip] - System.err - [org.eclipse.jdt.debug] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.debug.core.IJavaHotCodeReplaceListener
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-04-30 08:42:52,141 ERROR [main] - System.err - [org.eclipse.jdt.junit] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.internal.junit.ui.JUnitQuickFixProcessor
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-05-03 15:12:28,052 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-03 15:12:28,057 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.launching.JavaRuntime
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-05-03 15:14:01,171 ERROR [main] - System.err - [org.eclipse.jdt.junit] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.internal.junit.ui.JUnitQuickFixProcessor
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-05-03 15:25:15,701 ERROR [Worker-8: Compute launch button tooltip] - System.err - [org.eclipse.jdt.debug.ui] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.debug.ui.launchConfigurations.JavaApplicationLaunchShortcut
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-05-03 15:25:15,731 ERROR [Worker-8: Compute launch button tooltip] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-03 15:25:15,734 ERROR [Worker-8: Compute launch button tooltip] - System.err - [org.eclipse.jdt.debug] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.debug.core.IJavaHotCodeReplaceListener
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-05-03 20:18:25,103 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-03 20:18:25,109 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine modifiers of missing type org.eclipse.pde.internal.ui.wizards.imports.PluginImportHelper
+when weaving type org.eclipse.jdt.launching.JavaRuntime
+when weaving classes 
+when weaving 
+ [Xlint:cantFindType]
+2020-05-03 20:20:48,159 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-03 20:23:08,422 ERROR [Worker-10: Compute launch button tooltip] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-03 20:31:36,407 ERROR [main] - System.err - [org.eclipse.pde.ui] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-03 21:16:36,328 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-03 21:16:40,687 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-04 10:41:53,669 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-04 10:41:57,663 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-04 10:47:30,955 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-04 10:48:43,484 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-04 10:53:56,420 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-04 10:54:50,930 ERROR [main] - System.err - [org.eclipse.pde.ui] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-04 10:54:52,961 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-04 11:01:58,039 ERROR [Start Help Server] - System.err - 2020-05-04 11:01:58.037:INFO::Start Help Server: Logging initialized @496493ms to org.eclipse.jetty.util.log.StdErrLog
+2020-05-04 11:01:58,178 ERROR [Start Help Server] - System.err - 2020-05-04 11:01:58.178:INFO:oejs.session:Start Help Server: DefaultSessionIdManager workerName=node0
+2020-05-04 11:01:58,178 ERROR [Start Help Server] - System.err - 2020-05-04 11:01:58.178:INFO:oejs.session:Start Help Server: No SessionScavenger set, using defaults
+2020-05-04 11:01:58,179 ERROR [Start Help Server] - System.err - 2020-05-04 11:01:58.179:INFO:oejs.session:Start Help Server: node0 Scavenging every 600000ms
+2020-05-04 11:01:58,210 ERROR [Start Help Server] - System.err - 2020-05-04 11:01:58.210:INFO:oejs.session:Start Help Server: node0 Scavenging every 660000ms
+2020-05-04 11:15:15,599 ERROR [Attach Listener] - System.err - JProfiler> Attach mode initialized
+2020-05-04 22:14:29,084 ERROR [Stop Help Server] - System.err - 2020-05-04 22:14:29.082:INFO:oejs.session:Stop Help Server: node0 Stopped scavenging
+2020-05-05 14:56:16,510 ERROR [main] - System.err - [org.eclipse.pde.ui] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-05 14:56:16,563 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-05 14:56:21,147 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-05 15:01:02,515 ERROR [Attach Listener] - System.err - JProfiler> Attach mode initialized
+2020-05-05 15:32:12,803 ERROR [main] - System.err - java.lang.NoSuchMethodError: com.jprofiler.agent.util.d.a()Z
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at com.jprofiler.integrations.util.c.a(ejt:19)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at com.jprofiler.integrations.eclipse.EclipsePlugin.showMainWindow(ejt:149)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at com.jprofiler.integrations.eclipse.a.k.run(ejt:42)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4103)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3770)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1173)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1062)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:635)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+2020-05-05 15:32:12,806 ERROR [main] - System.err - at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:150)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:155)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:400)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:660)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at org.eclipse.equinox.launcher.Main.basicRun(Main.java:597)
+2020-05-05 15:32:12,807 ERROR [main] - System.err - at org.eclipse.equinox.launcher.Main.run(Main.java:1468)
+2020-05-07 06:06:52,588 ERROR [main] - System.err - [org.eclipse.pde.ui] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-07 06:06:52,635 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-07 06:09:07,077 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-07 06:11:29,119 ERROR [Attach Listener] - System.err - JProfiler> Attach mode initialized
+2020-05-07 06:47:09,628 ERROR [main] - System.err - java.lang.NoSuchMethodError: com.jprofiler.agent.util.d.a()Z
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at com.jprofiler.integrations.util.c.a(ejt:19)
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at com.jprofiler.integrations.eclipse.EclipsePlugin.showMainWindow(ejt:149)
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at com.jprofiler.integrations.eclipse.a.k.run(ejt:42)
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4103)
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3770)
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1173)
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+2020-05-07 06:47:09,630 ERROR [main] - System.err - at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1062)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:635)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:150)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:155)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:400)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:660)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.equinox.launcher.Main.basicRun(Main.java:597)
+2020-05-07 06:47:09,631 ERROR [main] - System.err - at org.eclipse.equinox.launcher.Main.run(Main.java:1468)
+2020-05-10 12:24:21,575 ERROR [main] - System.err - [org.eclipse.pde.ui] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-10 12:24:21,625 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-10 12:24:24,818 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-10 17:34:52,703 ERROR [main] - System.err - [org.eclipse.pde.ui] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-10 17:34:52,769 ERROR [main] - System.err - [org.eclipse.jdt.launching] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
+2020-05-10 17:34:56,808 ERROR [main] - System.err - [org.eclipse.jdt.debug] error can't determine implemented interfaces of missing type org.eclipse.jdt.internal.core.manipulation.JavaElementLabelComposerCore
+ [Xlint:cantFindType]
