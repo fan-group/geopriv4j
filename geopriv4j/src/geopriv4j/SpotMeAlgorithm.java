@@ -112,6 +112,9 @@ public class SpotMeAlgorithm {
 		}
 	}
 
+	/*
+	 * In this algorithm we do not report anything if the initial location passed is out of bounds 
+	 */
 
 	//this generates new locations based on the current location and specified probability
 	public Map<Integer, Boolean> generate( LatLng current) {

@@ -38,7 +38,7 @@ public class LaplaceAlgorithmExample {
 
 
 
-		long startTime = System.nanoTime();
+		long startTime = System.currentTimeMillis();
 
 
 		for(int i=0;i<locations.size();i++) {
@@ -48,7 +48,7 @@ public class LaplaceAlgorithmExample {
 			//			System.out.println("Genereated location: "+ generated_location);
 		}
 
-		long endTime   = System.nanoTime();
+		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("run time : "+totalTime);
 	}

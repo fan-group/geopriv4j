@@ -40,7 +40,7 @@ public class MovingInTheNeighbourhoodAlgorithmExample {
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 		MovingInTheNeighbourhoodAlgorithm algorithm = new MovingInTheNeighbourhoodAlgorithm(topleft, bottomright);
 
-		long startTime = System.nanoTime();
+		long startTime = System.currentTimeMillis();
 
 		for(int i=0;i<locations.size();i++) {
 
@@ -49,7 +49,7 @@ public class MovingInTheNeighbourhoodAlgorithmExample {
 			//			System.out.println("Generated location: "+generated_location);
 		}
 
-		long endTime   = System.nanoTime();
+		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("run time : "+totalTime);
 

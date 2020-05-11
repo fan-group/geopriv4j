@@ -40,7 +40,7 @@ public class SpotMeAlgorithmExample {
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 
-		long startTime = System.nanoTime();
+		long startTime = System.currentTimeMillis();
 
 		for(int i=0;i<locations.size();i++) {
 
@@ -49,7 +49,7 @@ public class SpotMeAlgorithmExample {
 			//	System.out.println("Generated locations: "+ generated_location);
 		}
 
-		long endTime   = System.nanoTime();
+		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("run time : "+totalTime);
 	}

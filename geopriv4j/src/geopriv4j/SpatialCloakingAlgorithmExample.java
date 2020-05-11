@@ -45,7 +45,7 @@ public class SpatialCloakingAlgorithmExample {
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
 
-		long startTime = System.nanoTime();
+		long startTime = System.currentTimeMillis();
 
 		for(int i=0;i<locations.size();i++) {
 
@@ -55,7 +55,7 @@ public class SpatialCloakingAlgorithmExample {
 			//			else System.out.println("Generated location inside the larger radius R ");
 		}
 
-		long endTime   = System.nanoTime();
+		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("run time : "+totalTime);
 	}

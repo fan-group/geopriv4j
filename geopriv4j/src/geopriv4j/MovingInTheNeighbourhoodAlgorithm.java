@@ -11,6 +11,7 @@ import java.util.Collections;
  * "An anonymous communication technique using dummies for location-based services," 
  * ICPS '05. Proceedings. International Conference on Pervasive Services, 2005., 
  * Santorini, Greece, 2005, pp. 88-97.
+ * 
  */
 
 
@@ -29,12 +30,20 @@ public class MovingInTheNeighbourhoodAlgorithm {
 		this.bottomright = bottomright;
 	}
 
+	/*
+	 * In this algorithm we do not report anything if the initial location passed is out of bounds 
+	 */
+
 	//This method generates new dummy locations based on the previous location and offset specified
 	public  ArrayList<LatLng> generate(double offset, int n, LatLng current_loc){
 
 		ArrayList<LatLng> dummies = new ArrayList<>();
 
+		//check if the location is within bounds
+		if(!this.checkBounds(current_loc)) return null;
+
 		dummies.add(current_loc);
+
 		for(int i =0;i<n;i++) {
 			int prevIndex = dummies.size() - 1;
 			LatLng previous_loaction = dummies.get(prevIndex);
@@ -44,10 +53,10 @@ public class MovingInTheNeighbourhoodAlgorithm {
 			}
 			dummies.add(generated_location);
 		}
-		
+
 		//TO-DO shuffle the dummies
 		Collections.shuffle(dummies);
-		
+
 		return dummies;
 	}
 

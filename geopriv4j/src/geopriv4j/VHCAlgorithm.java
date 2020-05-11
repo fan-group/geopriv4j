@@ -7,6 +7,17 @@ package geopriv4j;
  * This has been implemented based on the paper by Pingley, Aniket, et al. 
  * "Cap: A context-aware privacy protection system for location-based services." 
  * 2009 29th IEEE International Conference on Distributed Computing Systems. IEEE, 2009.
+ * 
+ * 
+ * In the original paper the authors partition a cell into 4 equal-size 
+ * subcells iff the total road length (in the original space) 
+ * covered by the cell is at least µ times the edge length of 
+ * the cell, where µ > 1 is a pre-determined granularity ratio.
+ * 
+ * In this implementation we divide the cell into 4 equal-size subcells iff
+ * the total nodes present is greater than a threshold set by VHC_LIMIT. 
+ * We have captured the nodes within the boundary from OpenStreetMaps and data 
+ * is present in maploc.txt.
  */
 
 import java.util.ArrayList;
@@ -30,7 +41,7 @@ public class VHCAlgorithm {
 	public VHCAlgorithm(int sigma, Mapper topleft, Mapper topright, Mapper bottomright, Mapper bottomleft, String file) {
 
 		this.sigma = sigma;
-		
+
 		//read data obtained from openStreetMap
 		ArrayList<Mapper> mappers = VhcFileReader.readFile(file);
 		ArrayList<Mapper> coordinates = new ArrayList<>();
@@ -140,11 +151,14 @@ public class VHCAlgorithm {
 		return 0;
 	}
 
+	/*
+	 * In this algorithm we do not report anything if the initial location passed is out of bounds 
+	 */
 
 	//generate new location based on the VHC
 	public LatLng generate(Mapper mapper) {
 		Random random = new Random();
-		int result=0;
+		int result=-1;
 		int sign = 1;
 
 		if(random.nextGaussian()<0.5){
@@ -161,6 +175,8 @@ public class VHCAlgorithm {
 				}
 			}
 		}
+
+		if(result==-1) return null;
 
 		//check if the generated cell is within the grid
 		if(result>=vhcmap.size()) {
