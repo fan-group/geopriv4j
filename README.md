@@ -1,5 +1,5 @@
-# geopriv4j
-An Open-Source Java Repository for Location Privacy Methods
+# Geopriv4j
+An Open Source Java Repository for Location Privacy Methods
 
 ## Location Privacy Methods (TODO:list methods with paper reference):
 
