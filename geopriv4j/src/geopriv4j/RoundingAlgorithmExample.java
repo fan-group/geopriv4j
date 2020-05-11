@@ -12,7 +12,10 @@ import geopriv4j.utils.DataHandler;
  * 
  * This method has been implemented from the paper by Krumm, John. 
  * "Inference attacks on location tracks." International Conference on Pervasive Computing. 
- * Springer, Berlin, Heidelberg, 2007.
+ * Springer, Berlin, Heidelberg, 2007. and Micinski, Kristopher, Philip Phelps, and 
+ * Jeffrey S. Foster. "An empirical study of location truncation on android." 
+ * Weather 2 (2013): 21.
+ * 
  */
 
 import geopriv4j.utils.LatLng;
