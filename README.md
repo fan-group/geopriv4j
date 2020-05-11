@@ -1,7 +1,7 @@
 # Geopriv4j
 An Open Source Java Repository for Location Privacy Methods
 
-## Location Privacy Methods (TODO:list methods with paper reference):
+## Location Privacy Methods:
 
 ### Generalization-based:
 * Rounding/trucation - This method has been implemented from the paper by Krumm, John. "Inference attacks on location tracks." International Conference on Pervasive Computing. Springer, Berlin, Heidelberg, 2007 [paper](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/12/inference-attack-refined02-distribute.pdf) and  Micinski, Kristopher, Philip Phelps, and Jeffrey S. Foster. "An empirical study of location truncation on android." Weather 2 (2013): 21. [paper](http://www.cs.tufts.edu/~jfoster/papers/most13.pdf)
