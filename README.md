@@ -1,5 +1,5 @@
 # Geopriv4j
-Geopriv4j is an open source repository for location privacy in Java (JDK 14.0.1).  Location privacy methods implemented in the repository do not rely on other trusted parties/users/servers, and protect the user's location on-the-fly.  Please see the below for a list of methods implemented in the repository.  
+Geopriv4j is an open source repository for location privacy in Java (JDK 14.0.1).  Location privacy methods implemented in the repository do not rely on other trusted parties/users/servers, and protect the user's location on-the-fly.  Please see the below for a list of methods currently implemented in the repository.  
 
 ## Location Privacy Methods:
 
