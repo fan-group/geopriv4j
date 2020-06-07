@@ -13,12 +13,13 @@ public class Mapper {
 		this.id = id;
 		this.loc = loc;
 	}
+
 	public Mapper() {
 
 	}
+
 	@Override
 	public String toString() {
 		return "map [id=" + id + ", loc=" + loc + "]";
 	}
 }
-

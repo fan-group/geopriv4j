@@ -14,16 +14,15 @@ import java.util.Collections;
  * 
  */
 
-
 import java.util.Random;
 
 import geopriv4j.utils.LatLng;
 
 public class MovingInTheNeighbourhoodAlgorithm {
 
-	//Specify the topleft and the bottomright locations for the grid 
-	public LatLng topleft ;
-	public LatLng bottomright ;
+	// Specify the topleft and the bottomright locations for the grid
+	public LatLng topleft;
+	public LatLng bottomright;
 
 	public MovingInTheNeighbourhoodAlgorithm(LatLng topleft, LatLng bottomright) {
 		this.topleft = topleft;
@@ -31,35 +30,37 @@ public class MovingInTheNeighbourhoodAlgorithm {
 	}
 
 	/*
-	 * In this algorithm we do not report anything if the initial location passed is out of bounds 
+	 * In this algorithm we do not report anything if the initial location passed is
+	 * out of bounds
 	 */
 
-	//This method generates new dummy locations based on the previous location and offset specified
-	public  ArrayList<LatLng> generate(double offset, int n, LatLng current_loc){
+	// This method generates new dummy locations based on the previous location and
+	// offset specified
+	public ArrayList<LatLng> generate(double offset, int n, LatLng current_loc) {
 
 		ArrayList<LatLng> dummies = new ArrayList<>();
 
-		//check if the location is within bounds
-		if(!this.checkBounds(current_loc)) return null;
+		// check if the location is within bounds
+		if (!this.checkBounds(current_loc))
+			return null;
 
 		dummies.add(current_loc);
 
-		for(int i =0;i<n;i++) {
+		for (int i = 0; i < n; i++) {
 			int prevIndex = dummies.size() - 1;
 			LatLng previous_loaction = dummies.get(prevIndex);
 			LatLng generated_location = MN(offset, previous_loaction);
-			while(!this.checkBounds(generated_location)) {
+			while (!this.checkBounds(generated_location)) {
 				generated_location = MN(offset, previous_loaction);
 			}
 			dummies.add(generated_location);
 		}
 
-		//TO-DO shuffle the dummies
+		// TO-DO shuffle the dummies
 		Collections.shuffle(dummies);
 
 		return dummies;
 	}
-
 
 	public static LatLng MN(double offset, LatLng prev) {
 
@@ -70,10 +71,9 @@ public class MovingInTheNeighbourhoodAlgorithm {
 		double ln1 = prev.longitude - offset;
 		double ln2 = prev.longitude + offset;
 		double random_lng = ln1 + (ln2 - ln1) * random.nextDouble();
-		return new LatLng(random_lat,random_lng);
+		return new LatLng(random_lat, random_lng);
 
 	}
-
 
 	public boolean checkBounds(LatLng location) {
 		if (this.topleft.latitude >= location.latitude && this.bottomright.latitude <= location.latitude

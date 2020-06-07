@@ -12,33 +12,30 @@ import java.util.ArrayList;
 
 public class VhcFileReader {
 
-
-	public static ArrayList<Mapper> readFile(String file){
+	public static ArrayList<Mapper> readFile(String file) {
 
 		ArrayList<Mapper> mappers = new ArrayList<Mapper>();
 		BufferedReader read = null;
-		String text=null;
-
+		String text = null;
 
 		try {
-			read = new BufferedReader(
-					new InputStreamReader(new FileInputStream(file)));
+			read = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 
-			while((text = read.readLine())!=null) {
+			while ((text = read.readLine()) != null) {
 
-				if(!text.equals("\n")){
+				if (!text.equals("\n")) {
 					String id = text;
 					String lat = read.readLine();
 					String lon = read.readLine();
 					try {
 						read.readLine();
-					}catch(Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 
 					Mapper m = new Mapper();
 					m.id = id;
-					m.loc = new LatLng(Double.valueOf(lat),Double.valueOf(lon));
+					m.loc = new LatLng(Double.valueOf(lat), Double.valueOf(lon));
 					mappers.add(m);
 				}
 			}
@@ -46,5 +43,5 @@ public class VhcFileReader {
 			e.printStackTrace();
 		}
 		return mappers;
-	}	
+	}
 }

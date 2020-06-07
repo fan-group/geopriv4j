@@ -32,32 +32,30 @@ import geopriv4j.utils.VhcFileReader;
 
 public class VHCAlgorithm {
 
-	public static Map<Integer,ArrayList<Mapper>> vhcmap = new HashMap<>();
+	public static Map<Integer, ArrayList<Mapper>> vhcmap = new HashMap<>();
 
-	//Specify the threshold for each cell in VHC algorithm
-	public static int VHC_LIMIT = 500 ;
-	
-	
+	// Specify the threshold for each cell in VHC algorithm
+	public static int VHC_LIMIT = 500;
 
 	public int sigma;
 
-	public VHCAlgorithm(int sigma, Mapper topleft, Mapper topright, Mapper bottomright, Mapper bottomleft, String file) {
+	public VHCAlgorithm(int sigma, Mapper topleft, Mapper topright, Mapper bottomright, Mapper bottomleft,
+			String file) {
 
 		this.sigma = sigma;
 
-		//read data obtained from openStreetMap
+		// read data obtained from openStreetMap
 		ArrayList<Mapper> mappers = VhcFileReader.readFile(file);
 		ArrayList<Mapper> coordinates = new ArrayList<>();
 		coordinates.add(topleft);
 		coordinates.add(topright);
 		coordinates.add(bottomright);
 		coordinates.add(bottomleft);
-		initiateVhc(mappers,coordinates);
+		initiateVhc(mappers, coordinates);
 
 	}
 
-
-	//create the VHC based on the coordinates specified
+	// create the VHC based on the coordinates specified
 	public int initiateVhc(ArrayList<Mapper> mappers, ArrayList<Mapper> coordinates) {
 
 		Mapper topleftMap = coordinates.get(0);
@@ -65,90 +63,110 @@ public class VHCAlgorithm {
 		Mapper bottomrightMap = coordinates.get(2);
 		Mapper bottomleftMap = coordinates.get(3);
 
+		// double diff_in_lat = Math.abs(topleftMap.loc.latitude -
+		// bottomrightMap.loc.latitude);
+		// double diff_in_lng = Math.abs(topleftMap.loc.longitude -
+		// bottomrightMap.loc.longitude);
 
-		//        double diff_in_lat = Math.abs(topleftMap.loc.latitude - bottomrightMap.loc.latitude);
-		//        double diff_in_lng = Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude);
-
-		//        double latmeters = difflat/0.0000089;
-		//        double lngmeters = difflng * Math.cos(m3.loc.latitude * 0.018)/0.0000089;
+		// double latmeters = difflat/0.0000089;
+		// double lngmeters = difflng * Math.cos(m3.loc.latitude * 0.018)/0.0000089;
 
 		int count = 0;
 
 		// Count total nodes in each cell
-		for(int i=0;i<mappers.size();i++) {
-			if(topleftMap.loc.latitude > mappers.get(i).loc.latitude && Math.abs(topleftMap.loc.longitude) > Math.abs(mappers.get(i).loc.longitude) ) {//&&  m4.loc.longitude < m.get(i).loc.longitude  &&  m4.loc.latitude < m.get(i).loc.latitude
-				if(bottomrightMap.loc.latitude < mappers.get(i).loc.latitude && Math.abs(bottomrightMap.loc.longitude) < Math.abs(mappers.get(i).loc.longitude) ) {//&&  m3.loc.longitude >m.get(i).loc.longitude  &&  m2.loc.latitude > m.get(i).loc.latitude
+		for (int i = 0; i < mappers.size(); i++) {
+			if (topleftMap.loc.latitude > mappers.get(i).loc.latitude
+					&& Math.abs(topleftMap.loc.longitude) > Math.abs(mappers.get(i).loc.longitude)) {// &&
+																										// m4.loc.longitude
+																										// <
+																										// m.get(i).loc.longitude
+																										// &&
+																										// m4.loc.latitude
+																										// <
+																										// m.get(i).loc.latitude
+				if (bottomrightMap.loc.latitude < mappers.get(i).loc.latitude
+						&& Math.abs(bottomrightMap.loc.longitude) < Math.abs(mappers.get(i).loc.longitude)) {// &&
+																												// m3.loc.longitude
+																												// >m.get(i).loc.longitude
+																												// &&
+																												// m2.loc.latitude
+																												// >
+																												// m.get(i).loc.latitude
 					count++;
 				}
 			}
 		}
 
-		//check if the count is below threshold
-		if(count > VHC_LIMIT ) {// MU * latmeters && count > MU * lngmeters
-			double lat = topleftMap.loc.latitude - (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude))/2;
-			double lng = topleftMap.loc.longitude + (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude))/2;
+		// check if the count is below threshold
+		if (count > VHC_LIMIT) {// MU * latmeters && count > MU * lngmeters
+			double lat = topleftMap.loc.latitude
+					- (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude)) / 2;
+			double lng = topleftMap.loc.longitude
+					+ (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude)) / 2;
 
-			ArrayList <Mapper> topLeftSquare_coordinates = new ArrayList<Mapper>();
+			ArrayList<Mapper> topLeftSquare_coordinates = new ArrayList<Mapper>();
 
-			//divide the map into four quadrants
+			// divide the map into four quadrants
 
-			//topleft quadrant
-			//Calculate new topright, bottomright and bottomleft location
-			Mapper new_TLS_toprightMap = new Mapper("TLS_toprightMap", new LatLng(topleftMap.loc.latitude,lng));
-			Mapper new_TLS_bottomrightMap = new Mapper("TLS_bottomrightMap", new LatLng(lat,lng));
-			Mapper new_TLS_bottomleftMap = new Mapper("TLS_bottomleftMap", new LatLng(lat,topleftMap.loc.longitude));
+			// topleft quadrant
+			// Calculate new topright, bottomright and bottomleft location
+			Mapper new_TLS_toprightMap = new Mapper("TLS_toprightMap", new LatLng(topleftMap.loc.latitude, lng));
+			Mapper new_TLS_bottomrightMap = new Mapper("TLS_bottomrightMap", new LatLng(lat, lng));
+			Mapper new_TLS_bottomleftMap = new Mapper("TLS_bottomleftMap", new LatLng(lat, topleftMap.loc.longitude));
 			topLeftSquare_coordinates.add(topleftMap);
 			topLeftSquare_coordinates.add(new_TLS_toprightMap);
 			topLeftSquare_coordinates.add(new_TLS_bottomrightMap);
 			topLeftSquare_coordinates.add(new_TLS_bottomleftMap);
 
-			//recursive call with new coordinates
-			initiateVhc(mappers,topLeftSquare_coordinates);
+			// recursive call with new coordinates
+			initiateVhc(mappers, topLeftSquare_coordinates);
 
-			//topright quadrant
-			//Calculate new topleft, bottomright and bottomleft location
+			// topright quadrant
+			// Calculate new topleft, bottomright and bottomleft location
 			ArrayList<Mapper> topRightSquare_coordinates = new ArrayList<Mapper>();
-			Mapper new_TRS_topleftMap = new Mapper("TRS_topleftMap", new LatLng(topleftMap.loc.latitude,lng));
-			Mapper new_TRS_bottomrightMap = new Mapper("TRS_bottomrightMap", new LatLng(lat,toprightMap.loc.longitude));
-			Mapper new_TRS_bottomleftMap = new Mapper("TRS_bottomleftMap", new LatLng(lat,lng));
+			Mapper new_TRS_topleftMap = new Mapper("TRS_topleftMap", new LatLng(topleftMap.loc.latitude, lng));
+			Mapper new_TRS_bottomrightMap = new Mapper("TRS_bottomrightMap",
+					new LatLng(lat, toprightMap.loc.longitude));
+			Mapper new_TRS_bottomleftMap = new Mapper("TRS_bottomleftMap", new LatLng(lat, lng));
 			topRightSquare_coordinates.add(new_TRS_topleftMap);
 			topRightSquare_coordinates.add(toprightMap);
 			topRightSquare_coordinates.add(new_TRS_bottomrightMap);
 			topRightSquare_coordinates.add(new_TRS_bottomleftMap);
 
-			//recursive call with new coordinates
-			initiateVhc(mappers,topRightSquare_coordinates);
+			// recursive call with new coordinates
+			initiateVhc(mappers, topRightSquare_coordinates);
 
-			//bottomright quadrant
-			//Calculate new topleft, topleft and bottomleft location
+			// bottomright quadrant
+			// Calculate new topleft, topleft and bottomleft location
 			ArrayList<Mapper> bottomRightSquare_coordinates = new ArrayList<Mapper>();
-			Mapper new_BRS_topleftMap = new Mapper("BRS_topleftMap", new LatLng(lat,lng));
-			Mapper new_BRS_toprightMap = new Mapper("BRS_toprightMap", new LatLng(lat,bottomrightMap.loc.longitude));
-			Mapper new_BRS_bottomleftMap = new Mapper("BRS_bottomleftMap", new LatLng(bottomrightMap.loc.latitude,lng));
+			Mapper new_BRS_topleftMap = new Mapper("BRS_topleftMap", new LatLng(lat, lng));
+			Mapper new_BRS_toprightMap = new Mapper("BRS_toprightMap", new LatLng(lat, bottomrightMap.loc.longitude));
+			Mapper new_BRS_bottomleftMap = new Mapper("BRS_bottomleftMap",
+					new LatLng(bottomrightMap.loc.latitude, lng));
 			bottomRightSquare_coordinates.add(new_BRS_topleftMap);
 			bottomRightSquare_coordinates.add(new_BRS_toprightMap);
 			bottomRightSquare_coordinates.add(bottomrightMap);
 			bottomRightSquare_coordinates.add(new_BRS_bottomleftMap);
 
-			//recursive call with new coordinates
-			initiateVhc(mappers,bottomRightSquare_coordinates);
+			// recursive call with new coordinates
+			initiateVhc(mappers, bottomRightSquare_coordinates);
 
-			//bottomleft quadrant
-			//Calculate new topleft, topright and bottomright location
+			// bottomleft quadrant
+			// Calculate new topleft, topright and bottomright location
 			ArrayList<Mapper> bottomLeftSquare_coordinates = new ArrayList<Mapper>();
-			Mapper new_BLS_topleftMap = new Mapper("BLS_topleftMap", new LatLng(lat,bottomleftMap.loc.longitude));
-			Mapper new_BLS_toprightMap = new Mapper("BLS_toprightMap", new LatLng(lat,lng));
-			Mapper new_BLS_bottomrightMap = new Mapper("BLS_bottomrightMap", new LatLng(bottomleftMap.loc.latitude,lng));
+			Mapper new_BLS_topleftMap = new Mapper("BLS_topleftMap", new LatLng(lat, bottomleftMap.loc.longitude));
+			Mapper new_BLS_toprightMap = new Mapper("BLS_toprightMap", new LatLng(lat, lng));
+			Mapper new_BLS_bottomrightMap = new Mapper("BLS_bottomrightMap",
+					new LatLng(bottomleftMap.loc.latitude, lng));
 			bottomLeftSquare_coordinates.add(new_BLS_topleftMap);
 			bottomLeftSquare_coordinates.add(new_BLS_toprightMap);
 			bottomLeftSquare_coordinates.add(new_BLS_bottomrightMap);
 			bottomLeftSquare_coordinates.add(bottomleftMap);
 
-			//recursive call with new coordinates
-			initiateVhc(mappers,bottomLeftSquare_coordinates);
+			// recursive call with new coordinates
+			initiateVhc(mappers, bottomLeftSquare_coordinates);
 
-		}
-		else {
+		} else {
 			vhcmap.put(vhcmap.size(), coordinates);
 			return 0;
 		}
@@ -156,62 +174,70 @@ public class VHCAlgorithm {
 	}
 
 	/*
-	 * In this algorithm we do not report anything if the initial location passed is out of bounds 
+	 * In this algorithm we do not report anything if the initial location passed is
+	 * out of bounds
 	 */
 
-	//generate new location based on the VHC
+	// generate new location based on the VHC
 	public LatLng generate(Mapper mapper) {
 		Random random = new Random();
-		int result=-1;
+		int result = -1;
 		int sign = 1;
 
-		if(random.nextGaussian()<0.5){
-			sign*=-1;
+		if (random.nextGaussian() < 0.5) {
+			sign *= -1;
 		}
 
-		for(int i=0;i<vhcmap.size();i++){
+		for (int i = 0; i < vhcmap.size(); i++) {
 			ArrayList<Mapper> coordinates = vhcmap.get(i);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
-			if(topleftMap.loc.latitude > mapper.loc.latitude && Math.abs(topleftMap.loc.longitude) > Math.abs(mapper.loc.longitude) ) {
-				if(bottomrightMap.loc.latitude < mapper.loc.latitude && Math.abs(bottomrightMap.loc.longitude) < Math.abs(mapper.loc.longitude) ) {
-					result = i+sign*random.nextInt(this.sigma);
+			if (topleftMap.loc.latitude > mapper.loc.latitude
+					&& Math.abs(topleftMap.loc.longitude) > Math.abs(mapper.loc.longitude)) {
+				if (bottomrightMap.loc.latitude < mapper.loc.latitude
+						&& Math.abs(bottomrightMap.loc.longitude) < Math.abs(mapper.loc.longitude)) {
+					result = i + sign * random.nextInt(this.sigma);
 				}
 			}
 		}
 
-		if(result==-1) return null;
+		if (result == -1)
+			return null;
 
-		//check if the generated cell is within the grid
-		if(result>=vhcmap.size()) {
-			ArrayList<Mapper> coordinates = vhcmap.get(vhcmap.size()-1);
+		// check if the generated cell is within the grid
+		if (result >= vhcmap.size()) {
+			ArrayList<Mapper> coordinates = vhcmap.get(vhcmap.size() - 1);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
-			double lat = topleftMap.loc.latitude - (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude))/2;
-			double lng = topleftMap.loc.longitude + (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude))/2;
-			return new LatLng(lat,lng);
+			double lat = topleftMap.loc.latitude
+					- (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude)) / 2;
+			double lng = topleftMap.loc.longitude
+					+ (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude)) / 2;
+			return new LatLng(lat, lng);
 		}
 
-		//check if the generated cell is within the grid
-		if(result<=0) {
+		// check if the generated cell is within the grid
+		if (result <= 0) {
 			ArrayList<Mapper> coordinates = vhcmap.get(0);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
-			double lat = topleftMap.loc.latitude - (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude))/2;
-			double lng = topleftMap.loc.longitude + (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude))/2;
-			return new LatLng(lat,lng);
+			double lat = topleftMap.loc.latitude
+					- (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude)) / 2;
+			double lng = topleftMap.loc.longitude
+					+ (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude)) / 2;
+			return new LatLng(lat, lng);
 		}
 
-		else{
+		else {
 			ArrayList<Mapper> coordinates = vhcmap.get(result);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
-			double lat = topleftMap.loc.latitude - (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude))/2;
-			double lng = topleftMap.loc.longitude + (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude))/2;
-			return new LatLng(lat,lng);
+			double lat = topleftMap.loc.latitude
+					- (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude)) / 2;
+			double lng = topleftMap.loc.longitude
+					+ (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude)) / 2;
+			return new LatLng(lat, lng);
 		}
 	}
-
-
 
 }

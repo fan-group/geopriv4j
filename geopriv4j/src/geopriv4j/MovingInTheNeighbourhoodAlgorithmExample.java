@@ -19,39 +19,39 @@ import geopriv4j.utils.DataHandler;
 import geopriv4j.utils.LatLng;
 
 public class MovingInTheNeighbourhoodAlgorithmExample {
-	//Moving in the neighborhood
+	// Moving in the neighborhood
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-		//Number of dummies to be generated 
+		// Number of dummies to be generated
 		int n = 5;
 
-		//distance between generated locations
+		// distance between generated locations
 		double offset = 0.001;
 
-		//		//this is the current user location
-		//		LatLng initial_location = new LatLng(35.3123, -80.7432);
+		// //this is the current user location
+		// LatLng initial_location = new LatLng(35.3123, -80.7432);
 
 		LatLng topleft = new LatLng(35.312266, -80.743184);
-		LatLng bottomright = new LatLng(35.2944838,-80.71985850859298);
+		LatLng bottomright = new LatLng(35.2944838, -80.71985850859298);
 
-		//change this variable to pick 1000, 5000, 10000 dummy points
+		// change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 10000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
+		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
 		MovingInTheNeighbourhoodAlgorithm algorithm = new MovingInTheNeighbourhoodAlgorithm(topleft, bottomright);
 
 		long startTime = System.currentTimeMillis();
 
-		for(int i=0;i<locations.size();i++) {
+		for (int i = 0; i < locations.size(); i++) {
 
 			ArrayList<LatLng> generated_location = algorithm.generate(offset, n, locations.get(i));
 
-			//			System.out.println("Generated location: "+generated_location);
+			// System.out.println("Generated location: "+generated_location);
 		}
 
-		long endTime   = System.currentTimeMillis();
+		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
-		System.out.println("run time : "+totalTime);
+		System.out.println("run time : " + totalTime);
 
 	}
 }

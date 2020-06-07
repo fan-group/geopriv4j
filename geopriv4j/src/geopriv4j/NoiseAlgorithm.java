@@ -17,42 +17,38 @@ import geopriv4j.utils.Constants;
 import geopriv4j.utils.LatLng;
 
 public class NoiseAlgorithm {
-	
+
 	public double variance;
 
 	public NoiseAlgorithm(double variance) {
-		
+
 		this.variance = variance;
-		
+
 	}
 
-	public  LatLng generate(LatLng location){
+	public LatLng generate(LatLng location) {
 
 		Random rand = new Random();
 
-		//Generate a random Gaussian noise with the variance provided
+		// Generate a random Gaussian noise with the variance provided
 		double noise_lat = rand.nextGaussian() * Math.sqrt(this.variance);
 		double noise_lng = rand.nextGaussian() * Math.sqrt(this.variance);
 
-
-		//offsets in meters
+		// offsets in meters
 		double random_lat = noise_lat;
 		double random_lng = noise_lng;
 
+		// Coordinate offsets in radians
+		double lat_in_degrees = random_lat / Constants.earth_radius;
+		double lng_in_degrees = random_lng / (Constants.earth_radius * Math.cos(Math.PI * location.latitude / 180));
 
+		// OffsetPosition, decimal degrees
+		double lat = location.latitude + lat_in_degrees * 180 / Math.PI;
+		double lng = location.longitude + lng_in_degrees * 180 / Math.PI;
 
-		//Coordinate offsets in radians
-		double lat_in_degrees = random_lat/Constants.earth_radius;
-		double lng_in_degrees = random_lng/(Constants.earth_radius * Math.cos(Math.PI*location.latitude/180));
-
-		//OffsetPosition, decimal degrees
-		double lat = location.latitude + lat_in_degrees *180/Math.PI;
-		double lng = location.longitude + lng_in_degrees *180/Math.PI;
-
-		LatLng generated_noise = new LatLng(lat,lng);
+		LatLng generated_noise = new LatLng(lat, lng);
 
 		return generated_noise;
 	}
-
 
 }

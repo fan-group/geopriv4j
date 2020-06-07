@@ -22,45 +22,41 @@ public class VHCAlgorithmExample {
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 
-		//		//this is the current user location
-		//		LatLng current_loc = new LatLng(35.3123,-80.7432);
+		// //this is the current user location
+		// LatLng current_loc = new LatLng(35.3123,-80.7432);
 
-
-
-		//specify the offset size here
+		// specify the offset size here
 		int sigma = 5;
 
+		// specify all four locations to be considered in this algorithm
+		Mapper topleft = new Mapper("topleft", new LatLng(35.3123, -80.7432));
+		Mapper topright = new Mapper("topright", new LatLng(35.3123, -80.7199));
+		Mapper bottomright = new Mapper("bottomright", new LatLng(35.2945, -80.7199));
+		Mapper bottomleft = new Mapper("bottomleft", new LatLng(35.2945, -80.7432));
 
-		//specify all four locations to be considered in this algorithm
-		Mapper topleft = new Mapper("topleft",new LatLng(35.3123,-80.7432));
-		Mapper topright = new Mapper("topright",new LatLng(35.3123,-80.7199));
-		Mapper bottomright = new Mapper("bottomright",new LatLng(35.2945,-80.7199));
-		Mapper bottomleft = new Mapper("bottomleft",new LatLng(35.2945,-80.7432));
-
-		//Specify the path to the open Street dataset
+		// Specify the path to the open Street dataset
 		String file = "data/maploc.txt";
 
-
 		VHCAlgorithm algorithm = new VHCAlgorithm(sigma, topleft, topright, bottomright, bottomleft, file);
-				
-		//change this variable to pick 1000, 5000, 10000 dummy points
+
+		// change this variable to pick 1000, 5000, 10000 dummy points
 		int data = 5000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/"+data+".txt");
+		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
 
 		long startTime = System.currentTimeMillis();
 
-		for(int i=0;i<locations.size();i++) {
+		for (int i = 0; i < locations.size(); i++) {
 
 			Mapper current_mapper = new Mapper("currentLoc", locations.get(i));
 
 			LatLng generated_location = algorithm.generate(current_mapper);
 
-			//			System.out.println("Generated location: "+ generated_location);
+			// System.out.println("Generated location: "+ generated_location);
 		}
 
-		long endTime   = System.currentTimeMillis();
+		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
-		System.out.println("run time : "+totalTime);
+		System.out.println("run time : " + totalTime);
 	}
 }
