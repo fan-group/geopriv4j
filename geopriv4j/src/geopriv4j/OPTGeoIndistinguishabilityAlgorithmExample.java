@@ -1,5 +1,10 @@
 package geopriv4j;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import geopriv4j.utils.DataHandler;
+
 /*
  * In this algorithm we show that, given a desired degree of geo-indistinguishability, 
  * it is possible to construct a mechanism that minimizes the service quality loss, 
@@ -14,25 +19,40 @@ package geopriv4j;
 import geopriv4j.utils.LatLng;
 
 public class OPTGeoIndistinguishabilityAlgorithmExample {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		// this is the current user location
-		LatLng current_loc = new LatLng(40.026, 116.1983);
-
-		float prior[] = new float[] { 0.1f, 0.8f, 0.3f, 0.8f, 0.1f, 0.5f, 0.8f, 0.3f, 0.4f, 0.8f, 0.5f, 0.2f, 0.8f,
-				0.4f, 0.1f, 0.5f, 0.8f, 0.3f, 0.8f, 0.1f, 0.5f, 0.8f, 0.3f, 0.4f, 0.8f };
+		// LatLng current_loc = new LatLng(35.3122, -80.72985850);
 
 		// ∊ value for ∊-differential privacy
 		double epsilon = 1f;
 		double delta = 1.f;
 
-		// speicfy the topleft and the bottomright locations for the grid
-		LatLng topleft = new LatLng(40.0266, 116.1983);
-		LatLng bottomright = new LatLng(39.7563, 116.5478);
+		// Specify the topleft and the bottomright locations for the grid
+		LatLng topleft = new LatLng(35.3123, -80.7432);
+		LatLng bottomright = new LatLng(35.2944838, -80.71985850859298);
 
 		OPTGeoIndistinguishabilityAlgorithm algorithm = new OPTGeoIndistinguishabilityAlgorithm(topleft, bottomright,
-				prior, epsilon, delta);
+				epsilon, delta);
 
-		LatLng generated_location = algorithm.generate(current_loc);
-		System.out.println("generated location: " + generated_location);
+		// change this variable to pick 1000, 5000, 10000 dummy points
+		int data = 10000;
+
+		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
+
+		float[] prior = OPTGeoIndistinguishabilityAlgorithm.getProbabilities(locations);
+		algorithm.initializeK(prior);
+
+		long startTime = System.currentTimeMillis();
+
+		for (int i = 0; i < locations.size(); i++) {
+			LatLng generated_location = algorithm.generate(locations.get(i));
+			System.out.println("generated location: " + generated_location);
+		}
+
+		long endTime = System.currentTimeMillis();
+		long totalTime = endTime - startTime;
+
+		System.out.println("run time : " + totalTime);
+
 	}
 }

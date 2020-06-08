@@ -10,6 +10,7 @@ public class Node {
 	public ArrayList<Node> parent = new ArrayList<Node>();
 	public ArrayList<Node> child = new ArrayList<Node>();
 	public int cell;
+	public int timestamp;
 	public double probability;
 
 	@Override
@@ -24,7 +25,7 @@ public class Node {
 		return true;
 	}
 
-	protected Object clone() throws CloneNotSupportedException {
+	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
 }

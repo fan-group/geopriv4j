@@ -11,16 +11,14 @@ package geopriv4j;
  * on computer and communications security. 2014.
  */
 
-
 import gurobi.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.tools.javac.code.Attribute.Array;
-
 import geopriv4j.utils.LatLng;
+import geopriv4j.utils.SpannerGraph;
 
 public class OPTGeoIndistinguishabilityAlgorithm {
 
@@ -41,24 +39,25 @@ public class OPTGeoIndistinguishabilityAlgorithm {
 
 	public static Map<Integer, ArrayList<Double>> K = new HashMap<Integer, ArrayList<Double>>();
 
-	public OPTGeoIndistinguishabilityAlgorithm(LatLng topleft, LatLng bottomright, float[] prior, double epsilon, double delta) {
+	public OPTGeoIndistinguishabilityAlgorithm(LatLng topleft, LatLng bottomright, double epsilon, double delta) {
 
 		this.topleft = topleft;
 		this.bottomright = bottomright;
-		this.prior = prior;
 		this.epsilon = epsilon;
 		this.delta = delta;
 
 		initiate(this.topleft, this.bottomright);
-		initializeK();
+
 	}
 
 	// initialize K according to the paper
-	public void initializeK() {
+	public void initializeK(float[] prior) {
 
 		try {
 			// pi sums to 1
-			prior = normalizePrior(this.prior);
+			// prior = normalizePrior(this.prior);
+
+			ArrayList<ArrayList<Integer>> adj = SpannerGraph.initialize();
 
 			// Create empty environment, set options, and start
 			GRBEnv env = new GRBEnv(true);
@@ -92,7 +91,7 @@ public class OPTGeoIndistinguishabilityAlgorithm {
 						GRBLinExpr expr1 = new GRBLinExpr();
 						expr1.addTerm(
 								Math.exp((epsilon / delta)
-										* getCoordinatesDistance(getCoordinates(x), getCoordinates(x_prime))),
+										* SpannerGraph.getShortestDistance(adj, x, x_prime, gridSize * gridSize)),
 								k[x_prime][z]);
 						model.addConstr(expr1, GRB.GREATER_EQUAL, k[x][z], "c" + x + z);
 					}
@@ -120,7 +119,7 @@ public class OPTGeoIndistinguishabilityAlgorithm {
 				K.put(i, list);
 			}
 
-			// System.out.println(K);
+			System.out.println(K);
 			model.dispose();
 			env.dispose();
 		} catch (GRBException e) {
@@ -131,6 +130,9 @@ public class OPTGeoIndistinguishabilityAlgorithm {
 	// generate new locations
 	public LatLng generate(LatLng current) {
 		int cell = getCurrentCell(current);
+		if (cell == -1) {
+			return current;
+		}
 		int reportedcell = getMaxIndex(cell);
 
 		return getLatLng(reportedcell);
@@ -154,16 +156,6 @@ public class OPTGeoIndistinguishabilityAlgorithm {
 		return pi;
 	}
 
-	// get the euclidian coordinate distance
-	public static double getCoordinatesDistance(double[] n1, double[] n2) {
-		return Math.sqrt((n1[0] - n2[0]) * (n1[0] - n2[0]) + (n1[1] - n2[1]) * (n1[1] - n2[1]));
-	}
-
-	// get the cell coordinates
-	public static double[] getCoordinates(int cell) {
-		return new double[] { cell / gridSize, cell % gridSize };
-	}
-
 	// snap the lat lng to the center of the cell
 	public static LatLng getLatLng(int cell) {
 		return new LatLng((grids.get(cell).get(0).latitude + grids.get(cell).get(1).latitude) / 2,
@@ -178,16 +170,17 @@ public class OPTGeoIndistinguishabilityAlgorithm {
 
 	// generate the spanner-graph
 	public static Map<Integer, ArrayList<Integer>> getSpanner(double delta) {
+		ArrayList<ArrayList<Integer>> adj = SpannerGraph.initialize();
 		Map<Integer, ArrayList<Integer>> edges = new HashMap<Integer, ArrayList<Integer>>();
-		for (int i = 0; i < gridSize * gridSize; i++) {
+		for (int x = 0; x < gridSize * gridSize; x++) {
 			ArrayList<Integer> list = new ArrayList<Integer>();
-			for (int j = 0; j < gridSize * gridSize; j++) {
-				if (getCoordinatesDistance(getCoordinates(i), getCoordinates(j)) > delta
-						* getLatLngDistance(getLatLng(i), getLatLng(j))) {
-					list.add(j);
+			for (int x_prime = 0; x_prime < gridSize * gridSize; x_prime++) {
+				if (SpannerGraph.getShortestDistance(adj, x, x_prime, gridSize * gridSize) > delta
+						* getLatLngDistance(getLatLng(x), getLatLng(x_prime))) {
+					list.add(x_prime);
 				}
 			}
-			edges.put(i, list);
+			edges.put(x, list);
 		}
 		return edges;
 	}
@@ -282,5 +275,28 @@ public class OPTGeoIndistinguishabilityAlgorithm {
 		} else {
 			return -1;
 		}
+	}
+
+	// generate prior probabilites
+	public static float[] getProbabilities(ArrayList<LatLng> locations) {
+		Map<Integer, Integer> probability = new HashMap<Integer, Integer>();
+		for (int i = 0; i < gridSize * gridSize; i++) {
+			probability.put(i, 0);
+		}
+
+		for (LatLng l : locations) {
+			int cell = getCurrentCell(l);
+			if (cell == -1) {
+				continue;
+			}
+			probability.put(cell, probability.get(cell) + 1);
+		}
+
+		float[] prior = new float[gridSize * gridSize];
+		for (int i = 0; i < gridSize * gridSize; i++) {
+			prior[i] = probability.get(i);
+		}
+		prior = normalizePrior(prior);
+		return prior;
 	}
 }

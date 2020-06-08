@@ -1,5 +1,7 @@
 package geopriv4j;
 
+import java.io.IOException;
+
 /*
  * In this algorithm we want to let people have the privacy protection level they desire. 
  * In order to provide this, they define θ, the personal privacy threshold, 
@@ -16,33 +18,41 @@ package geopriv4j;
 
 import java.util.ArrayList;
 
+import geopriv4j.utils.DataHandler;
 import geopriv4j.utils.LatLng;
 import geopriv4j.utils.Node;
 
 public class UserAdaptiveCloakingAlgorithmExample {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ArrayList<LatLng> trajectory = new ArrayList<LatLng>();
-		trajectory.add(new LatLng(39.9996120356879, 116.37365828472014));
-		trajectory.add(new LatLng(39.94561501577017, 116.44361393370866));
-		trajectory.add(new LatLng(39.89157588683963, 116.37338076992393));
-		trajectory.add(new LatLng(39.837494795795294, 116.30325936160527));
+	public static void main(String[] args) throws ClassNotFoundException, IOException, CloneNotSupportedException {
 
-		// speicfy the topleft and the bottomright locations for the grid
-		LatLng topleft = new LatLng(40.0266, 116.1983);
-		LatLng bottomright = new LatLng(39.7563, 116.5478);
+		// Specify the topleft and the bottomright locations for the grid
+		LatLng topleft = new LatLng(35.3123, -80.7432);
+		LatLng bottomright = new LatLng(35.2944838, -80.71985850859298);
 
-		double theta = 0.9;
+		double theta = 0.1;
 
 		int alpha_max = 3;
 
-		UserAdaptiveCloakingAlgorithm algorithm = new UserAdaptiveCloakingAlgorithm(theta, alpha_max,
-				topleft, bottomright);
+		UserAdaptiveCloakingAlgorithm algorithm = new UserAdaptiveCloakingAlgorithm(theta, alpha_max, topleft,
+				bottomright);
 
-		ArrayList<Node> graph = algorithm.generate(trajectory);
+		// change this variable to pick 1000, 5000, 10000 dummy points
+		int data = 1000;
 
-		System.out.println("\ngraph : \n");
-		algorithm.display(graph);
+		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
+
+		long startTime = System.currentTimeMillis();
+
+		ArrayList<Node> graph = algorithm.generate(locations);
+
+		long endTime = System.currentTimeMillis();
+		long totalTime = endTime - startTime;
+
+		System.out.println("\n graph : \n");
+		UserAdaptiveCloakingAlgorithm.display(graph);
+
+		System.out.println("run time : " + totalTime);
+
 	}
 }

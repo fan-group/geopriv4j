@@ -77,21 +77,21 @@ public class VHCAlgorithm {
 		for (int i = 0; i < mappers.size(); i++) {
 			if (topleftMap.loc.latitude > mappers.get(i).loc.latitude
 					&& Math.abs(topleftMap.loc.longitude) > Math.abs(mappers.get(i).loc.longitude)) {// &&
-																										// m4.loc.longitude
-																										// <
-																										// m.get(i).loc.longitude
-																										// &&
-																										// m4.loc.latitude
-																										// <
-																										// m.get(i).loc.latitude
+				// m4.loc.longitude
+				// <
+				// m.get(i).loc.longitude
+				// &&
+				// m4.loc.latitude
+				// <
+				// m.get(i).loc.latitude
 				if (bottomrightMap.loc.latitude < mappers.get(i).loc.latitude
 						&& Math.abs(bottomrightMap.loc.longitude) < Math.abs(mappers.get(i).loc.longitude)) {// &&
-																												// m3.loc.longitude
-																												// >m.get(i).loc.longitude
-																												// &&
-																												// m2.loc.latitude
-																												// >
-																												// m.get(i).loc.latitude
+					// m3.loc.longitude
+					// >m.get(i).loc.longitude
+					// &&
+					// m2.loc.latitude
+					// >
+					// m.get(i).loc.latitude
 					count++;
 				}
 			}

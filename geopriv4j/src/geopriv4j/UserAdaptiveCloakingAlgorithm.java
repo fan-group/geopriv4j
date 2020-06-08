@@ -56,12 +56,13 @@ public class UserAdaptiveCloakingAlgorithm {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Node> generate(ArrayList<LatLng> trajectory) {
+	public ArrayList<Node> generate(ArrayList<LatLng> trajectory) throws CloneNotSupportedException {
 
 		int counter = 0;
 		ArrayList<Node> prevSpannerGraph = new ArrayList<Node>();
 
 		for (int timestamp = 0; timestamp < trajectory.size(); timestamp++) {
+			System.out.println(trajectory.get(timestamp));
 			// re-initlize lambda for every iteration
 			lambda = 2;
 			prevSpannerGraph = (ArrayList<Node>) spannerGraph.clone();
@@ -77,14 +78,14 @@ public class UserAdaptiveCloakingAlgorithm {
 
 				ArrayList<Integer> alpha = getAlpha(lambda, trajectory.get(timestamp));
 
-				System.out.println("timestamp: " + timestamp + " alpha: " + alpha);
+				System.out.println("timestamp: " + timestamp + " alpha: " + alpha + " lambda: " + lambda);
 
 				int k = alpha.size();
 
 				for (int cell : alpha) {
 					Node node = new Node();
 					node.cell = cell;
-					//build graph by adding the node
+					// build graph by adding the node
 					Node new_node = buildGraph(k, node, alpha, timestamp);
 					if (new_node != null) {
 						new_graph.add(new_node);
@@ -97,36 +98,36 @@ public class UserAdaptiveCloakingAlgorithm {
 						spannerGraph.get(index).child = g.child;
 						spannerGraph.get(index).parent = g.parent;
 						spannerGraph.get(index).probability = g.probability;
+						spannerGraph.get(index).timestamp = g.timestamp;
 					} else {
 						spannerGraph.add(g);
 					}
 				}
+				if (lambda >= gridSize) {
+					break;
+				}
 				// check if alpha_max has reached
-				if (this.alpha_max == counter) {
+				else if (this.alpha_max <= counter) {
 					lambda++;
 					counter = 0;
-				} else if (lambda == gridSize) {
-					break;
-				} else {
-					counter++;
 				}
 				// check if the expected distortion is greater than theta and end it
 			} while (expectedDistortion(actual) < this.theta);
 		}
 		return spannerGraph;
-
 	}
 
 	// calculate the expected distortion
 	public static double expectedDistortion(Node actual) {
-
 		double distortion = 0.;
-		ArrayList<Node> leafNodes = getLeafNodes();
+		int lastimestamp = getLeafNodeTimestamp();
+		// System.out.println("lastimestamp: " + lastimestamp);
+		ArrayList<Node> leafNodes = getLeafNodes(lastimestamp);
 		for (int i = 0; i < leafNodes.size(); i++) {
 			distortion += getCoordinatesDistance(getCoordinates(actual.cell), getCoordinates(leafNodes.get(i).cell))
 					* leafNodes.get(i).probability;
 		}
-		System.out.println("distortion: " + distortion);
+		System.out.println("distortion: " + distortion + "\n");
 		return distortion;
 	}
 
@@ -141,11 +142,11 @@ public class UserAdaptiveCloakingAlgorithm {
 	}
 
 	// get leaf nodes of the graph
-	public static ArrayList<Node> getLeafNodes() {
+	public static ArrayList<Node> getLeafNodes(int timestamp) {
 		ArrayList<Node> leafNodes = new ArrayList<Node>();
 
 		for (Node g : spannerGraph) {
-			if (g.child.size() == 0) {
+			if (g.timestamp == timestamp && g.child.size() == 0) {
 				leafNodes.add(g);
 			}
 		}
@@ -153,30 +154,51 @@ public class UserAdaptiveCloakingAlgorithm {
 		return leafNodes;
 	}
 
+	public static int getLeafNodeTimestamp() {
+		int timestamp = 0;
+		// System.out.println();
+		for (Node g : spannerGraph) {
+			// System.out.println(g.cell);
+			if (timestamp <= g.timestamp) {
+				timestamp = g.timestamp;
+			}
+		}
+		return timestamp;
+	}
+
 	// build the spanner graph for each time stamp
-	public static Node buildGraph(int k, Node node, List<Integer> alpha, int timestamp) {
+	public static Node buildGraph(int k, Node node, List<Integer> alpha, int timestamp)
+			throws CloneNotSupportedException {
 		if (timestamp == 0) {
 			node.probability = (double) 1 / k;
+			node.timestamp = timestamp;
 		} else {
-			ArrayList<Node> spanner = getLeafNodes();
+			int lastimestamp = getLeafNodeTimestamp();
+			ArrayList<Node> spanner = getLeafNodes(lastimestamp);
 			ArrayList<Integer> graphNodes = new ArrayList<Integer>();
 			for (Node g : spanner) {
 				graphNodes.add(g.cell);
 			}
 			ArrayList<Integer> parents = possibleLocations(node.cell, gridSize, graphNodes);
 			if (parents.size() > 0) {
-				Iterator<Node> iterator = spanner.iterator(); // change it to leaf nodes
+				Iterator<Node> iterator = spanner.iterator();
 				while (iterator.hasNext()) {
 					Node graphNode = iterator.next();
 					if (parents.contains(graphNode.cell)) {
 						if (node.parent.contains(graphNode)) {
-							continue;
+							if (graphNode.child.contains(node)) {
+								continue;
+							} else {
+								graphNode.child.add(node);
+								continue;
+							}
 						}
 						node.parent.add(graphNode);
 						if (graphNode.child.contains(node)) {
 							continue;
 						}
 						graphNode.child.add(node);
+						node.timestamp = timestamp;
 					}
 				}
 				if (node.parent.size() > 0) {
@@ -201,7 +223,7 @@ public class UserAdaptiveCloakingAlgorithm {
 	}
 
 	// diplay the graph
-	public void display(ArrayList<Node> graph) {
+	public static void display(ArrayList<Node> graph) {
 		for (Node node : graph) {
 			System.out.println("node.cell: " + node.cell);
 			if (node.parent.size() > 0) {
@@ -219,6 +241,7 @@ public class UserAdaptiveCloakingAlgorithm {
 			}
 
 			System.out.println("node.probability : " + node.probability);
+			System.out.println("node.timestamp : " + node.timestamp);
 			System.out.println();
 		}
 	}
@@ -229,6 +252,7 @@ public class UserAdaptiveCloakingAlgorithm {
 		for (Node parent : node.parent) {
 			probability += parent.probability * 1 / (parent.child.size());
 		}
+		// System.out.println(node.cell + " " + probability);
 		return probability;
 	}
 
@@ -290,53 +314,73 @@ public class UserAdaptiveCloakingAlgorithm {
 		int sx = (int) (1 + Math.ceil(lambda / 2));
 		int sy = (int) (1 + Math.floor(lambda / 2));
 
-		ArrayList<Integer> area = new ArrayList<Integer>();
-		area.add(sx);
-		area.add(sy);
-
-		return getAlphaPosition(area, l);
+		return getAlphaPosition(sx, sy, l);
 	}
 
 	// Calculate the alpha position for the sx and sy values
-	public static ArrayList<Integer> getAlphaPosition(ArrayList<Integer> area, LatLng l) {
+	public static ArrayList<Integer> getAlphaPosition(int sx, int sy, LatLng l) {
 
-		int x_l = random.nextInt(area.get(0));
-		int x_r = area.get(0) - x_l - 1;
+		int x_l = random.nextInt(sx);
+		int x_r = sx - x_l - 1;
 
-		int y_l = random.nextInt(area.get(1));
-		int y_r = area.get(1) - y_l - 1;
+		int y_l = random.nextInt(sy);
+		int y_r = sy - y_l - 1;
 
-		while ((getCurrentCell(l) - x_l) % gridSize > x_l && x_l != 0) {
-			x_l = random.nextInt(area.get(0));
-			x_r = area.get(0) - x_l - 1;
+		if (getCurrentCell(l) == -1) {
+			x_l = 0;
+			x_r = sx - x_l - 1;
+			y_l = 0;
+			y_r = sy - y_l - 1;
+		} else {
+			while ((getCurrentCell(l) - x_l) % gridSize > x_l && x_l != 0) {
+				x_l = random.nextInt(sx);
+				x_r = sx - x_l - 1;
+			}
+
+			while ((getCurrentCell(l) - (y_l * gridSize)) < 0) {
+				y_l = random.nextInt(sy);
+				y_r = sy - y_l - 1;
+			}
+		}
+		int topLeft = getCurrentCell(l) - x_l - (y_l * gridSize);
+		int bottomRight = getCurrentCell(l) + x_r + (y_r * gridSize);
+
+		if (topLeft <= 0) {
+			if (getCurrentCell(l) >= 0) {
+				topLeft = getCurrentCell(l);
+				bottomRight = topLeft + sx;
+				bottomRight = bottomRight + ((sy - 1) * gridSize);
+			} else {
+				topLeft = 0;
+				bottomRight = topLeft + sx;
+				bottomRight = bottomRight + ((sy - 1) * gridSize);
+			}
 		}
 
-		while ((getCurrentCell(l) - y_l * gridSize) < 0) {
-			y_l = random.nextInt(area.get(1));
-			y_r = area.get(1) - y_l - 1;
+		else if (bottomRight >= gridSize * gridSize) {
+			if (getCurrentCell(l) >= 0) {
+				bottomRight = getCurrentCell(l);
+				topLeft = bottomRight - sx;
+				topLeft = topLeft - (sy * gridSize);
+			} else {
+				bottomRight = (gridSize * gridSize) - 1;
+				topLeft = bottomRight - sx;
+				topLeft = topLeft - (sy * gridSize);
+			}
 		}
 
-		int topLeft = getCurrentCell(l) - x_l - y_l * gridSize;
-		if (topLeft < 0) {
-			topLeft = 0;
-		}
-
-		int bottomRight = getCurrentCell(l) + x_r + y_r * gridSize;
-
-		if (bottomRight >= gridSize * gridSize) {
-			bottomRight = gridSize * gridSize - 1;
-		}
-
-		return generateObfuscationArea(topLeft, bottomRight, area.get(0), area.get(1));
+		return generateObfuscationArea(topLeft, bottomRight, sx, sy);
 	}
 
 	// generate the obfuscation area or the alpha
 	public static ArrayList<Integer> generateObfuscationArea(int topLeft, int bottomRight, int sx, int sy) {
 		ArrayList<Integer> alpha = new ArrayList<Integer>();
-		for (int i = topLeft; i < bottomRight; i = i + gridSize) {
-			for (int j = i; j < i + sx; j++) {
+		for (int i = topLeft; i <= bottomRight; i = i + gridSize) {
+			for (int j = i; j < i + sx && j <= bottomRight; j++) {
 				if (i % gridSize <= j % gridSize) {
-					alpha.add(j);
+					if (!alpha.contains(j) && j >= 0) {
+						alpha.add(j);
+					}
 				}
 			}
 		}
