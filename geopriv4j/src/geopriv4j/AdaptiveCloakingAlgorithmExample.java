@@ -18,7 +18,7 @@ public class AdaptiveCloakingAlgorithmExample {
 		LatLng topleft = new LatLng(35.3123, -80.7432);
 		LatLng bottomright = new LatLng(35.2944838, -80.71985850859298);
 
-		double theta = 0.9;
+		double theta = 0.1;
 
 		int alpha_max = 3;
 
