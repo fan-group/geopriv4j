@@ -61,9 +61,9 @@ public class AdaptiveCloakingAlgorithm {
 		int counter = 0;
 		ArrayList<Node> prevSpannerGraph = new ArrayList<Node>();
 
-		for (int timestamp = 0; timestamp < 50; timestamp++) {//trajectory.size()
-			System.out.println("latlng location : "+trajectory.get(timestamp));
-			System.out.println("cell location: "+getCurrentCell(trajectory.get(timestamp)));
+		for (int timestamp = 0; timestamp < 50; timestamp++) {// trajectory.size()
+			System.out.println("latlng location : " + trajectory.get(timestamp));
+			System.out.println("cell location: " + getCurrentCell(trajectory.get(timestamp)));
 			// re-initlize lambda for every iteration
 			lambda = 2;
 			prevSpannerGraph = (ArrayList<Node>) spannerGraph.clone();
@@ -180,7 +180,8 @@ public class AdaptiveCloakingAlgorithm {
 			for (Node g : spanner) {
 				graphNodes.add(g.cell);
 			}
-			ArrayList<Integer> parents = possibleLocations(node.cell, gridSize, graphNodes);//add node itself to the list of parents
+			ArrayList<Integer> parents = possibleLocations(node.cell, gridSize, graphNodes);// add node itself to the
+																							// list of parents
 			if (parents.size() > 0) {
 				Iterator<Node> iterator = spanner.iterator();
 				while (iterator.hasNext()) {
@@ -305,6 +306,7 @@ public class AdaptiveCloakingAlgorithm {
 			possibilites.add(bottomRight);
 		}
 
+		possibilites.add(cell);
 		return possibilites;
 
 	}

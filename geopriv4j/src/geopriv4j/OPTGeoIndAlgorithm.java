@@ -19,9 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.tc33.jheatchart.HeatChart;
-
 import geopriv4j.utils.DataHandler;
 import geopriv4j.utils.LatLng;
 import geopriv4j.utils.SpannerGraph;
@@ -54,64 +51,6 @@ public class OPTGeoIndAlgorithm {
 
 		initiate(this.topleft, this.bottomright);
 
-	}
-
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		// Specify the topleft and the bottomright locations for the grid
-		LatLng topleft = new LatLng(35.3123, -80.7432);
-		LatLng bottomright = new LatLng(35.2944838, -80.71985850859298);
-		initiate(topleft, bottomright);
-		// Create some dummy data.
-		int data = 1000;
-		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
-
-		float[] locdata = getProbabilities(locations);
-
-		// ∊ value for ∊-differential privacy
-		double epsilon = .9f;
-		double delta = 1.f;
-		OPTGeoIndAlgorithm algorithm = new OPTGeoIndAlgorithm(topleft, bottomright,
-				epsilon, delta);
-
-		algorithm.initializeK(locdata);
-		double[][] locationdata = new double[gridSize][gridSize];
-		for (int i = 0, counter = 0; i < gridSize; i++) {
-			for (int j = 0; j < gridSize; j++) {
-				locationdata[i][j] = locdata[counter++];
-			}
-		}
-		// Step 1: Create our heat map chart using our data.
-		HeatChart map = new HeatChart(locationdata);
-
-		// Step 2: Customise the chart.
-		map.setTitle("This is my heat chart title");
-		map.setXAxisLabel("X Axis");
-		map.setYAxisLabel("Y Axis");
-
-		// Step 3: Output the chart to a file.
-		map.saveToFile(new File("prior.png"));
-		
-		int [] input_locations = new int[] {0, 18, 25, 51, 63}; 
-		for(int i=0;i<input_locations.length;i++) {
-			locationdata = new double[gridSize][gridSize];
-			ArrayList<Double> ld = K.get(input_locations[i]);
-			for (int k = 0, counter = 0; k < gridSize; k++) {
-				for (int l = 0; l < gridSize; l++) {
-					locationdata[k][l] = ld.get(counter++);
-				}
-			}
-			
-			// Step 1: Create our heat map chart using our data.
-			 map = new HeatChart(locationdata);
-
-			// Step 2: Customise the chart.
-			map.setTitle("This is my heat chart title");
-			map.setXAxisLabel("X Axis");
-			map.setYAxisLabel("Y Axis");
-
-			// Step 3: Output the chart to a file.
-			map.saveToFile(new File("input_location"+input_locations[i]+".png"));
-		}
 	}
 
 	// initialize K according to the paper
