@@ -1,11 +1,3 @@
-package geopriv4j;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import geopriv4j.utils.DataHandler;
-import geopriv4j.utils.LatLng;
-
 /* 
  * This is a Laplace Algorithm Example class.
  * In this method we will be generating new location z with a probability p that 
@@ -17,6 +9,12 @@ import geopriv4j.utils.LatLng;
  * security. 2013.
  */
 
+package geopriv4j;
+
+import java.io.IOException; 
+import java.util.ArrayList;
+import geopriv4j.utils.DataHandler;
+import geopriv4j.utils.LatLng;
 
 
 public class LaplaceAlgorithmExample {
