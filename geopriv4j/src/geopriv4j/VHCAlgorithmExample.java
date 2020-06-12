@@ -1,29 +1,18 @@
+/* 
+ * This is a VHC Algorithm Example class
+ */
+
 package geopriv4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import geopriv4j.utils.DataHandler;
-
-/* 
- * This is a VHC Algorithm Example class
- * In this we use Various-size-grid Hilbert Curve (VHC)-mapping to project user location 
- * based on the population density in each cell.
- * 
- * This has been implemented based on the paper by Pingley, Aniket, et al. 
- * "Cap: A context-aware privacy protection system for location-based services." 
- * 2009 29th IEEE International Conference on Distributed Computing Systems. IEEE, 2009.
- */
-
 import geopriv4j.utils.LatLng;
 import geopriv4j.utils.Mapper;
 
 public class VHCAlgorithmExample {
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-
-		// //this is the current user location
-		// LatLng current_loc = new LatLng(35.3123,-80.7432);
 
 		// specify the offset size here
 		int sigma = 5;
@@ -39,7 +28,7 @@ public class VHCAlgorithmExample {
 
 		VHCAlgorithm algorithm = new VHCAlgorithm(sigma, topleft, topright, bottomright, bottomleft, file);
 
-		// change this variable to pick 1000, 5000, 10000 dummy points
+		// change this variable to pick 1000, 5000, 10000 synthetic points
 		int data = 5000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");

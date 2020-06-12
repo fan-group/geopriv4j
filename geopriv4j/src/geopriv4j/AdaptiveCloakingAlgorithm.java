@@ -24,14 +24,14 @@ import java.util.Random;
 import geopriv4j.utils.LatLng;
 import geopriv4j.utils.Node;
 
-public class UserAdaptiveCloakingAlgorithm {
+public class AdaptiveCloakingAlgorithm {
 
 	static Random random = new Random();
 
 	// Earth’s radius, sphere
 	final public static int earth_radius = 6378137;
 	// specify the grid size
-	public static int gridSize = 5;
+	public static int gridSize = 10;
 
 	// This contains the grids that is generated
 	public static Map<Integer, ArrayList<LatLng>> grids = new HashMap<>();
@@ -45,7 +45,7 @@ public class UserAdaptiveCloakingAlgorithm {
 	public double theta;
 	public int alpha_max;
 
-	public UserAdaptiveCloakingAlgorithm(double theta, int alpha_max, LatLng topleft, LatLng bottomright) {
+	public AdaptiveCloakingAlgorithm(double theta, int alpha_max, LatLng topleft, LatLng bottomright) {
 
 		this.theta = theta;
 		this.alpha_max = alpha_max;
@@ -61,8 +61,9 @@ public class UserAdaptiveCloakingAlgorithm {
 		int counter = 0;
 		ArrayList<Node> prevSpannerGraph = new ArrayList<Node>();
 
-		for (int timestamp = 0; timestamp < trajectory.size(); timestamp++) {
-			System.out.println(trajectory.get(timestamp));
+		for (int timestamp = 0; timestamp < 50; timestamp++) {//trajectory.size()
+			System.out.println("latlng location : "+trajectory.get(timestamp));
+			System.out.println("cell location: "+getCurrentCell(trajectory.get(timestamp)));
 			// re-initlize lambda for every iteration
 			lambda = 2;
 			prevSpannerGraph = (ArrayList<Node>) spannerGraph.clone();
@@ -179,7 +180,7 @@ public class UserAdaptiveCloakingAlgorithm {
 			for (Node g : spanner) {
 				graphNodes.add(g.cell);
 			}
-			ArrayList<Integer> parents = possibleLocations(node.cell, gridSize, graphNodes);
+			ArrayList<Integer> parents = possibleLocations(node.cell, gridSize, graphNodes);//add node itself to the list of parents
 			if (parents.size() > 0) {
 				Iterator<Node> iterator = spanner.iterator();
 				while (iterator.hasNext()) {

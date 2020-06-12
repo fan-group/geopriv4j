@@ -1,21 +1,12 @@
+/*
+ * This is a SpotMe Algorithm Example Class
+ */
+
 package geopriv4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-/*
- * This is a SpotMe Algorithm Example Class
- * We generate grids of a certain specified dimensions and report user location in
- * each cell based on a defined probability
- * 
- * This has been implemented based on the paper by D. Quercia, I. Leontiadis, 
- * L. McNamara, C. Mascolo and J. Crowcroft, "SpotME If You Can: Randomized Responses
- * for Location Obfuscation on Mobile Phones," 2011 31st International Conference on
- * Distributed Computing Systems, Minneapolis, MN, 2011, pp. 363-372.
- */
-
 import java.util.Map;
-
 import geopriv4j.utils.DataHandler;
 import geopriv4j.utils.LatLng;
 
@@ -25,9 +16,6 @@ public class SpotMeAlgorithmExample {
 
 		// specify the probability for reporting true
 		double probability = 0.01;
-
-		// //this is the current user location
-		// LatLng current_loc = new LatLng(35.3123,-80.7432);
 
 		// Specify the topleft and the bottomright locations for the grid
 		LatLng topleft = new LatLng(35.312266, -80.743184);
@@ -40,7 +28,7 @@ public class SpotMeAlgorithmExample {
 
 		algorithm.setGridSize(gridSize);
 
-		// change this variable to pick 1000, 5000, 10000 dummy points
+		// change this variable to pick 1000, 5000, 10000 synthetic points
 		int data = 10000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
