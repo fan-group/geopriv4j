@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import geopriv4j.utils.DataHandler;
+import geopriv4j.utils.LatLng;
 
 /* 
  * This is a Laplace Algorithm Example class.
@@ -16,7 +17,7 @@ import geopriv4j.utils.DataHandler;
  * security. 2013.
  */
 
-import geopriv4j.utils.LatLng;
+
 
 public class LaplaceAlgorithmExample {
 
