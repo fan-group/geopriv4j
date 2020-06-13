@@ -28,12 +28,12 @@ public class OPTGeoIndAlgorithmExample {
 		int data = 10000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
-		
+
 		String file = "data/maploc.txt";
 		ArrayList<Mapper> mappers = OpenStreetMapFileReader.readFile(file);
-		
+
 		float[] prior = OPTGeoIndAlgorithm.getProbabilities(mappers);
-		
+
 		algorithm.initializeK(prior);
 
 		long startTime = System.currentTimeMillis();
