@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import geopriv4j.utils.DataHandler;
 import geopriv4j.utils.LatLng;
+import geopriv4j.utils.Mapper;
 import geopriv4j.utils.SpannerGraph;
 
 public class OPTGeoIndAlgorithm {
@@ -281,14 +282,14 @@ public class OPTGeoIndAlgorithm {
 	}
 
 	// generate prior probabilites
-	public static float[] getProbabilities(ArrayList<LatLng> locations) {
+	public static float[] getProbabilities(ArrayList<Mapper> mappers) {
 		Map<Integer, Integer> probability = new HashMap<Integer, Integer>();
 		for (int i = 0; i < gridSize * gridSize; i++) {
 			probability.put(i, 0);
 		}
 
-		for (LatLng l : locations) {
-			int cell = getCurrentCell(l);
+		for (Mapper l : mappers) {
+			int cell = getCurrentCell(l.loc);
 			if (cell == -1) {
 				continue;
 			}

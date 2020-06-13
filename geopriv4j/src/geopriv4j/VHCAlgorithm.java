@@ -28,7 +28,7 @@ import java.util.Random;
 import geopriv4j.utils.Constants;
 import geopriv4j.utils.LatLng;
 import geopriv4j.utils.Mapper;
-import geopriv4j.utils.VhcFileReader;
+import geopriv4j.utils.OpenStreetMapFileReader;
 
 public class VHCAlgorithm {
 
@@ -45,7 +45,7 @@ public class VHCAlgorithm {
 		this.sigma = sigma;
 
 		// read data obtained from openStreetMap
-		ArrayList<Mapper> mappers = VhcFileReader.readFile(file);
+		ArrayList<Mapper> mappers = OpenStreetMapFileReader.readFile(file);
 		ArrayList<Mapper> coordinates = new ArrayList<>();
 		coordinates.add(topleft);
 		coordinates.add(topright);

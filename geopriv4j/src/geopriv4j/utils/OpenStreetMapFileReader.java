@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class VhcFileReader {
+public class OpenStreetMapFileReader {
 
 	public static ArrayList<Mapper> readFile(String file) {
 

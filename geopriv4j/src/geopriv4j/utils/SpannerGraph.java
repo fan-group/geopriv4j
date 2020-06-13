@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class SpannerGraph {
-	public static int gridSize = 5;
+	public static int gridSize = 8;
 	// No of vertices
 	public static int v = gridSize * gridSize;
 

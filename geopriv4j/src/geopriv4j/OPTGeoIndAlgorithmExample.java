@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import geopriv4j.utils.DataHandler;
 import geopriv4j.utils.LatLng;
+import geopriv4j.utils.Mapper;
+import geopriv4j.utils.OpenStreetMapFileReader;
 
 public class OPTGeoIndAlgorithmExample {
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
@@ -26,8 +28,12 @@ public class OPTGeoIndAlgorithmExample {
 		int data = 10000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
-
-		float[] prior = OPTGeoIndAlgorithm.getProbabilities(locations);
+		
+		String file = "data/maploc.txt";
+		ArrayList<Mapper> mappers = OpenStreetMapFileReader.readFile(file);
+		
+		float[] prior = OPTGeoIndAlgorithm.getProbabilities(mappers);
+		
 		algorithm.initializeK(prior);
 
 		long startTime = System.currentTimeMillis();
