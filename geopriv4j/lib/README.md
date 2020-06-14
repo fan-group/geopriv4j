@@ -1,0 +1,1 @@
+This is the folder to place external jar files required by any algorithm, eg. gurobi.jar required by OPTGeoIndAlgorithm

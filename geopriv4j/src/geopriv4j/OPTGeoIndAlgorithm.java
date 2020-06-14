@@ -11,7 +11,9 @@ package geopriv4j;
  * on computer and communications security. 2014.
  */
 
-//import gurobi.*;
+// Please include the gurobi.jar file in the lib folder
+import gurobi.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,84 +55,85 @@ public class OPTGeoIndAlgorithm {
 
 	}
 
+	/*
+	 * please include the gurobi.jar file in the lib folder in order to compute K
+	 */
 	// initialize K according to the paper
-	// public void initializeK(float[] prior) {
-	//
-	// try {
-	// // pi sums to 1
-	// // prior = normalizePrior(this.prior);
-	//
-	// ArrayList<ArrayList<Integer>> adj = SpannerGraph.initialize();
-	//
-	// // Create empty environment, set options, and start
-	// GRBEnv env = new GRBEnv(true);
-	// env.set("logFile", "AdaptiveCloakingAlgorithm.log");
-	// env.start();
-	//
-	// // Create empty model
-	// GRBModel model = new GRBModel(env);
-	// GRBVar[][] k = new GRBVar[gridSize * gridSize][gridSize * gridSize];
-	// GRBLinExpr expr = new GRBLinExpr();
-	//
-	// Map<Integer, ArrayList<Integer>> spanner = getSpanner(delta);
-	//
-	// // construct optimization function
-	//
-	// for (int x = 0; x < gridSize * gridSize; x++) {
-	// for (int z = 0; z < gridSize * gridSize; z++) {
-	// k[x][z] = model.addVar(0.0, 1.0, 1.0, GRB.CONTINUOUS, "K" + x + z);
-	// expr.addTerm(prior[x] * getLatLngDistance(getLatLng(x), getLatLng(z)),
-	// k[x][z]);
-	// }
-	// }
-	//
-	// // set it to minimization
-	// model.setObjective(expr, GRB.MINIMIZE);
-	//
-	// // add constraints
-	// for (int z = 0; z < gridSize * gridSize; z++) {
-	// for (int x = 0; x < gridSize * gridSize; x++) {
-	// ArrayList<Integer> edges = spanner.get(x);
-	// for (int x_prime : edges) {
-	// GRBLinExpr expr1 = new GRBLinExpr();
-	// expr1.addTerm(
-	// Math.exp((epsilon / delta)
-	// * SpannerGraph.getShortestDistance(adj, x, x_prime, gridSize * gridSize)),
-	// k[x_prime][z]);
-	// model.addConstr(expr1, GRB.GREATER_EQUAL, k[x][z], "c" + x + z);
-	// }
-	// }
-	// }
-	//
-	// // add constraints
-	// for (int x = 0; x < gridSize * gridSize; x++) {
-	// GRBLinExpr expr2 = new GRBLinExpr();
-	// for (int z = 0; z < gridSize * gridSize; z++) {
-	// expr2.addTerm(1.0, k[x][z]);
-	// }
-	// model.addConstr(expr2, GRB.EQUAL, 1.0, "c" + x);
-	// }
-	//
-	// model.optimize();
-	//
-	// for (int i = 0, counter = 0; i < gridSize * gridSize; i++) {
-	// ArrayList<Double> list = new ArrayList<Double>();
-	// for (int j = 0; j < gridSize * gridSize; j++) {
-	// double x = model.getVars()[counter].get(GRB.DoubleAttr.X);
-	// list.add(x);
-	// counter++;
-	// }
-	// K.put(i, list);
-	// }
-	//
-	// System.out.println(K);
-	// model.dispose();
-	// env.dispose();
-	// } catch (GRBException e) {
-	// System.out.println(" Error code : " + e.getErrorCode() + ". " +
-	// e.getMessage());
-	// }
-	// }
+	public void initializeK(float[] prior) {
+
+		try {
+			// pi sums to 1
+			// prior = normalizePrior(this.prior);
+
+			ArrayList<ArrayList<Integer>> adj = SpannerGraph.initialize();
+
+			// Create empty environment, set options, and start
+			GRBEnv env = new GRBEnv(true);
+			env.set("logFile", "AdaptiveCloakingAlgorithm.log");
+			env.start();
+
+			// Create empty model
+			GRBModel model = new GRBModel(env);
+			GRBVar[][] k = new GRBVar[gridSize * gridSize][gridSize * gridSize];
+			GRBLinExpr expr = new GRBLinExpr();
+
+			Map<Integer, ArrayList<Integer>> spanner = getSpanner(delta);
+
+			// construct optimization function
+
+			for (int x = 0; x < gridSize * gridSize; x++) {
+				for (int z = 0; z < gridSize * gridSize; z++) {
+					k[x][z] = model.addVar(0.0, 1.0, 1.0, GRB.CONTINUOUS, "K" + x + z);
+					expr.addTerm(prior[x] * getLatLngDistance(getLatLng(x), getLatLng(z)), k[x][z]);
+				}
+			}
+
+			// set it to minimization
+			model.setObjective(expr, GRB.MINIMIZE);
+
+			// add constraints
+			for (int z = 0; z < gridSize * gridSize; z++) {
+				for (int x = 0; x < gridSize * gridSize; x++) {
+					ArrayList<Integer> edges = spanner.get(x);
+					for (int x_prime : edges) {
+						GRBLinExpr expr1 = new GRBLinExpr();
+						expr1.addTerm(
+								Math.exp((epsilon / delta)
+										* SpannerGraph.getShortestDistance(adj, x, x_prime, gridSize * gridSize)),
+								k[x_prime][z]);
+						model.addConstr(expr1, GRB.GREATER_EQUAL, k[x][z], "c" + x + z);
+					}
+				}
+			}
+
+			// add constraints
+			for (int x = 0; x < gridSize * gridSize; x++) {
+				GRBLinExpr expr2 = new GRBLinExpr();
+				for (int z = 0; z < gridSize * gridSize; z++) {
+					expr2.addTerm(1.0, k[x][z]);
+				}
+				model.addConstr(expr2, GRB.EQUAL, 1.0, "c" + x);
+			}
+
+			model.optimize();
+
+			for (int i = 0, counter = 0; i < gridSize * gridSize; i++) {
+				ArrayList<Double> list = new ArrayList<Double>();
+				for (int j = 0; j < gridSize * gridSize; j++) {
+					double x = model.getVars()[counter].get(GRB.DoubleAttr.X);
+					list.add(x);
+					counter++;
+				}
+				K.put(i, list);
+			}
+
+			System.out.println(K);
+			model.dispose();
+			env.dispose();
+		} catch (GRBException e) {
+			System.out.println(" Error code : " + e.getErrorCode() + ". " + e.getMessage());
+		}
+	}
 
 	// generate new locations
 	public LatLng generate(LatLng current) {
