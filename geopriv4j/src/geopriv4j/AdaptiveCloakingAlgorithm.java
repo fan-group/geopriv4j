@@ -56,65 +56,65 @@ public class AdaptiveCloakingAlgorithm {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Node> generate(ArrayList<LatLng> trajectory) throws CloneNotSupportedException {
+	public ArrayList<Node> generate(LatLng latLng, int timestamp) throws CloneNotSupportedException {
 
 		int counter = 0;
 		ArrayList<Node> prevSpannerGraph = new ArrayList<Node>();
 
-		for (int timestamp = 0; timestamp < 50; timestamp++) {// trajectory.size()
-			System.out.println("latlng location : " + trajectory.get(timestamp));
-			System.out.println("cell location: " + getCurrentCell(trajectory.get(timestamp)));
-			// re-initlize lambda for every iteration
-			lambda = 2;
-			prevSpannerGraph = (ArrayList<Node>) spannerGraph.clone();
-			Node actual = new Node();
-			// get current cell and add it to the node
-			actual.cell = getCurrentCell(trajectory.get(timestamp));
-			do {
-				counter++;
-				// System.out.println("lambda: "+ lambda);
-				spannerGraph = (ArrayList<Node>) prevSpannerGraph.clone();
+		// trajectory.size()
+		System.out.println("latlng location : " + latLng);
+		System.out.println("cell location: " + getCurrentCell(latLng));
+		// re-initlize lambda for every iteration
+		lambda = 2;
+		prevSpannerGraph = (ArrayList<Node>) spannerGraph.clone();
+		Node actual = new Node();
+		// get current cell and add it to the node
+		actual.cell = getCurrentCell(latLng);
+		do {
+			counter++;
+			// System.out.println("lambda: "+ lambda);
+			spannerGraph = (ArrayList<Node>) prevSpannerGraph.clone();
 
-				ArrayList<Node> new_graph = new ArrayList<Node>();
+			ArrayList<Node> new_graph = new ArrayList<Node>();
 
-				ArrayList<Integer> alpha = getAlpha(lambda, trajectory.get(timestamp));
+			ArrayList<Integer> alpha = getAlpha(lambda, latLng);
 
-				System.out.println("timestamp: " + timestamp + " alpha: " + alpha + " lambda: " + lambda);
+			System.out.println("timestamp: " + timestamp + " alpha: " + alpha + " lambda: " + lambda);
 
-				int k = alpha.size();
+			int k = alpha.size();
 
-				for (int cell : alpha) {
-					Node node = new Node();
-					node.cell = cell;
-					// build graph by adding the node
-					Node new_node = buildGraph(k, node, alpha, timestamp);
-					if (new_node != null) {
-						new_graph.add(new_node);
-					}
+			for (int cell : alpha) {
+				Node node = new Node();
+				node.cell = cell;
+				// build graph by adding the node
+				Node new_node = buildGraph(k, node, alpha, timestamp);
+				if (new_node != null) {
+					new_graph.add(new_node);
 				}
+			}
 
-				for (Node g : new_graph) {
-					if (spannerGraph.contains(g)) {
-						int index = spannerGraph.indexOf(g);
-						spannerGraph.get(index).child = g.child;
-						spannerGraph.get(index).parent = g.parent;
-						spannerGraph.get(index).probability = g.probability;
-						spannerGraph.get(index).timestamp = g.timestamp;
-					} else {
-						spannerGraph.add(g);
-					}
+			for (Node g : new_graph) {
+				if (spannerGraph.contains(g)) {
+					int index = spannerGraph.indexOf(g);
+					spannerGraph.get(index).child = g.child;
+					spannerGraph.get(index).parent = g.parent;
+					spannerGraph.get(index).probability = g.probability;
+					spannerGraph.get(index).timestamp = g.timestamp;
+				} else {
+					spannerGraph.add(g);
 				}
-				if (lambda >= gridSize) {
-					break;
-				}
-				// check if alpha_max has reached
-				else if (this.alpha_max <= counter) {
-					lambda++;
-					counter = 0;
-				}
-				// check if the expected distortion is greater than theta and end it
-			} while (expectedDistortion(actual) < this.theta);
-		}
+			}
+			if (lambda >= gridSize) {
+				break;
+			}
+			// check if alpha_max has reached
+			else if (this.alpha_max <= counter) {
+				lambda++;
+				counter = 0;
+			}
+			// check if the expected distortion is greater than theta and end it
+		} while (expectedDistortion(actual) < this.theta);
+
 		return spannerGraph;
 	}
 

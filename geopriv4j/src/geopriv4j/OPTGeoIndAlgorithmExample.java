@@ -29,6 +29,7 @@ public class OPTGeoIndAlgorithmExample {
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
 
+		// fetch the open street map locations to pre compute the prior probabilities
 		String file = "data/maploc.txt";
 		ArrayList<Mapper> mappers = OpenStreetMapFileReader.readFile(file);
 

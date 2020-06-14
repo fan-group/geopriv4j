@@ -31,13 +31,19 @@ public class AdaptiveCloakingAlgorithmExample {
 
 		long startTime = System.currentTimeMillis();
 
-		ArrayList<Node> graph = algorithm.generate(locations);
+		for (int i = 0; i < locations.size(); i++) {
+			ArrayList<Node> graph = algorithm.generate(locations.get(i), i);
+			System.out.println("generated location: " + graph);
+			
+			// System.out.println("\n graph : \n");
+			// AdaptiveCloakingAlgorithm.display(graph);
+		}
+		// ArrayList<Node> graph = algorithm.generate(locations);
 
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 
-		System.out.println("\n graph : \n");
-		AdaptiveCloakingAlgorithm.display(graph);
+		
 
 		System.out.println("run time : " + totalTime);
 
