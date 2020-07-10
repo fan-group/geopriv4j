@@ -20,7 +20,7 @@ public class Node {
 		if (getClass() != obj.getClass())
 			return false;
 		Node other = (Node) obj;
-		if (cell != other.cell)
+		if (this.cell != other.cell)
 			return false;
 		return true;
 	}

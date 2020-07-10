@@ -31,7 +31,7 @@ public class AdaptiveCloakingAlgorithm {
 	// Earth’s radius, sphere
 	final public static int earth_radius = 6378137;
 	// specify the grid size
-	public static int gridSize = 10;
+	public static int gridSize = 25;
 
 	// This contains the grids that is generated
 	public static Map<Integer, ArrayList<LatLng>> grids = new HashMap<>();
@@ -56,31 +56,33 @@ public class AdaptiveCloakingAlgorithm {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Node> generate(LatLng latLng, int timestamp) throws CloneNotSupportedException {
+	public ArrayList<Node> generate(LatLng latLng, int timestamp, ArrayList<Node> graph)
+			throws CloneNotSupportedException {
 
 		int counter = 0;
 		ArrayList<Node> prevSpannerGraph = new ArrayList<Node>();
-
+		spannerGraph = new ArrayList<Node>();
 		// trajectory.size()
 		System.out.println("latlng location : " + latLng);
 		System.out.println("cell location: " + getCurrentCell(latLng));
 		// re-initlize lambda for every iteration
 		lambda = 2;
-		prevSpannerGraph = (ArrayList<Node>) spannerGraph.clone();
+		prevSpannerGraph = deepCopy(graph);
+		spannerGraph = deepCopy(graph);
 		Node actual = new Node();
 		// get current cell and add it to the node
 		actual.cell = getCurrentCell(latLng);
 		do {
 			counter++;
-			// System.out.println("lambda: "+ lambda);
-			spannerGraph = (ArrayList<Node>) prevSpannerGraph.clone();
+			spannerGraph = new ArrayList<Node>();
+			spannerGraph = deepCopy(prevSpannerGraph);
 
 			ArrayList<Node> new_graph = new ArrayList<Node>();
 
 			ArrayList<Integer> alpha = getAlpha(lambda, latLng);
 
 			System.out.println("timestamp: " + timestamp + " alpha: " + alpha + " lambda: " + lambda);
-
+			// display(spannerGraph);
 			int k = alpha.size();
 
 			for (int cell : alpha) {
@@ -94,9 +96,13 @@ public class AdaptiveCloakingAlgorithm {
 			}
 
 			for (Node g : new_graph) {
-				if (spannerGraph.contains(g)) {
+				if (g.parent.size() > 0 && g.timestamp == timestamp) {
+					g.probability = getProbability(g);
+				}
+				if (containsNode(spannerGraph, g)) {
+					// System.err.println("node exits");
 					int index = spannerGraph.indexOf(g);
-					spannerGraph.get(index).child = g.child;
+					// spannerGraph.get(index).child = g.child;
 					spannerGraph.get(index).parent = g.parent;
 					spannerGraph.get(index).probability = g.probability;
 					spannerGraph.get(index).timestamp = g.timestamp;
@@ -113,17 +119,61 @@ public class AdaptiveCloakingAlgorithm {
 				counter = 0;
 			}
 			// check if the expected distortion is greater than theta and end it
-		} while (expectedDistortion(actual) < this.theta);
+		} while (expectedDistortion(actual, timestamp) < this.theta);
 
-		return spannerGraph;
+		return deepCopy(spannerGraph);
+	}
+
+	public static ArrayList<Node> deepCopy(ArrayList<Node> nodes) {
+		ArrayList<Node> copy = new ArrayList<Node>();
+
+		for (Node n : nodes) {
+			Node x = new Node();
+			x.cell = n.cell;
+			for (Node p : n.parent) {
+				x.parent.add(p);
+			}
+			// x.parent = n.parent;
+			for (Node c : n.child) {
+				x.child.add(c);
+			}
+			// x.child = n.child;
+			x.probability = n.probability;
+			x.timestamp = n.timestamp;
+			copy.add(x);
+		}
+
+		return copy;
+
+	}
+
+	public static Node deepCopyNode(Node node) {
+
+		Node x = new Node();
+		x.cell = node.cell;
+		for (Node p : node.parent) {
+			x.parent.add(p);
+		}
+		// x.parent = n.parent;
+		for (Node c : node.child) {
+			x.child.add(c);
+		}
+		// x.child = n.child;
+		x.probability = node.probability;
+		x.timestamp = node.timestamp;
+
+		return x;
+
 	}
 
 	// calculate the expected distortion
-	public static double expectedDistortion(Node actual) {
+	public static double expectedDistortion(Node actual, int timestamp) {
 		double distortion = 0.;
-		int lastimestamp = getLeafNodeTimestamp();
+		// int lastimestamp = getLeafNodeTimestamp();
 		// System.out.println("lastimestamp: " + lastimestamp);
-		ArrayList<Node> leafNodes = getLeafNodes(lastimestamp);
+		ArrayList<Node> leafNodes = getLeafNodes(timestamp);
+		System.out.println("leafNodes: ");
+		// display(leafNodes);
 		for (int i = 0; i < leafNodes.size(); i++) {
 			distortion += getCoordinatesDistance(getCoordinates(actual.cell), getCoordinates(leafNodes.get(i).cell))
 					* leafNodes.get(i).probability;
@@ -147,7 +197,7 @@ public class AdaptiveCloakingAlgorithm {
 		ArrayList<Node> leafNodes = new ArrayList<Node>();
 
 		for (Node g : spannerGraph) {
-			if (g.timestamp == timestamp && g.child.size() == 0) {
+			if (g.timestamp == timestamp) {// && g.child.size() == 0
 				leafNodes.add(g);
 			}
 		}
@@ -159,13 +209,17 @@ public class AdaptiveCloakingAlgorithm {
 		int timestamp = 0;
 		// System.out.println();
 		for (Node g : spannerGraph) {
-			// System.out.println(g.cell);
-			if (timestamp <= g.timestamp) {
+			// System.out.println("g.timestamp " + g.timestamp + " g.cell " + g.cell + "
+			// timestamp " + timestamp);
+			if (timestamp < g.timestamp) {
 				timestamp = g.timestamp;
 			}
 		}
-		return timestamp;
+		System.err.println("lasttimestamp " + (timestamp == 0 ? 0 : timestamp - 1));
+		return timestamp == 0 ? 0 : timestamp - 1;
 	}
+
+	// update the nodes and calculate probability
 
 	// build the spanner graph for each time stamp
 	public static Node buildGraph(int k, Node node, List<Integer> alpha, int timestamp)
@@ -174,44 +228,68 @@ public class AdaptiveCloakingAlgorithm {
 			node.probability = (double) 1 / k;
 			node.timestamp = timestamp;
 		} else {
-			int lastimestamp = getLeafNodeTimestamp();
-			ArrayList<Node> spanner = getLeafNodes(lastimestamp);
+			// System.out.println("node.cell " + node.cell);
+			// int lastimestamp = getLeafNodeTimestamp();
+			// System.out.println("lastimestamp " + lastimestamp);
+			ArrayList<Node> spanner = getLeafNodes(timestamp - 1);
 			ArrayList<Integer> graphNodes = new ArrayList<Integer>();
 			for (Node g : spanner) {
 				graphNodes.add(g.cell);
 			}
 			ArrayList<Integer> parents = possibleLocations(node.cell, gridSize, graphNodes);// add node itself to the
-																							// list of parents
+			// list of parents
 			if (parents.size() > 0) {
 				Iterator<Node> iterator = spanner.iterator();
 				while (iterator.hasNext()) {
 					Node graphNode = iterator.next();
+					Node n = deepCopyNode(graphNode);
+					// System.out.println("node.parent.size() " + node.parent.size() + " node.cell "
+					// + node.cell);
 					if (parents.contains(graphNode.cell)) {
-						if (node.parent.contains(graphNode)) {
-							if (graphNode.child.contains(node)) {
-								continue;
-							} else {
-								graphNode.child.add(node);
-								continue;
+						// int index = spanner.indexOf(graphNode);
+						// System.out.println("graphNode.cell " + graphNode.cell);
+						// System.out.println(containsNode(node.parent, graphNode));
+						if (containsNode(node.parent, graphNode)) {
+							System.out.println("node exists!");
+							if (!containsNode(graphNode.child, node)) {
+								// System.out.println("child node does not exists!");
+								// spanner.get(index).child.add(node);
+								int index = spannerGraph.indexOf(graphNode);
+								spannerGraph.get(index).child.add(node);
+								n.child.add(node);
 							}
+						} else {
+							// System.out.println("node does not exists!");
+							if (!containsNode(graphNode.child, node)) {
+								// System.out.println("child node does not exists!");
+								// spanner.get(index).child.add(node);
+								int index = spannerGraph.indexOf(graphNode);
+								spannerGraph.get(index).child.add(node);
+								n.child.add(node);
+
+							}
+							node.parent.add(n);
 						}
-						node.parent.add(graphNode);
-						if (graphNode.child.contains(node)) {
-							continue;
-						}
-						graphNode.child.add(node);
 						node.timestamp = timestamp;
 					}
-				}
-				if (node.parent.size() > 0) {
-					node.probability = getProbability(node);
-				} else {
-					return null;
 				}
 			}
 		}
 
 		return node;
+	}
+
+	public static boolean containsNode(ArrayList<Node> nodes, Node node) {
+		for (Node n : nodes) {
+			// System.out.println("n.cell " + n.cell + " node.cell " + node.cell);
+			if (n.cell == node.cell) {
+				// System.out.println("equals");
+				return true;
+			} else {
+				continue;
+			}
+		}
+		return false;
 	}
 
 	// check if node exists
@@ -250,11 +328,13 @@ public class AdaptiveCloakingAlgorithm {
 
 	// calculate probability of the node
 	public static Double getProbability(Node node) {
-		double probability = 0.;
+		// double e = 1e-6;
+		double probability = 0.; // + e;
 		for (Node parent : node.parent) {
-			probability += parent.probability * 1 / (parent.child.size());
+			if (parent.child.size() > 0) {
+				probability += parent.probability * 1 / (parent.child.size());
+			}
 		}
-		// System.out.println(node.cell + " " + probability);
 		return probability;
 	}
 
@@ -335,7 +415,7 @@ public class AdaptiveCloakingAlgorithm {
 			y_l = 0;
 			y_r = sy - y_l - 1;
 		} else {
-			while ((getCurrentCell(l) - x_l) % gridSize > x_l && x_l != 0) {
+			while ((getCurrentCell(l) - x_l) % gridSize < x_l && x_l != 0) {
 				x_l = random.nextInt(sx);
 				x_r = sx - x_l - 1;
 			}
@@ -361,17 +441,18 @@ public class AdaptiveCloakingAlgorithm {
 		}
 
 		else if (bottomRight >= gridSize * gridSize) {
-			if (getCurrentCell(l) >= 0) {
-				bottomRight = getCurrentCell(l);
-				topLeft = bottomRight - sx;
-				topLeft = topLeft - (sy * gridSize);
-			} else {
+			if (getCurrentCell(l) >= gridSize * gridSize) {
 				bottomRight = (gridSize * gridSize) - 1;
-				topLeft = bottomRight - sx;
-				topLeft = topLeft - (sy * gridSize);
+				topLeft = bottomRight - (sx - 1);
+				topLeft = topLeft - ((sy - 1) * gridSize);
+			} else {
+				bottomRight = getCurrentCell(l);
+				topLeft = bottomRight - (sx - 1);
+				topLeft = topLeft - ((sy - 1) * gridSize);
 			}
 		}
-
+		// System.out.println("topLeft: " + topLeft + " bottomRight: " + bottomRight + "
+		// sx: " + sx + " sy: " + sy);
 		return generateObfuscationArea(topLeft, bottomRight, sx, sy);
 	}
 
@@ -464,6 +545,7 @@ public class AdaptiveCloakingAlgorithm {
 		}
 	}
 
+	// get current cell location for the given latlng co-ordinate
 	public static int getCurrentCell(LatLng current) {
 		if (current.latitude != 0 && current.latitude != -1) {
 			for (Integer r = 0; r < grids.size(); r++) {

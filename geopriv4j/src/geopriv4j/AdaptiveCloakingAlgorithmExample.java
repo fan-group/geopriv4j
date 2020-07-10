@@ -30,20 +30,27 @@ public class AdaptiveCloakingAlgorithmExample {
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
 
 		long startTime = System.currentTimeMillis();
+		ArrayList<Node> graph = new ArrayList<Node>();
+		
+		// speicify the size of each time slot for the graph 
+		int time_slots = 25;
+		
+		for (int i = 0; i < locations.size(); i++) { 
+			System.out.println("timestamp: " + i);
+			int timestamp = i % time_slots;
+			if (timestamp == 0) {
+				graph = new ArrayList<Node>();
+			}
+			graph = algorithm.generate(locations.get(i), timestamp, graph);
+			// System.out.println("generated location: " + graph);
 
-		for (int i = 0; i < locations.size(); i++) {
-			ArrayList<Node> graph = algorithm.generate(locations.get(i), i);
-			System.out.println("generated location: " + graph);
-			
-			// System.out.println("\n graph : \n");
-			// AdaptiveCloakingAlgorithm.display(graph);
+			System.out.println("\n graph : \n");
+			AdaptiveCloakingAlgorithm.display(graph);
 		}
 		// ArrayList<Node> graph = algorithm.generate(locations);
 
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
-
-		
 
 		System.out.println("run time : " + totalTime);
 

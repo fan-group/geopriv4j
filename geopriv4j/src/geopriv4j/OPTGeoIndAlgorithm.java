@@ -13,6 +13,7 @@ package geopriv4j;
 
 // Please include the gurobi.jar file in the lib folder
 import gurobi.*;
+import org.tc33.jheatchart.HeatChart;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +24,12 @@ import java.util.Map;
 import geopriv4j.utils.DataHandler;
 import geopriv4j.utils.LatLng;
 import geopriv4j.utils.Mapper;
+import geopriv4j.utils.OpenStreetMapFileReader;
 import geopriv4j.utils.SpannerGraph;
 
 public class OPTGeoIndAlgorithm {
 
-	public static int gridSize = 8;
+	public static int gridSize = 5;
 	// Earth’s radius, sphere
 	final public static int earth_radius = 6378137;
 
@@ -43,6 +45,7 @@ public class OPTGeoIndAlgorithm {
 	public double delta;
 
 	public static Map<Integer, ArrayList<Double>> K = new HashMap<Integer, ArrayList<Double>>();
+	public static ArrayList<ArrayList<Integer>> adj = SpannerGraph.initialize(gridSize);
 
 	public OPTGeoIndAlgorithm(LatLng topleft, LatLng bottomright, double epsilon, double delta) {
 
@@ -65,8 +68,6 @@ public class OPTGeoIndAlgorithm {
 			// pi sums to 1
 			// prior = normalizePrior(this.prior);
 
-			ArrayList<ArrayList<Integer>> adj = SpannerGraph.initialize();
-
 			// Create empty environment, set options, and start
 			GRBEnv env = new GRBEnv(true);
 			env.set("logFile", "AdaptiveCloakingAlgorithm.log");
@@ -77,7 +78,11 @@ public class OPTGeoIndAlgorithm {
 			GRBVar[][] k = new GRBVar[gridSize * gridSize][gridSize * gridSize];
 			GRBLinExpr expr = new GRBLinExpr();
 
-			Map<Integer, ArrayList<Integer>> spanner = getSpanner(delta);
+			// update dg correctly
+			ArrayList<ArrayList<Integer>> spanner = getSpanner(delta);
+			// Map<Integer, ArrayList<Integer>> spanner = getSpanner(delta);
+
+			System.out.println("Spanner: " + spanner);
 
 			// construct optimization function
 
@@ -177,22 +182,34 @@ public class OPTGeoIndAlgorithm {
 	}
 
 	// generate the spanner-graph
-	public static Map<Integer, ArrayList<Integer>> getSpanner(double delta) {
-		ArrayList<ArrayList<Integer>> adj = SpannerGraph.initialize();
-		Map<Integer, ArrayList<Integer>> edges = new HashMap<Integer, ArrayList<Integer>>();
-		for (int x = 0; x < gridSize * gridSize; x++) {
+	public static ArrayList<ArrayList<Integer>> getSpanner(double delta) {
+		ArrayList<ArrayList<Integer>> edges = new ArrayList<ArrayList<Integer>>();
+		for (int i = 0; i < gridSize * gridSize; i++) {
 			ArrayList<Integer> list = new ArrayList<Integer>();
+			edges.add(list);
+		}
+		for (int x = 0; x < gridSize * gridSize; x++) {
 			for (int x_prime = 0; x_prime < gridSize * gridSize; x_prime++) {
-				if (SpannerGraph.getShortestDistance(adj, x, x_prime, gridSize * gridSize) > delta
-						* getLatLngDistance(getLatLng(x), getLatLng(x_prime))) {
-					list.add(x_prime);
+				if ((double) SpannerGraph.getShortestDistance(adj, x, x_prime, gridSize * gridSize)
+						/ (gridSize * gridSize) > delta * getLatLngDistance(getLatLng(x), getLatLng(x_prime))) {
+					// System.out.println((double) SpannerGraph.getShortestDistance(adj, x, x_prime,
+					// gridSize * gridSize)
+					// / (gridSize * gridSize) + " "
+					// + delta * getLatLngDistance(getLatLng(x), getLatLng(x_prime)));
+					if (!edges.get(x).contains(x_prime)) {
+						edges.get(x).add(x_prime);
+						if (x != x_prime) {
+							edges.get(x_prime).add(x);
+						}
+					}
+					adj = SpannerGraph.addEdge(adj, x, x_prime);
 				}
 			}
-			edges.put(x, list);
 		}
 		return edges;
 	}
 
+	//initialize the grids
 	private static void initiate(LatLng topleft, LatLng bottomright) {
 
 		// calculate the cell size

@@ -14,7 +14,7 @@ public class DataHandler {
 		ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 		objectOut.writeObject(objects);
 		objectOut.close();
-		System.out.println("The Object  was succesfully written to a file " + objects);
+		System.out.println("The Object was succesfully written to a file " + objects);
 
 	}
 
@@ -24,7 +24,7 @@ public class DataHandler {
 
 		ArrayList<T> objects = (ArrayList<T>) oi.readObject();
 
-		System.out.println("The Object  was succesfully read from a file " + objects);
+		// System.out.println("The Object was succesfully read from a file " + objects);
 		return objects;
 
 	}

@@ -4,21 +4,22 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class SpannerGraph {
-	public static int gridSize = 8;
-	// No of vertices
-	public static int v = gridSize * gridSize;
 
 	// Driver Program
 	public static void main(String args[]) {
-
-		ArrayList<ArrayList<Integer>> adj = initialize();
+		int gridSize = 8;
+		// No of vertices
+		int v = gridSize * gridSize;
+		ArrayList<ArrayList<Integer>> adj = initialize(gridSize);
 		int source = 0, dest = 7;
 		int dist = getShortestDistance(adj, source, dest, v);
 		// Print distance
 		System.out.println("Shortest path length is: " + dist);
 	}
 
-	public static ArrayList<ArrayList<Integer>> initialize() {
+	public static ArrayList<ArrayList<Integer>> initialize(int gridSize) {
+		// No of vertices
+		int v = gridSize * gridSize;
 		// Adjacency list for storing which vertices are connected
 		ArrayList<ArrayList<Integer>> adj = new ArrayList<ArrayList<Integer>>(v);
 		for (int i = 0; i < v; i++) {
@@ -30,12 +31,12 @@ public class SpannerGraph {
 		// and destination vertex as argument and forms
 		// an edge between them.
 
-		for (int i = 0; i < v; i++) {
-			ArrayList<Integer> possibileNeighbors = neighbors(i, gridSize);
-			for (int pn : possibileNeighbors) {
-				addEdge(adj, i, pn);
-			}
-		}
+		// for (int i = 0; i < v; i++) {
+		// ArrayList<Integer> possibileNeighbors = neighbors(i, gridSize);
+		// for (int pn : possibileNeighbors) {
+		// addEdge(adj, i, pn);
+		// }
+		// }
 		return adj;
 	}
 
@@ -87,15 +88,17 @@ public class SpannerGraph {
 			possibileNeighbors.add(bottomRight);
 		}
 
+		possibileNeighbors.add(cell);
 		return possibileNeighbors;
 
 	}
 
 	// function to form edge between two vertices
 	// source and dest
-	private static void addEdge(ArrayList<ArrayList<Integer>> adj, int i, int j) {
+	public static ArrayList<ArrayList<Integer>> addEdge(ArrayList<ArrayList<Integer>> adj, int i, int j) {
 		adj.get(i).add(j);
 		adj.get(j).add(i);
+		return adj;
 	}
 
 	// function to print the shortest distance and path
@@ -109,7 +112,7 @@ public class SpannerGraph {
 
 		if (BFS(adj, s, dest, v, pred, dist) == false) {
 			// System.out.println("Given source and destination" + "are not connected");
-			return 0;
+			return v + 1;
 		}
 
 		// LinkedList to store path
