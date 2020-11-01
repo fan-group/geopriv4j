@@ -23,10 +23,14 @@ public class MovingInTheNeighbourhoodAlgorithm {
 	// Specify the topleft and the bottomright locations for the grid
 	public LatLng topleft;
 	public LatLng bottomright;
+	public double offset;
+	public int n;
 
-	public MovingInTheNeighbourhoodAlgorithm(LatLng topleft, LatLng bottomright) {
+	public MovingInTheNeighbourhoodAlgorithm(LatLng topleft, LatLng bottomright, double offset, int n) {
 		this.topleft = topleft;
 		this.bottomright = bottomright;
+		this.offset = offset;
+		this.n = n;
 	}
 
 	/*
@@ -36,7 +40,7 @@ public class MovingInTheNeighbourhoodAlgorithm {
 
 	// This method generates new dummy locations based on the previous location and
 	// offset specified
-	public ArrayList<LatLng> generate(double offset, int n, LatLng current_loc) {
+	public ArrayList<LatLng> generate( LatLng current_loc) {
 
 		ArrayList<LatLng> dummies = new ArrayList<>();
 
@@ -46,12 +50,12 @@ public class MovingInTheNeighbourhoodAlgorithm {
 
 		dummies.add(current_loc);
 
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < this.n; i++) {
 			int prevIndex = dummies.size() - 1;
 			LatLng previous_loaction = dummies.get(prevIndex);
-			LatLng generated_location = MN(offset, previous_loaction);
+			LatLng generated_location = MN(this.offset, previous_loaction);
 			while (!this.checkBounds(generated_location)) {
-				generated_location = MN(offset, previous_loaction);
+				generated_location = MN(this.offset, previous_loaction);
 			}
 			dummies.add(generated_location);
 		}

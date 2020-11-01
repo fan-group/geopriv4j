@@ -26,13 +26,14 @@ public class MovingInTheNeighbourhoodAlgorithmExample {
 		int data = 10000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
-		MovingInTheNeighbourhoodAlgorithm algorithm = new MovingInTheNeighbourhoodAlgorithm(topleft, bottomright);
+		MovingInTheNeighbourhoodAlgorithm algorithm = new MovingInTheNeighbourhoodAlgorithm(topleft, bottomright,
+				offset, n);
 
 		long startTime = System.currentTimeMillis();
 
 		for (int i = 0; i < locations.size(); i++) {
 
-			ArrayList<LatLng> generated_location = algorithm.generate(offset, n, locations.get(i));
+			ArrayList<LatLng> generated_location = algorithm.generate(locations.get(i));
 
 			// System.out.println("Generated location: "+generated_location);
 		}
