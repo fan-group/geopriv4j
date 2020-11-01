@@ -20,16 +20,13 @@ public class SpotMeAlgorithmExample {
 		// Specify the topleft and the bottomright locations for the grid
 		LatLng topleft = new LatLng(35.312266, -80.743184);
 		LatLng bottomright = new LatLng(35.2944838, -80.71985850859298);
-
-		SpotMeAlgorithm algorithm = new SpotMeAlgorithm(topleft, bottomright, probability);
-
 		// Setting the gridSize
 		int gridSize = 25;
-
-		algorithm.setGridSize(gridSize);
+		
+		SpotMeAlgorithm algorithm = new SpotMeAlgorithm(topleft, bottomright, probability, gridSize);
 
 		// change this variable to pick 1000, 5000, 10000 synthetic points
-		int data = 10000;
+		int data = 1000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
 

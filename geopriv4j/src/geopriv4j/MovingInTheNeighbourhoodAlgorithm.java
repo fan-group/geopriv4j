@@ -40,7 +40,7 @@ public class MovingInTheNeighbourhoodAlgorithm {
 
 	// This method generates new dummy locations based on the previous location and
 	// offset specified
-	public ArrayList<LatLng> generate( LatLng current_loc) {
+	public ArrayList<LatLng> generate(LatLng current_loc) {
 
 		ArrayList<LatLng> dummies = new ArrayList<>();
 
@@ -54,7 +54,9 @@ public class MovingInTheNeighbourhoodAlgorithm {
 			int prevIndex = dummies.size() - 1;
 			LatLng previous_loaction = dummies.get(prevIndex);
 			LatLng generated_location = MN(this.offset, previous_loaction);
-			while (!this.checkBounds(generated_location)) {
+			int count = 1;
+			while (!this.checkBounds(generated_location) && count < this.n) {
+				count++;
 				generated_location = MN(this.offset, previous_loaction);
 			}
 			dummies.add(generated_location);

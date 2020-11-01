@@ -23,7 +23,7 @@ public class MovingInTheNeighbourhoodAlgorithmExample {
 		LatLng bottomright = new LatLng(35.2944838, -80.71985850859298);
 
 		// change this variable to pick 1000, 5000, 10000 synthetic points
-		int data = 10000;
+		int data = 1000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
 		MovingInTheNeighbourhoodAlgorithm algorithm = new MovingInTheNeighbourhoodAlgorithm(topleft, bottomright,

@@ -23,25 +23,18 @@ public class SpotMeAlgorithm {
 	// specify the grid size
 	public int gridSize;
 
-	public int getGridSize() {
-		return gridSize;
-	}
-
-	public void setGridSize(int gridSize) {
-		this.gridSize = gridSize;
-	}
-
 	// This contains the grids that is generated
-	public static Map<Integer, ArrayList<LatLng>> grids = new HashMap<>();
+	public  Map<Integer, ArrayList<LatLng>> grids = new HashMap<>();
 
 	public LatLng topleft;
 	public LatLng bottomright;
 	public double probability;
 
-	public SpotMeAlgorithm(LatLng topleft, LatLng bottomright, double probability) {
+	public SpotMeAlgorithm(LatLng topleft, LatLng bottomright, double probability, int gridSize) {
 		this.topleft = topleft;
 		this.bottomright = bottomright;
 		this.probability = probability;
+		this.gridSize = gridSize;
 		this.initiateSpotMe(this.topleft, this.bottomright);
 	}
 
@@ -54,7 +47,7 @@ public class SpotMeAlgorithm {
 		double result = Math.pow(Math.sin(difflat / 2), 2) + Math.cos(Math.toRadians(topleft.latitude))
 				* Math.cos(Math.toRadians(bottomright.latitude)) * Math.pow(Math.sin(difflng / 2), 2);
 		result = 2 * Math.asin(Math.sqrt(result));
-		double offset = result * Constants.earth_radius / gridSize;
+		double offset = result * Constants.earth_radius / this.gridSize;
 
 		// calculate bearing
 		double y = Math.sin(Math.toRadians(bottomright.longitude) - Math.toRadians(topleft.longitude))
@@ -115,7 +108,7 @@ public class SpotMeAlgorithm {
 				arrayList.add(new LatLng(new_blat, new_blong));
 
 				// adding both topleft and bottom right to specified cell in the grid
-				grids.put(grids.size(), arrayList);
+				this.grids.put(this.grids.size(), arrayList);
 			}
 
 		}
@@ -135,8 +128,8 @@ public class SpotMeAlgorithm {
 
 		int count = 0;
 
-		for (Integer r = 0; r < grids.size(); r++) {
-			ArrayList<LatLng> locs = grids.get(r);
+		for (Integer r = 0; r < this.grids.size(); r++) {
+			ArrayList<LatLng> locs = this.grids.get(r);
 
 			// check if the probability is greater then report true
 			if (random.nextDouble() < this.probability) {
