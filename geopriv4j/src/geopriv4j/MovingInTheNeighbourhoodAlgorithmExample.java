@@ -30,10 +30,10 @@ public class MovingInTheNeighbourhoodAlgorithmExample {
 				offset, n);
 
 		long startTime = System.currentTimeMillis();
-
+		ArrayList<LatLng> generated_location = new ArrayList<LatLng>();
 		for (int i = 0; i < locations.size(); i++) {
 
-			ArrayList<LatLng> generated_location = algorithm.generate(locations.get(i));
+			 generated_location = algorithm.generate(generated_location, locations.get(i));
 
 			// System.out.println("Generated location: "+generated_location);
 		}

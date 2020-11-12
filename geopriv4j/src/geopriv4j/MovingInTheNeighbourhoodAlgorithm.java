@@ -25,6 +25,7 @@ public class MovingInTheNeighbourhoodAlgorithm {
 	public LatLng bottomright;
 	public double offset;
 	public int n;
+	ArrayList<LatLng> previous = new ArrayList<>();
 
 	public MovingInTheNeighbourhoodAlgorithm(LatLng topleft, LatLng bottomright, double offset, int n) {
 		this.topleft = topleft;
@@ -40,36 +41,43 @@ public class MovingInTheNeighbourhoodAlgorithm {
 
 	// This method generates new dummy locations based on the previous location and
 	// offset specified
-	public ArrayList<LatLng> generate(LatLng current_loc) {
+	public ArrayList<LatLng> generate(ArrayList<LatLng> previous_dummies, LatLng current_loc) {
 
 		ArrayList<LatLng> dummies = new ArrayList<>();
 
 		// check if the location is within bounds
 		if (!this.checkBounds(current_loc))
 			return null;
+		this.previous = previous_dummies;
+		
+		if (this.previous.size()==0) {
+			this.previous.add(current_loc);
+			for (int i = 0; i < this.n-1; i++) {
+				this.previous.add(MN(this.offset, this.previous.get(i)));
+			}
+		}
 
 		dummies.add(current_loc);
 
-		for (int i = 0; i < this.n; i++) {
-			int prevIndex = dummies.size() - 1;
-			LatLng previous_loaction = dummies.get(prevIndex);
-			LatLng generated_location = MN(this.offset, previous_loaction);
-			int count = 1;
-			while (!this.checkBounds(generated_location) && count < this.n) {
-				count++;
-				generated_location = MN(this.offset, previous_loaction);
+		for (int i = 1; i < this.n; i++) {
+//			int prevIndex = dummies.size() - 1;
+			LatLng previous_location = this.previous.get(i);
+			LatLng generated_location = MN(this.offset, previous_location);
+			int counter=0;
+			while (!this.checkBounds(generated_location)&& counter<=this.n) {
+				counter++;
+				generated_location = MN(this.offset, previous_location);
 			}
 			dummies.add(generated_location);
 		}
 
 		// TO-DO shuffle the dummies
-		Collections.shuffle(dummies);
+//		Collections.shuffle(dummies, new Random(this.n));
 
 		return dummies;
 	}
 
 	public static LatLng MN(double offset, LatLng prev) {
-
 		Random random = new Random();
 		double l1 = prev.latitude - offset;
 		double l2 = prev.latitude + offset;
@@ -78,7 +86,6 @@ public class MovingInTheNeighbourhoodAlgorithm {
 		double ln2 = prev.longitude + offset;
 		double random_lng = ln1 + (ln2 - ln1) * random.nextDouble();
 		return new LatLng(random_lat, random_lng);
-
 	}
 
 	public boolean checkBounds(LatLng location) {
@@ -89,5 +96,4 @@ public class MovingInTheNeighbourhoodAlgorithm {
 
 		return false;
 	}
-
 }
