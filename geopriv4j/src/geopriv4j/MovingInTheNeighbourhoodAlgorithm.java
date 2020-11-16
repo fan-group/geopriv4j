@@ -25,7 +25,7 @@ public class MovingInTheNeighbourhoodAlgorithm {
 	public LatLng bottomright;
 	public double offset;
 	public int n;
-	ArrayList<LatLng> previous = new ArrayList<>();
+	public ArrayList<LatLng> previous = new ArrayList<>();
 
 	public MovingInTheNeighbourhoodAlgorithm(LatLng topleft, LatLng bottomright, double offset, int n) {
 		this.topleft = topleft;
@@ -41,18 +41,17 @@ public class MovingInTheNeighbourhoodAlgorithm {
 
 	// This method generates new dummy locations based on the previous location and
 	// offset specified
-	public ArrayList<LatLng> generate(ArrayList<LatLng> previous_dummies, LatLng current_loc) {
+	public ArrayList<LatLng> generate(LatLng current_loc) {
 
 		ArrayList<LatLng> dummies = new ArrayList<>();
 
 		// check if the location is within bounds
 		if (!this.checkBounds(current_loc))
 			return null;
-		this.previous = previous_dummies;
-		
-		if (this.previous.size()==0) {
+
+		if (this.previous.size() == 0) {
 			this.previous.add(current_loc);
-			for (int i = 0; i < this.n-1; i++) {
+			for (int i = 0; i < this.n - 1; i++) {
 				this.previous.add(MN(this.offset, this.previous.get(i)));
 			}
 		}
@@ -63,8 +62,8 @@ public class MovingInTheNeighbourhoodAlgorithm {
 //			int prevIndex = dummies.size() - 1;
 			LatLng previous_location = this.previous.get(i);
 			LatLng generated_location = MN(this.offset, previous_location);
-			int counter=0;
-			while (!this.checkBounds(generated_location)&& counter<=this.n) {
+			int counter = 0;
+			while (!this.checkBounds(generated_location) && counter <= this.n) {
 				counter++;
 				generated_location = MN(this.offset, previous_location);
 			}
@@ -73,7 +72,7 @@ public class MovingInTheNeighbourhoodAlgorithm {
 
 		// TO-DO shuffle the dummies
 //		Collections.shuffle(dummies, new Random(this.n));
-
+		this.previous = dummies;
 		return dummies;
 	}
 

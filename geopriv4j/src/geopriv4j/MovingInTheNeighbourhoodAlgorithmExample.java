@@ -33,7 +33,7 @@ public class MovingInTheNeighbourhoodAlgorithmExample {
 		ArrayList<LatLng> generated_location = new ArrayList<LatLng>();
 		for (int i = 0; i < locations.size(); i++) {
 
-			 generated_location = algorithm.generate(generated_location, locations.get(i));
+			 generated_location = algorithm.generate(locations.get(i));
 
 			// System.out.println("Generated location: "+generated_location);
 		}
