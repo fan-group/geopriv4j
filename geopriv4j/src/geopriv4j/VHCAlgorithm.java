@@ -76,7 +76,7 @@ public class VHCAlgorithm {
 		// Count total nodes in each cell
 		for (int i = 0; i < mappers.size(); i++) {
 			if (topleftMap.loc.latitude > mappers.get(i).loc.latitude
-					&& Math.abs(topleftMap.loc.longitude) > Math.abs(mappers.get(i).loc.longitude)) {// &&
+					&& topleftMap.loc.longitude < mappers.get(i).loc.longitude) {// &&
 				// m4.loc.longitude
 				// <
 				// m.get(i).loc.longitude
@@ -85,7 +85,7 @@ public class VHCAlgorithm {
 				// <
 				// m.get(i).loc.latitude
 				if (bottomrightMap.loc.latitude < mappers.get(i).loc.latitude
-						&& Math.abs(bottomrightMap.loc.longitude) < Math.abs(mappers.get(i).loc.longitude)) {// &&
+						&& bottomrightMap.loc.longitude>mappers.get(i).loc.longitude) {// &&
 					// m3.loc.longitude
 					// >m.get(i).loc.longitude
 					// &&
@@ -100,9 +100,9 @@ public class VHCAlgorithm {
 		// check if the count is below threshold
 		if (count > VHC_LIMIT) {// MU * latmeters && count > MU * lngmeters
 			double lat = topleftMap.loc.latitude
-					- (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude)) / 2;
+					- (Math.abs(topleftMap.loc.latitude - bottomrightMap.loc.latitude)) / 2;
 			double lng = topleftMap.loc.longitude
-					+ (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude)) / 2;
+					+ (Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude)) / 2;
 
 			ArrayList<Mapper> topLeftSquare_coordinates = new ArrayList<Mapper>();
 
@@ -193,9 +193,9 @@ public class VHCAlgorithm {
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
 			if (topleftMap.loc.latitude > mapper.loc.latitude
-					&& Math.abs(topleftMap.loc.longitude) > Math.abs(mapper.loc.longitude)) {
+					&& topleftMap.loc.longitude<mapper.loc.longitude) {
 				if (bottomrightMap.loc.latitude < mapper.loc.latitude
-						&& Math.abs(bottomrightMap.loc.longitude) < Math.abs(mapper.loc.longitude)) {
+						&& bottomrightMap.loc.longitude>mapper.loc.longitude) {
 					result = i + sign * random.nextInt(this.sigma);
 				}
 			}
@@ -209,10 +209,13 @@ public class VHCAlgorithm {
 			ArrayList<Mapper> coordinates = vhcmap.get(vhcmap.size() - 1);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
+			
 			double lat = topleftMap.loc.latitude
-					- (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude)) / 2;
+					- (Math.abs(topleftMap.loc.latitude - bottomrightMap.loc.latitude)) / 2;
 			double lng = topleftMap.loc.longitude
-					+ (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude)) / 2;
+					+ (Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude)) / 2;
+			
+
 			return new LatLng(lat, lng);
 		}
 
@@ -222,9 +225,9 @@ public class VHCAlgorithm {
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
 			double lat = topleftMap.loc.latitude
-					- (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude)) / 2;
+					- (Math.abs(topleftMap.loc.latitude - bottomrightMap.loc.latitude)) / 2;
 			double lng = topleftMap.loc.longitude
-					+ (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude)) / 2;
+					+ (Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude)) / 2;
 			return new LatLng(lat, lng);
 		}
 
@@ -233,9 +236,9 @@ public class VHCAlgorithm {
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
 			double lat = topleftMap.loc.latitude
-					- (Math.abs(topleftMap.loc.latitude) - Math.abs(bottomrightMap.loc.latitude)) / 2;
+					- (Math.abs(topleftMap.loc.latitude - bottomrightMap.loc.latitude)) / 2;
 			double lng = topleftMap.loc.longitude
-					+ (Math.abs(topleftMap.loc.longitude) - Math.abs(bottomrightMap.loc.longitude)) / 2;
+					+ (Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude)) / 2;
 			return new LatLng(lat, lng);
 		}
 	}
