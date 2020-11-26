@@ -26,23 +26,24 @@ public class VHCAlgorithmExample {
 		// Specify the path to the open Street dataset
 		String file = "data/maploc.txt";
 
-		VHCAlgorithm algorithm = new VHCAlgorithm(sigma, topleft, topright, bottomright, bottomleft, file);
-
+		VHCUpdatedAlgorithm algorithm = new VHCUpdatedAlgorithm(sigma, topleft, topright, bottomright, bottomleft,
+				file);
+		System.out.println(VHCUpdatedAlgorithm.vhcmap.size());
 		// change this variable to pick 1000, 5000, 10000 synthetic points
-		int data = 5000;
+//		int data = 5000;
 
-		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
-
+//		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
+		LatLng location = new LatLng(35.312, -80.743);
 		long startTime = System.currentTimeMillis();
 
-		for (int i = 0; i < locations.size(); i++) {
+//		for (int i = 0; i < locations.size(); i++) {
 
-			Mapper current_mapper = new Mapper("currentLoc", locations.get(i));
+		Mapper current_mapper = new Mapper("currentLoc", location);// s.get(i));
 
-			LatLng generated_location = algorithm.generate(current_mapper);
+		LatLng generated_location = algorithm.generate(current_mapper);
 
-			// System.out.println("Generated location: "+ generated_location);
-		}
+		System.out.println("Generated location: " + generated_location);
+//		}
 
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
