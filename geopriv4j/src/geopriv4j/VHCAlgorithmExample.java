@@ -15,7 +15,7 @@ public class VHCAlgorithmExample {
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 
 		// specify the offset size here
-		int sigma = 5;
+		double sigma = 0.1;
 
 		// specify all four locations to be considered in this algorithm
 		Mapper topleft = new Mapper("topleft", new LatLng(35.3123, -80.7432));
@@ -28,7 +28,7 @@ public class VHCAlgorithmExample {
 
 		VHCUpdatedAlgorithm algorithm = new VHCUpdatedAlgorithm(sigma, topleft, topright, bottomright, bottomleft,
 				file);
-		System.out.println(VHCUpdatedAlgorithm.vhcmap.size());
+		System.out.println(VHCUpdatedAlgorithm.ranges);
 		// change this variable to pick 1000, 5000, 10000 synthetic points
 //		int data = 5000;
 
