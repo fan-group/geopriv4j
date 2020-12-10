@@ -44,7 +44,7 @@ public class VHCUpdatedAlgorithm {
 			String file) {
 
 		this.sigma = sigma;
-		this.sigma = getLatLngToMeters(this.sigma);
+		//this.sigma = getLatLngToMeters(this.sigma);
 
 		// read data obtained from openStreetMap
 		ArrayList<Mapper> mappers = OpenStreetMapFileReader.readFile(file);
@@ -184,7 +184,9 @@ public class VHCUpdatedAlgorithm {
 			Mapper bottomrightMap = coordinates.get(2);
 
 			double offset = Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude);
-
+			
+			offset = getHorizontaldistance(topleftMap.loc, bottomrightMap.loc);
+			
 			if (ranges.containsKey(i - 1)) {
 				ArrayList<Double> previous = ranges.get(i - 1);
 				ArrayList<Double> newrange = new ArrayList<Double>();
@@ -223,11 +225,11 @@ public class VHCUpdatedAlgorithm {
 			if (topleftMap.loc.latitude > mapper.loc.latitude && topleftMap.loc.longitude < mapper.loc.longitude) {
 				if (bottomrightMap.loc.latitude < mapper.loc.latitude
 						&& bottomrightMap.loc.longitude > mapper.loc.longitude) {
-
+					System.out.println("real cell: "+i);
 					// getting the range
 					ArrayList<Double> range = ranges.get(i);
-					double dx = Math.abs(topleftMap.loc.longitude - mapper.loc.longitude);
-					dx = getLatLngToMeters(dx);
+					//double dx = Math.abs(topleftMap.loc.longitude - mapper.loc.longitude);
+					double dx = getHorizontaldistance(topleftMap.loc , mapper.loc);
 					// calculating F(x)
 					f_x = range.get(0) + dx;
 				}
@@ -247,6 +249,8 @@ public class VHCUpdatedAlgorithm {
 				result = i;
 			}
 		}
+		System.out.println("result cell: "+result);
+
 
 		if (result == -1)
 			return null;
@@ -289,8 +293,15 @@ public class VHCUpdatedAlgorithm {
 		}
 	}
 	
-	public double getLatLngToMeters (double latlng) {
-		return latlng * 111.5;
+	public static double getHorizontaldistance(LatLng topleft, LatLng bottomright) {
+		double brlatitude =  topleft.latitude;
+		double difflat = Math.abs(Math.toRadians(topleft.latitude) - Math.toRadians(brlatitude));
+		double difflng = Math.abs(Math.toRadians(topleft.longitude) - Math.toRadians(bottomright.longitude));
+		double result = Math.pow(Math.sin(difflat / 2), 2) + Math.cos(Math.toRadians(topleft.latitude))
+				* Math.cos(Math.toRadians(brlatitude)) * Math.pow(Math.sin(difflng / 2), 2);
+		result = 2 * Math.asin(Math.sqrt(result));
+		double offset = result * Constants.earth_radius;
+		return offset;
 	}
 
 }

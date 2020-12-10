@@ -17,7 +17,7 @@ public class OPTGeoIndAlgorithmExample {
 		// ∊ value for ∊-differential privacy
 		double epsilon = 1f;
 		double delta = 5.f;
-		int gridSize = 5;
+		int gridSize = 10;
 
 		// Specify the topleft and the bottomright locations for the grid
 		LatLng topleft = new LatLng(35.3123, -80.7432);

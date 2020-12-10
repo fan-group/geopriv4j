@@ -45,7 +45,7 @@ public class OPTGeoIndAlgorithm {
 	public double delta;
 
 	public static Map<Integer, ArrayList<Double>> K = new HashMap<Integer, ArrayList<Double>>();
-	public static ArrayList<ArrayList<Integer>> adj = SpannerGraph.initialize(gridSize);
+	public static ArrayList<ArrayList<Integer>> adj = new ArrayList<ArrayList<Integer>> ();
 
 	public OPTGeoIndAlgorithm(LatLng topleft, LatLng bottomright, double epsilon, double delta, int gridSize) {
 
@@ -55,6 +55,7 @@ public class OPTGeoIndAlgorithm {
 		this.delta = delta;
 		OPTGeoIndAlgorithm.gridSize = gridSize;
 		initiate(this.topleft, this.bottomright);
+		adj = SpannerGraph.initialize(gridSize);
 
 	}
 

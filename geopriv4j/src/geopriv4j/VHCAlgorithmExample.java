@@ -14,8 +14,8 @@ public class VHCAlgorithmExample {
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 
-		// specify the offset size here
-		double sigma = 0.1;
+		// specify the offset size here in meters
+		double sigma = 1000;//0.1;
 
 		// specify all four locations to be considered in this algorithm
 		Mapper topleft = new Mapper("topleft", new LatLng(35.3123, -80.7432));
