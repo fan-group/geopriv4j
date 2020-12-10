@@ -47,13 +47,13 @@ public class OPTGeoIndAlgorithm {
 	public static Map<Integer, ArrayList<Double>> K = new HashMap<Integer, ArrayList<Double>>();
 	public static ArrayList<ArrayList<Integer>> adj = SpannerGraph.initialize(gridSize);
 
-	public OPTGeoIndAlgorithm(LatLng topleft, LatLng bottomright, double epsilon, double delta) {
+	public OPTGeoIndAlgorithm(LatLng topleft, LatLng bottomright, double epsilon, double delta, int gridSize) {
 
 		this.topleft = topleft;
 		this.bottomright = bottomright;
 		this.epsilon = epsilon;
 		this.delta = delta;
-
+		OPTGeoIndAlgorithm.gridSize = gridSize;
 		initiate(this.topleft, this.bottomright);
 
 	}

@@ -17,12 +17,13 @@ public class OPTGeoIndAlgorithmExample {
 		// ∊ value for ∊-differential privacy
 		double epsilon = 1f;
 		double delta = 5.f;
+		int gridSize = 5;
 
 		// Specify the topleft and the bottomright locations for the grid
 		LatLng topleft = new LatLng(35.3123, -80.7432);
 		LatLng bottomright = new LatLng(35.2944838, -80.71985850859298);
 
-		OPTGeoIndAlgorithm algorithm = new OPTGeoIndAlgorithm(topleft, bottomright, epsilon, delta);
+		OPTGeoIndAlgorithm algorithm = new OPTGeoIndAlgorithm(topleft, bottomright, epsilon, delta, gridSize);
 
 		// change this variable to pick 1000, 5000, 10000 synthetic points
 		int data = 10000;

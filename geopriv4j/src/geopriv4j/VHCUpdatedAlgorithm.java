@@ -44,6 +44,7 @@ public class VHCUpdatedAlgorithm {
 			String file) {
 
 		this.sigma = sigma;
+		this.sigma = getLatLngToMeters(this.sigma);
 
 		// read data obtained from openStreetMap
 		ArrayList<Mapper> mappers = OpenStreetMapFileReader.readFile(file);
@@ -226,12 +227,13 @@ public class VHCUpdatedAlgorithm {
 					// getting the range
 					ArrayList<Double> range = ranges.get(i);
 					double dx = Math.abs(topleftMap.loc.longitude - mapper.loc.longitude);
+					dx = getLatLngToMeters(dx);
 					// calculating F(x)
 					f_x = range.get(0) + dx;
 				}
 			}
 		}
-
+		
 		// adding noise to F(x)
 		double randomValue = -this.sigma + 2 * this.sigma * random.nextDouble();
 
@@ -285,6 +287,10 @@ public class VHCUpdatedAlgorithm {
 					+ (Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude)) / 2;
 			return new LatLng(lat, lng);
 		}
+	}
+	
+	public double getLatLngToMeters (double latlng) {
+		return latlng * 111.5;
 	}
 
 }
