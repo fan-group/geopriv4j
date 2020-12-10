@@ -26,7 +26,7 @@ public class OPTGeoIndAlgorithmExample {
 		OPTGeoIndAlgorithm algorithm = new OPTGeoIndAlgorithm(topleft, bottomright, epsilon, delta, gridSize);
 
 		// change this variable to pick 1000, 5000, 10000 synthetic points
-		int data = 10000;
+		int data = 1000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
 
