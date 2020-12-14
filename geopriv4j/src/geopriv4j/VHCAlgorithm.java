@@ -33,16 +33,18 @@ import geopriv4j.utils.OpenStreetMapFileReader;
 public class VHCAlgorithm {
 
 	public static Map<Integer, ArrayList<Mapper>> vhcmap = new HashMap<>();
+	public static Map<Integer, ArrayList<Double>> ranges = new HashMap<>();
 
 	// Specify the threshold for each cell in VHC algorithm
 	public static int VHC_LIMIT = 500;
 
-	public int sigma;
+	public double sigma;
 
-	public VHCAlgorithm(int sigma, Mapper topleft, Mapper topright, Mapper bottomright, Mapper bottomleft,
+	public VHCAlgorithm(double sigma, Mapper topleft, Mapper topright, Mapper bottomright, Mapper bottomleft,
 			String file) {
 
 		this.sigma = sigma;
+		// this.sigma = getLatLngToMeters(this.sigma);
 
 		// read data obtained from openStreetMap
 		ArrayList<Mapper> mappers = OpenStreetMapFileReader.readFile(file);
@@ -52,6 +54,7 @@ public class VHCAlgorithm {
 		coordinates.add(bottomright);
 		coordinates.add(bottomleft);
 		initiateVhc(mappers, coordinates);
+		initiateRanges();
 
 	}
 
@@ -85,7 +88,7 @@ public class VHCAlgorithm {
 				// <
 				// m.get(i).loc.latitude
 				if (bottomrightMap.loc.latitude < mappers.get(i).loc.latitude
-						&& bottomrightMap.loc.longitude>mappers.get(i).loc.longitude) {// &&
+						&& bottomrightMap.loc.longitude > mappers.get(i).loc.longitude) {// &&
 					// m3.loc.longitude
 					// >m.get(i).loc.longitude
 					// &&
@@ -173,6 +176,32 @@ public class VHCAlgorithm {
 		return 0;
 	}
 
+	public void initiateRanges() {
+
+		for (int i = 0; i < vhcmap.size(); i++) {
+			ArrayList<Mapper> coordinates = vhcmap.get(i);
+			Mapper topleftMap = coordinates.get(0);
+			Mapper bottomrightMap = coordinates.get(2);
+
+			double offset = Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude);
+
+			offset = getHorizontaldistance(topleftMap.loc, bottomrightMap.loc);
+
+			if (ranges.containsKey(i - 1)) {
+				ArrayList<Double> previous = ranges.get(i - 1);
+				ArrayList<Double> newrange = new ArrayList<Double>();
+				newrange.add(previous.get(1));
+				newrange.add(previous.get(1) + offset);
+				ranges.put(i, newrange);
+			} else {
+				ArrayList<Double> newrange = new ArrayList<Double>();
+				newrange.add(0.);
+				newrange.add(offset);
+				ranges.put(i, newrange);
+			}
+		}
+	}
+
 	/*
 	 * In this algorithm we do not report anything if the initial location passed is
 	 * out of bounds
@@ -182,6 +211,7 @@ public class VHCAlgorithm {
 	public LatLng generate(Mapper mapper) {
 		Random random = new Random();
 		int result = -1;
+		double f_x = 0.;
 		int sign = 1;
 
 		if (random.nextGaussian() < 0.5) {
@@ -192,12 +222,47 @@ public class VHCAlgorithm {
 			ArrayList<Mapper> coordinates = vhcmap.get(i);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
-			if (topleftMap.loc.latitude > mapper.loc.latitude
-					&& topleftMap.loc.longitude<mapper.loc.longitude) {
+			if (topleftMap.loc.latitude > mapper.loc.latitude && topleftMap.loc.longitude < mapper.loc.longitude) {
 				if (bottomrightMap.loc.latitude < mapper.loc.latitude
-						&& bottomrightMap.loc.longitude>mapper.loc.longitude) {
-					result = i + sign * random.nextInt(this.sigma);
+						&& bottomrightMap.loc.longitude > mapper.loc.longitude) {
+					// getting the range
+					ArrayList<Double> range = ranges.get(i);
+					// double dx = Math.abs(topleftMap.loc.longitude - mapper.loc.longitude);
+					double dx = getHorizontaldistance(topleftMap.loc, mapper.loc);
+					// calculating F(x)
+					f_x = range.get(0) + dx;
+					
+					// added by Liyue: 
+					break;
+
 				}
+			}
+		}
+
+		// adding noise to F(x)
+		double randomValue = -this.sigma + 2 * this.sigma * random.nextDouble();
+
+
+		f_x += randomValue;
+
+		for (int i = 0; i < ranges.size(); i++) {
+			ArrayList<Double> range = ranges.get(i);
+			// added by Liyue:
+			if (i == 0 && f_x < range.get(0)) {
+				break;
+			}
+
+			// added by Liyue:
+			if (i == ranges.size() - 1 && f_x >= range.get(1)) {
+				result = ranges.size();
+				break;
+			}
+
+			if (f_x >= range.get(0) && f_x < range.get(1)) {
+				result = i;
+				// added by Liyue:
+				break;
+
 			}
 		}
 
@@ -209,18 +274,17 @@ public class VHCAlgorithm {
 			ArrayList<Mapper> coordinates = vhcmap.get(vhcmap.size() - 1);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
-			
+
 			double lat = topleftMap.loc.latitude
 					- (Math.abs(topleftMap.loc.latitude - bottomrightMap.loc.latitude)) / 2;
 			double lng = topleftMap.loc.longitude
 					+ (Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude)) / 2;
-			
 
 			return new LatLng(lat, lng);
 		}
 
 		// check if the generated cell is within the grid
-		if (result <= 0) {
+		if (result < 0) { // modified by Liyue from <=0
 			ArrayList<Mapper> coordinates = vhcmap.get(0);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
@@ -241,6 +305,17 @@ public class VHCAlgorithm {
 					+ (Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude)) / 2;
 			return new LatLng(lat, lng);
 		}
+	}
+
+	public static double getHorizontaldistance(LatLng topleft, LatLng bottomright) {
+		double brlatitude = topleft.latitude;
+		double difflat = Math.abs(Math.toRadians(topleft.latitude) - Math.toRadians(brlatitude));
+		double difflng = Math.abs(Math.toRadians(topleft.longitude) - Math.toRadians(bottomright.longitude));
+		double result = Math.pow(Math.sin(difflat / 2), 2) + Math.cos(Math.toRadians(topleft.latitude))
+				* Math.cos(Math.toRadians(brlatitude)) * Math.pow(Math.sin(difflng / 2), 2);
+		result = 2 * Math.asin(Math.sqrt(result));
+		double offset = result * Constants.earth_radius;
+		return offset;
 	}
 
 }
