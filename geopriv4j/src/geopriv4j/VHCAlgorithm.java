@@ -66,35 +66,15 @@ public class VHCAlgorithm {
 		Mapper bottomrightMap = coordinates.get(2);
 		Mapper bottomleftMap = coordinates.get(3);
 
-		// double diff_in_lat = Math.abs(topleftMap.loc.latitude -
-		// bottomrightMap.loc.latitude);
-		// double diff_in_lng = Math.abs(topleftMap.loc.longitude -
-		// bottomrightMap.loc.longitude);
-
-		// double latmeters = difflat/0.0000089;
-		// double lngmeters = difflng * Math.cos(m3.loc.latitude * 0.018)/0.0000089;
 
 		int count = 0;
 
 		// Count total nodes in each cell
 		for (int i = 0; i < mappers.size(); i++) {
-			if (topleftMap.loc.latitude > mappers.get(i).loc.latitude
-					&& topleftMap.loc.longitude < mappers.get(i).loc.longitude) {// &&
-				// m4.loc.longitude
-				// <
-				// m.get(i).loc.longitude
-				// &&
-				// m4.loc.latitude
-				// <
-				// m.get(i).loc.latitude
-				if (bottomrightMap.loc.latitude < mappers.get(i).loc.latitude
-						&& bottomrightMap.loc.longitude > mappers.get(i).loc.longitude) {// &&
-					// m3.loc.longitude
-					// >m.get(i).loc.longitude
-					// &&
-					// m2.loc.latitude
-					// >
-					// m.get(i).loc.latitude
+			if (topleftMap.loc.latitude >= mappers.get(i).loc.latitude
+					&& topleftMap.loc.longitude <= mappers.get(i).loc.longitude) {
+				if (bottomrightMap.loc.latitude <= mappers.get(i).loc.latitude
+						&& bottomrightMap.loc.longitude >= mappers.get(i).loc.longitude) {
 					count++;
 				}
 			}
@@ -183,9 +163,8 @@ public class VHCAlgorithm {
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
 
-			double offset = Math.abs(topleftMap.loc.longitude - bottomrightMap.loc.longitude);
 
-			offset = getHorizontaldistance(topleftMap.loc, bottomrightMap.loc);
+			double offset = getHorizontaldistance(topleftMap.loc, bottomrightMap.loc);
 
 			if (ranges.containsKey(i - 1)) {
 				ArrayList<Double> previous = ranges.get(i - 1);
@@ -222,17 +201,17 @@ public class VHCAlgorithm {
 			ArrayList<Mapper> coordinates = vhcmap.get(i);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);
-			if (topleftMap.loc.latitude > mapper.loc.latitude && topleftMap.loc.longitude < mapper.loc.longitude) {
-				if (bottomrightMap.loc.latitude < mapper.loc.latitude
-						&& bottomrightMap.loc.longitude > mapper.loc.longitude) {
+			if (topleftMap.loc.latitude >= mapper.loc.latitude && topleftMap.loc.longitude <= mapper.loc.longitude) {
+				if (bottomrightMap.loc.latitude <= mapper.loc.latitude
+						&& bottomrightMap.loc.longitude >= mapper.loc.longitude) { 
+
 					// getting the range
 					ArrayList<Double> range = ranges.get(i);
-					// double dx = Math.abs(topleftMap.loc.longitude - mapper.loc.longitude);
+				
 					double dx = getHorizontaldistance(topleftMap.loc, mapper.loc);
 					// calculating F(x)
 					f_x = range.get(0) + dx;
 					
-					// added by Liyue: 
 					break;
 
 				}
@@ -247,12 +226,12 @@ public class VHCAlgorithm {
 
 		for (int i = 0; i < ranges.size(); i++) {
 			ArrayList<Double> range = ranges.get(i);
-			// added by Liyue:
+			
 			if (i == 0 && f_x < range.get(0)) {
 				break;
 			}
 
-			// added by Liyue:
+			
 			if (i == ranges.size() - 1 && f_x >= range.get(1)) {
 				result = ranges.size();
 				break;
@@ -260,14 +239,13 @@ public class VHCAlgorithm {
 
 			if (f_x >= range.get(0) && f_x < range.get(1)) {
 				result = i;
-				// added by Liyue:
+				
 				break;
 
 			}
 		}
 
-		if (result == -1)
-			return null;
+
 
 		// check if the generated cell is within the grid
 		if (result >= vhcmap.size()) {
@@ -284,7 +262,7 @@ public class VHCAlgorithm {
 		}
 
 		// check if the generated cell is within the grid
-		if (result < 0) { // modified by Liyue from <=0
+		if (result < 0) { 
 			ArrayList<Mapper> coordinates = vhcmap.get(0);
 			Mapper topleftMap = coordinates.get(0);
 			Mapper bottomrightMap = coordinates.get(2);

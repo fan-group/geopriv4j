@@ -15,7 +15,7 @@ public class VHCAlgorithmExample {
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 
 		// specify the offset size here in meters
-		double sigma = 1000;// 0.1;
+		double sigma = 1000;
 
 		// specify all four locations to be considered in this algorithm
 		Mapper topleft = new Mapper("topleft", new LatLng(35.3123, -80.7432));
@@ -23,21 +23,20 @@ public class VHCAlgorithmExample {
 		Mapper bottomright = new Mapper("bottomright", new LatLng(35.2945, -80.7199));
 		Mapper bottomleft = new Mapper("bottomleft", new LatLng(35.2945, -80.7432));
 
-		// Specify the path to the open Street dataset
+		// Specify the path to the openStreetMap data
 		String file = "data/maploc.txt";
 
 		VHCAlgorithm algorithm = new VHCAlgorithm(sigma, topleft, topright, bottomright, bottomleft, file);
-		System.out.println(VHCUpdatedAlgorithm.ranges);
+
 		// change this variable to pick 1000, 5000, 10000 synthetic points
 		int data = 5000;
 
 		ArrayList<LatLng> locations = DataHandler.readData("data/" + data + ".txt");
-		LatLng location = new LatLng(35.312, -80.743);
 		long startTime = System.currentTimeMillis();
 
 		for (int i = 0; i < locations.size(); i++) {
 
-			Mapper current_mapper = new Mapper("currentLoc", location);// s.get(i));
+			Mapper current_mapper = new Mapper("currentloc", locations.get(i));
 
 			LatLng generated_location = algorithm.generate(current_mapper);
 
