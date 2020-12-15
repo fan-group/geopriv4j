@@ -32,8 +32,8 @@ import geopriv4j.utils.OpenStreetMapFileReader;
 
 public class VHCAlgorithm {
 
-	public static Map<Integer, ArrayList<Mapper>> vhcmap = new HashMap<>();
-	public static Map<Integer, ArrayList<Double>> ranges = new HashMap<>();
+	public Map<Integer, ArrayList<Mapper>> vhcmap = new HashMap<>();
+	public Map<Integer, ArrayList<Double>> ranges = new HashMap<>();
 
 	// Specify the threshold for each cell in VHC algorithm
 	public static int VHC_LIMIT = 500;
