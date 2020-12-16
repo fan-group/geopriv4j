@@ -25,6 +25,7 @@ public class MovingInTheNeighbourhoodAlgorithm {
 	public LatLng bottomright;
 	public double offset;
 	public int n;
+	public int max_trial=20;
 	public ArrayList<LatLng> previous = new ArrayList<>();
 
 	public MovingInTheNeighbourhoodAlgorithm(LatLng topleft, LatLng bottomright, double offset, int n) {
@@ -33,6 +34,8 @@ public class MovingInTheNeighbourhoodAlgorithm {
 		this.offset = offset;
 		this.n = n;
 	}
+	
+
 
 	/*
 	 * In this algorithm we do not report anything if the initial location passed is
@@ -40,7 +43,7 @@ public class MovingInTheNeighbourhoodAlgorithm {
 	 */
 
 	// This method generates new dummy locations based on the previous location and
-	// offset specified
+	// offset specified	
 	public ArrayList<LatLng> generate(LatLng current_loc) {
 
 		ArrayList<LatLng> dummies = new ArrayList<>();
@@ -50,24 +53,29 @@ public class MovingInTheNeighbourhoodAlgorithm {
 			return null;
 
 		if (this.previous.size() == 0) {
-			this.previous.add(current_loc);
+			dummies.add(current_loc);
 			for (int i = 0; i < this.n - 1; i++) {
-				this.previous.add(MN(this.offset, this.previous.get(i)));
+				dummies.add(randLoc());
 			}
 		}
+		
+		else {
 
-		dummies.add(current_loc);
+			dummies.add(current_loc);
 
-		for (int i = 1; i < this.n; i++) {
-//			int prevIndex = dummies.size() - 1;
-			LatLng previous_location = this.previous.get(i);
-			LatLng generated_location = MN(this.offset, previous_location);
-			int counter = 0;
-			while (!this.checkBounds(generated_location) && counter <= this.n) {
-				counter++;
-				generated_location = MN(this.offset, previous_location);
+			for (int i = 1; i < this.n; i++) {
+				//			int prevIndex = dummies.size() - 1;
+				LatLng previous_location = this.previous.get(i);
+				LatLng generated_location = MN(this.offset, previous_location);
+				
+				int counter = 0;
+				while (!this.checkBounds(generated_location) && counter <= this.max_trial) {
+					counter++;
+					generated_location = MN(this.offset, previous_location);
+				}
+				
+				dummies.add(generated_location);
 			}
-			dummies.add(generated_location);
 		}
 
 		// TO-DO shuffle the dummies
@@ -94,5 +102,20 @@ public class MovingInTheNeighbourhoodAlgorithm {
 		}
 
 		return false;
+	}
+	
+	public LatLng randLoc() {
+		double lat1 = topleft.latitude;
+		double lat2 = bottomright.latitude;
+		
+		double long1 = topleft.longitude;
+		double long2 = bottomright.longitude;
+		
+		Random random = new Random();
+		double r = random.nextDouble();
+		double new_lat = r*lat1 + (1-r)*lat2;
+		double new_long = r*long1 + (1-r)*long2;
+		
+		return new LatLng(new_lat, new_long);
 	}
 }
