@@ -16,10 +16,14 @@ Geopriv4j implements location privacy methods in Java (JDK 14.0.1).  Methods in 
 * Various-sized Hilbert Curve - This has been implemented based on the paper by Pingley, Aniket, et al. "Cap: A context-aware privacy protection system for location-based services." 2009 29th IEEE International Conference on Distributed Computing Systems. IEEE, 2009. [paper](https://www2.seas.gwu.edu/~nzhang10/cap/cap/Welcome_files/paper.pdf)
 * Laplace - This method is implemented based on the paper by Andrés, Miguel E., et al.  "Geo-indistinguishability: Differential privacy for location-based systems." Proceedings of the 2013 ACM SIGSAC conference on Computer & communications security. 2013. [paper](http://www.lix.polytechnique.fr/~catuscia/papers/Geolocation/geo.pdf)
 
+*Installation Note:* You must provide your own gurobi.jar file either in your build path or by placing it in geopriv4j/lib/. The gurobi.jar file can be found in your Gurobi installation folder.
+
 ## Usage Examples
 A usage example is provided for each location privacy method.  Synthetic location traces can be found in "data".
 
 ## Test Android App
 A sample app is provided to illustrate the adoption of location privacy methods.  [Video](https://drive.google.com/file/d/1IBTvD7EH-sFyUZmwia_x1HBBpUMpulZO/view?usp=sharing)
+
+*Installation Note:* You will need to enable "Maps SDK for Android" on the Google Developer Console and provide your own API key in the testApp code. The API key must be entered in 'testApp/app/src/main/res/AndroidManifest.xml' under the value for com.google.android.geo.API_KEY.
 
 *Acknolwedgement:* This research has been supported in part by NSF grant CNS-1951430 and UNC Charlotte. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the sponsors.
