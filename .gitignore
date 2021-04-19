@@ -1,1 +1,8 @@
 /.metadata/
+.name
+gradle.xml
+misc.xml
+vcs.xml
+AndroidManifest.xml
+.DS_Store
+.gitignore
