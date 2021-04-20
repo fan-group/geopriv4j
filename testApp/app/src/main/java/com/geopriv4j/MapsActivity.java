@@ -24,14 +24,25 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Locale;
+import java.net.*;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import geopriv4j.utils.Mapper;
 
@@ -142,7 +153,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //displaying actual location on the map
         LatLng loc = new LatLng(currentLatitude, currentLongitude);
         googleMap.addMarker(new MarkerOptions().position(loc).title("actual location").icon(BitmapDescriptorFactory.fromResource(R.drawable.red_dot)));
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14));
 
         //converting com.google.android.gms.maps.model.LatLng object to geopriv4j.utils.LatLng object
         geopriv4j.utils.LatLng location = new geopriv4j.utils.LatLng(loc.latitude, loc.longitude);
@@ -323,10 +334,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int sigma = 1000;
 
         //specify all four locations to be considered in this algorithm
-        Mapper topleft = new Mapper("topleft", new geopriv4j.utils.LatLng((location.latitude + 0.05), (location.longitude - 0.05)));
-        Mapper topright = new Mapper("topright", new geopriv4j.utils.LatLng((location.latitude + 0.05), (location.longitude + 0.05)));
-        Mapper bottomright = new Mapper("bottomright", new geopriv4j.utils.LatLng((location.latitude - 0.05), (location.longitude + 0.05)));
-        Mapper bottomleft = new Mapper("bottomleft", new geopriv4j.utils.LatLng((location.latitude - 0.05), (location.longitude - 0.05)));
+        Mapper topleft = new Mapper("topleft", new geopriv4j.utils.LatLng(35.3630, -80.9845));
+        Mapper topright = new Mapper("topright", new geopriv4j.utils.LatLng(35.3630, -80.6134));
+        Mapper bottomright = new Mapper("bottomright", new geopriv4j.utils.LatLng(35.1427, -80.6134));
+        Mapper bottomleft = new Mapper("bottomleft", new geopriv4j.utils.LatLng(35.1427, -80.9845));
 
         //Code for visualizing the boundaries you set
         LatLng topleft_LatLng = new LatLng(topleft.loc.latitude, topleft.loc.longitude);
@@ -350,85 +361,86 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        File file = new File(getFilesDir() + "/output.xml");
-        File trimmed_file = new File( getFilesDir() + "/trimmed_output.txt");
+        File file = new File(getFilesDir() + "/clt.xml");
+        File trimmed_file = new File( getFilesDir() + "/clt_trimmed.txt");
 
         //Declare bounding box string using previously calculated min and max
         String bbox = min_long + "," + min_lat + "," + max_long + "," + max_lat;
 
-//        if (!trimmed_file.exists()) {
-//            System.out.println("Trimmed Dataset not present. Running API call and file creation.");
-//            //Pull node data from API
-//            try {
-//                String data = "[bbox];way[highway];node(w);out;&bbox=" + bbox;
-//                URL url = new URL("https://overpass-api.de/api/interpreter?data=" + data);
-//                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//                con.setRequestMethod("GET");
-//
-//                BufferedReader in = new BufferedReader(new InputStreamReader(
-//                        con.getInputStream()));
-//                String inputLine;
-//                StringBuffer response = new StringBuffer();
-//
-//                while ((inputLine = in.readLine()) != null) {
-//                    response.append(inputLine);
-//                }
-//                in.close();
-//
-//                //Write to xml file on internal storage
-//                System.out.println("File Path: " + file.getPath());
-//                System.out.println("Response Length: " + response.length());
-//
-//                file.createNewFile();
-//                FileOutputStream fos = new FileOutputStream(file, false);
-//
-//
-//                byte[] bytesArray = response.toString().getBytes();
-//
-//                fos.write(bytesArray);
-//                fos.flush();
-//                fos.close();
-//
-//                System.out.println("Length of file before trimming: " + file.length());
-//            } catch (IOException err) {
-//                System.out.println(err.getMessage());
-//            }
-//
-//            try {
-//                DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
-//                        .newDocumentBuilder();
-//                Document doc = dBuilder.parse(file);
-//                FileWriter myWriter = new FileWriter(trimmed_file.getPath());
-//                if (doc.getDocumentElement().hasChildNodes()) {
-//                    printNote(doc.getDocumentElement().getChildNodes(), myWriter);
-//                }
-//                myWriter.close();
-//            } catch (ParserConfigurationException e) {
-//                e.printStackTrace();
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } catch (SAXException e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//        }else{
+        if (!trimmed_file.exists()) {
+            System.out.println("Trimmed Dataset not present. Running API call and file creation.");
+            //Pull node data from API
+            try {
+                String data = "[bbox];way[highway];node(w);out;&bbox=" + bbox;
+                URL url = new URL("https://overpass-api.de/api/interpreter?data=" + data);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                //Write to xml file on internal storage
+                System.out.println("File Path: " + file.getPath());
+                System.out.println("Response Length: " + response.length());
+
+                file.createNewFile();
+                FileOutputStream fos = new FileOutputStream(file, false);
+
+
+                byte[] bytesArray = response.toString().getBytes();
+
+                fos.write(bytesArray);
+                fos.flush();
+                fos.close();
+
+                System.out.println("Length of file before trimming: " + file.length());
+            } catch (IOException err) {
+                System.out.println(err.getMessage());
+            }
+
+            try {
+                DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
+                        .newDocumentBuilder();
+                Document doc = dBuilder.parse(file);
+                FileWriter myWriter = new FileWriter(trimmed_file.getPath());
+                if (doc.getDocumentElement().hasChildNodes()) {
+                    printNote(doc.getDocumentElement().getChildNodes(), myWriter);
+                }
+                myWriter.close();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+//        else{
 //            System.out.println("Trimmed Dataset present.");
 //        }
 
-        final VHCAlgorithm algorithm = new VHCAlgorithm(sigma, topleft, topright, bottomright, bottomleft, trimmed_file.getPath());
-        Mapper current_mapper = new Mapper("currentLoc", location);
-        geopriv4j.utils.LatLng generated_location = algorithm.generate(current_mapper);
-
-        //Convert to google LatLng object
-        System.out.println("Current Location: " + location);
-        System.out.println("Generated Location: " + generated_location);
-        LatLng converted_location = new LatLng(generated_location.latitude, generated_location.longitude);
-
-        googleMap.addMarker(new MarkerOptions().position(converted_location).title("VHC Algorithm Output").icon(BitmapDescriptorFactory.fromResource(R.drawable.green_dot)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(converted_location, 14));
+//        final VHCAlgorithm algorithm = new VHCAlgorithm(sigma, topleft, topright, bottomright, bottomleft, trimmed_file.getPath());
+//        Mapper current_mapper = new Mapper("currentLoc", location);
+//        geopriv4j.utils.LatLng generated_location = algorithm.generate(current_mapper);
+//
+//        //Convert to google LatLng object
+//        System.out.println("Current Location: " + location);
+//        System.out.println("Generated Location: " + generated_location);
+//        LatLng converted_location = new LatLng(generated_location.latitude, generated_location.longitude);
+//
+//        googleMap.addMarker(new MarkerOptions().position(converted_location).title("VHC Algorithm Output").icon(BitmapDescriptorFactory.fromResource(R.drawable.green_dot)));
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(converted_location, 14));
     }
 
     private static void printNote(NodeList nodeList, FileWriter myWriter) throws IOException {
