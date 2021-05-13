@@ -29,6 +29,6 @@ A sample app is provided to illustrate the adoption of location privacy methods.
 
 *Installation Note:* You will need to enable "Maps SDK for Android" on the Google Developer Console and provide your own API key in the testApp code. The API key must be entered in 'testApp/app/src/main/AndroidManifest.xml' under the value for com.google.android.geo.API_KEY.
 
-There are example classes defined for 7 algorithms located in 'testApp/app/src/main/com.geopriv4j/'. To try out each algorithm, you must edit 'testApp/app/src/main/AndroidManifest.xml'. Find 'android:name' in the <activity> tag and change "MapsActivity____" to the desired class name.
+There are example classes defined for 7 algorithms located in 'testApp/app/src/main/com.geopriv4j/'. To try out each algorithm, you must edit 'testApp/app/src/main/AndroidManifest.xml'. Find 'android:name' in the activity tag and change "MapsActivity____" to the desired class name.
 
 *Acknolwedgement:* This research has been supported in part by NSF grant CNS-1951430 and UNC Charlotte. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the sponsors.
