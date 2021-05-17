@@ -10,6 +10,8 @@ A sample android application that implements the geopriv4j open-source project.
 
 *Installation Note:* You will need to enable "Maps SDK for Android" on the Google Developer Console and provide your own API key in the testApp code. The API key must be entered in 'testApp/app/src/main/AndroidManifest.xml' under the value for com.google.android.geo.API_KEY.
 
+The geopriv4j.jar file located in '/testApp/app/libs/' will occasionally need to be updated to the most current version.
+
 
 ## Privacy Methodology:
 * We snap each latitude and longitude to the nearest point on a square grid with spacing ∆ in meters.
