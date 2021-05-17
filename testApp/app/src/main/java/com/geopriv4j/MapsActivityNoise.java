@@ -1,8 +1,5 @@
 package com.geopriv4j;
 
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -10,6 +7,14 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,19 +22,24 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Locale;
 
-import geopriv4j.*;
+import geopriv4j.NoiseAlgorithm;
+import geopriv4j.utils.Mapper;
+
+//import geopriv4j.*;
+//import geopriv4j.VHCAlgorithm;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivityNoise extends FragmentActivity implements OnMapReadyCallback {
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -91,7 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 .findFragmentById(R.id.map);
 
                         assert mapFragment != null;
-                        mapFragment.getMapAsync(MapsActivity.this);
+                        mapFragment.getMapAsync(MapsActivityNoise.this);
 
                     }
 
@@ -110,6 +120,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 Looper.getMainLooper());
@@ -132,26 +152,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.addMarker(new MarkerOptions().position(loc).title("actual location").icon(BitmapDescriptorFactory.fromResource(R.drawable.red_dot)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14));
 
-        //converting com.google.android.gms.maps.model.LatLng obejct to geopriv4j.utils.LatLng object
+        //converting com.google.android.gms.maps.model.LatLng object to geopriv4j.utils.LatLng object
         geopriv4j.utils.LatLng location = new geopriv4j.utils.LatLng(loc.latitude, loc.longitude);
 
         /*
-         * Rounding Algorithm example
+         * Noise Algorithm example
          */
 
-        //specify the offset in meters
-        double s = 500;
+        double variance = 5000;
 
-        //generating the noise using the RoundingAlgorithm from geopriv4j package
-        geopriv4j.utils.LatLng rounded = new RoundingAlgorithm(s).generate(location);
+        //Generate noise using the NoiseAlgorithm from geopriv4j package
+        geopriv4j.utils.LatLng noise = new NoiseAlgorithm(variance).generate(location);
 
 
-        //converting geopriv4j.utils.LatLng object to com.google.android.gms.maps.model.LatLng obejct
-        LatLng roundedLatLng = new LatLng(rounded.latitude, rounded.longitude);
+        //Convert geopriv4j.utils.LatLng object to com.google.android.gms.maps.model.LatLng object
+        LatLng noiseLatLng = new LatLng(noise.latitude, noise.longitude);
 
         //displaying the location on the map
-        googleMap.addMarker(new MarkerOptions().position(roundedLatLng).title("rounded location").icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow_dot)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(roundedLatLng, 14));
-
+        googleMap.addMarker(new MarkerOptions().position(noiseLatLng).title("Noise Algorithm location").icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow_dot)));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(noiseLatLng, 14));
     }
 }
