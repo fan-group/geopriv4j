@@ -1,8 +1,6 @@
 # Geopriv4j: An Open Source Repository for Location Privacy
 Geopriv4j implements location privacy methods in Java (JDK 14.0.1).  Methods in the repository do not rely on other trusted parties/users/servers, and protect the user's location on-the-fly.  Please see the below for a list of methods currently implemented in the repository.
 
-# My Contributions
-This fork contains contributions made during my undergraduate research during the Spring 2021 semester. During this time, I implemented algorithms in the testApp that had previously not been implemented. See [Test Android App](#test-android-app) for details.
 
 ## Location Privacy Methods:
 
@@ -27,8 +25,6 @@ A usage example is provided for each location privacy method.  Synthetic locatio
 ## Test Android App
 A sample app is provided to illustrate the adoption of location privacy methods.  [Video](https://drive.google.com/file/d/1IBTvD7EH-sFyUZmwia_x1HBBpUMpulZO/view?usp=sharing)
 
-*Installation Note:* You will need to enable "Maps SDK for Android" on the Google Developer Console and provide your own API key in the testApp code. The API key must be entered in 'testApp/app/src/main/AndroidManifest.xml' under the value for com.google.android.geo.API_KEY.
-
-There are example classes defined for 7 algorithms located in 'testApp/app/src/main/com.geopriv4j/'. To try out each algorithm, you must edit 'testApp/app/src/main/AndroidManifest.xml'. Find 'android:name' in the activity tag and change "MapsActivity____" to the desired class name.
+See [testApp](https://github.com/fan-group/geopriv4j/tree/master/testApp) for more details.
 
 *Acknolwedgement:* This research has been supported in part by NSF grant CNS-1951430 and UNC Charlotte. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the sponsors.
